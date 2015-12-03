@@ -1,7 +1,6 @@
 .DS_Store
 
 appx/config/*
-sys31/*
 
 application/cache/*
 !application/cache/index.html
