@@ -945,8 +945,9 @@ class Marketing extends CI_Controller {
 		$datax = $this->db->get('temp_issued_today');
 		$datax = $datax->result_array();
 		$hasil['data'] = $datax;
-		$this->db->select('data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
+		$this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
+		$this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
 		$this->db->where('updated_at',NULL);
 		$dataz = $this->db->get('data_all_error');
 		$dataz = $dataz->result_array();
