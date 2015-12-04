@@ -131,24 +131,6 @@ function csv_to_array($filename='', $delimiter=',')
 			return $data;
 		}
 	}
-	// public function logdata($value)
-	// {
-		
-	// 	$link = array();
-	// 	for($i = 1;$i<50;$i++){
-	// 		if($this->uri->segment($i)!=""){
-	// 			$link[$i] = $this->uri->segment($i); 
-	// 		}
-	// 	}
-		
-		
-	// 	$data['isi'] = $value." ".json_encode($link)." ".json_encode($_GET);
-	// 	$data['idpengguna'] = $this->session->userdata('id');
-	// 	$data['ip'] = $_SERVER['REMOTE_ADDR'];
-	// 	$data['tanggal'] = date("Y-m-d");
-	// 	$data['jam'] = date("H:i:s");
-	// 	$this->db->insert('logdata',$data);
-	// }
 	public function cek($data){
 		$query = $this->db->where('email',$data['email']);
 		$query = $this->db->get('data_user');
