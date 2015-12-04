@@ -18,6 +18,36 @@ class Root extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+	public function sendmail($email)
+	{
+		$this->load->library('email');
+
+        $config['protocol'] = 'sendmail';
+        $config['mailpath'] = '/usr/sbin/sendmail';
+        $config['charset'] = 'iso-8859-1';
+        $config['mailtype'] = 'html';
+        $config['wordwrap'] = TRUE;
+
+        $this->email->initialize($config);
+
+        $this->email->from('info@copasin.com', 'Copasin.com');
+        $this->email->to('arief@pointer.co.id'); 
+        //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false)); 
+        //$this->email->bcc('them@their-example.com'); 
+        $ss = "<h2>Office Pointer</h2>
+        		<hr>
+        		<p>Account Information</p>
+        		<p>".$email."</p>
+        		<p>&nbsp;</p>
+        		<div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
+	 </b></span></span></span></span></span></span></b></span></span></span>
+</span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>";
+        $this->email->subject("Office Pointer Account Information");
+        $this->email->message($ss);  
+
+        $this->email->send();
+	}
+
 	public function logdata()
 	{
 		$limit = 100;

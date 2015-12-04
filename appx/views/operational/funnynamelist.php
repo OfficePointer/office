@@ -10,7 +10,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" id="kolam_funnyname">
       <table class="table table-bordered table-striped for_datatables_asc">
         <thead>
           <tr>
