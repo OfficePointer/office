@@ -22,14 +22,7 @@ class Root extends CI_Controller {
 	{
 		$this->load->library('email');
 
-        $config['protocol'] = 'sendmail';
-        $config['mailpath'] = '/usr/sbin/sendmail';
-        $config['charset'] = 'iso-8859-1';
-        $config['mailtype'] = 'html';
-        $config['wordwrap'] = TRUE;
-
-        $this->email->initialize($config);
-
+        $this->email->set_header('X-MC-PreserveRecipients',TRUE);
         $this->email->from('info@copasin.com', 'Copasin.com');
         $this->email->to('arief@pointer.co.id'); 
         //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false)); 
