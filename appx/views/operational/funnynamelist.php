@@ -28,7 +28,7 @@
             <td><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)"><?php echo $key['brand_name'];?></a></td>
             <td><?php echo $key['prefix'];?></td>
             <td><?php echo $key['jumlah'];?></td>
-            <td><a target="_blank" href="<?php echo $key['link'];?>">Click Here</a></td>
+            <td><a onclick="show_funnyname('<?php echo $key['link'];?>')">Click Here</a></td>
           </tr>
         <?php
         }

@@ -58,6 +58,11 @@
 	    setInterval(function () {
 	    	get_issued_log_data();
 	    },1000*5);
+	    setInterval(function(){
+	    	if($("#modal_profiling").css('display')=='none'){
+	    		$('.modal-dialog').css('width','600px');
+	    	}
+	    },1000);
 	    <?php 
 		}
 		?>
@@ -94,6 +99,53 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	// 		}
 	// 	});	
 	// }
+
+	function showstatus () {
+		$("#btn_fol2").remove();
+		$("#btn_fol2").remove();
+		$("#btn_fol").remove();
+		$(".modal-footer").prepend('<button onclick="save_status()" id="btn_fol" class="pull-left btn btn-primary">Submit</button>');
+		$("#btn_fol2").remove();
+		$("#exampleModalLabel").html('Change Status');
+		$("#isinya").html('<tr>'+
+				'<td>Status</td>'+
+				'<td><select class="form-control" type="text" id="status_online">'+
+						'<option value="Online"><i class="fa fa-circle text-success"></i> Online</option>'+
+						'<option value="Invisible"><i class="fa fa-circle text-error"></i> Invisible</option>'+
+				'</td>'+
+			'</tr>');
+	    $('#modal_profiling').modal('show');
+	}
+	function show_funnyname(link) {
+		$("#btn_fol2").remove();
+		$("#btn_fol2").remove();
+		$("#btn_fol").remove();
+		$("#btn_fol2").remove();
+		$("#exampleModalLabel").html('Funnyname');
+		$("#isinya").html('<iframe style="width:1150px;height:450px;border:0px;" src="'+link+'"></iframe>');
+	    $('.modal-dialog').css('width','1200px');
+	    $('#modal_profiling').modal('show');
+	    $("#modal_profiling").on('hide',function(){
+	    	$('.modal-dialog').css('width','600px');
+	    });
+	}
+
+	function save_status () {
+		$.ajax({
+			url:'<?php echo base_url("operational/change_status");?>',
+			type:'POST',
+			data:{status:$("#status_online").val()},
+			success:function(balik){
+				var data = 'error';
+				if(balik=='Online'){
+					data = 'success';
+				}
+				$("#status_").html('<i class="fa fa-circle text-'+data+'"></i> '+balik);
+
+				$(document).find("#btn_modal_close").click();	
+			}
+		});
+	}
 
 	function get_issued_log_data (date) {
 		$.ajax({
