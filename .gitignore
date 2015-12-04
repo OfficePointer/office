@@ -1,7 +1,8 @@
 .DS_Store
 
+
 appx/config/*
-appx/model/*
+appx/models/*
 
 application/cache/*
 !application/cache/index.html
