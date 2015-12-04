@@ -1,5 +1,8 @@
 <?php 
   $all_div = array('Root','Opera','Opera+','HRD','Finan','Perf','Marketing','Feedback Service');
+  $this->db->where('id',$this->session->userdata('id'));
+  $ax = $this->db->get('data_user');
+  $ax = $ax->row_array();
 ?>
 <aside class="main-sidebar">
     <!-- sidebar: style can be found in sidebar.less -->
@@ -11,7 +14,7 @@
         </div>
         <div class="pull-left info">
           <p><?php echo $this->session->userdata('nama');?></p>
-          <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
+          <a id="status_" style="border:1px solid white;padding:1px 5px 1px;border-radius:10px;" onclick="showstatus()" href="#"><i class="fa fa-circle text-<?php echo ($ax['status']=="Online")?"success":"error";?>"></i> <?php echo $ax['status'];?> </a>
         </div>
       </div>
       <!-- search form -->
