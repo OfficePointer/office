@@ -1,5 +1,6 @@
 .DS_Store
 
+
 appx/config/*
 appx/models/*
 
@@ -28,3 +29,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.stTheme.cache
 *.sublime-workspace
 *.sublime-project
+
+cron/*
+appx/models/*
