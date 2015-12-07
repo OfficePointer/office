@@ -344,14 +344,14 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('settings/user_manage');?>"><i class="fa fa-th-list"></i> User Data</a></li>
-                <li><a href="<?php echo base_url('settings/division_data');?>"><i class="fa fa-th-list"></i> Division Data</a></li>
-                <li><a href="<?php echo base_url('settings/level_data');?>"><i class="fa fa-th-list"></i> Level Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/user_manage');?>"><i class="fa fa-th-list"></i> User Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/division_data');?>"><i class="fa fa-th-list"></i> Division Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/level_data');?>"><i class="fa fa-th-list"></i> Level Data</a></li>
               </ul>
             </li>
           <?php } ?>
-            <li><a href="<?php echo base_url('settings/edit_profile');?>"><i class="fa fa-key"></i> Edit Profile</a></li>
-            <li><a href="<?php echo base_url('settings/office_manual');?>"><i class="fa fa-life-ring"></i> Office Help</a></li>
+            <li><a href="<?php echo base_url('pengaturan/edit_profile');?>"><i class="fa fa-key"></i> Edit Profile</a></li>
+            <li><a href="<?php echo base_url('pengaturan/office_manual');?>"><i class="fa fa-life-ring"></i> Office Help</a></li>
           </ul>
         </li>
         <?php
