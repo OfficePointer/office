@@ -214,7 +214,7 @@ class Operational extends CI_Controller {
 
 					$datasearch[] = "data:image/".$tipe[1].";base64,".$ima[1];
 
-					$datarep[] = 'http://office.pointer.co.id/office/assets/imgposts/'.$tgl.'.jpeg';
+					$datarep[] = 'http://103.4.167.242/assets/imgposts/'.$tgl.'.jpeg';
 					//echo $ima[1];
 				}
 				$ada = 0;
@@ -274,7 +274,7 @@ class Operational extends CI_Controller {
 
 					$datasearch[] = "data:image/".$tipe[1].";base64,".$ima[1];
 
-					$datarep[] = 'http://office.pointer.co.id/office/assets/imgposts/'.$tgl.'.jpeg';
+					$datarep[] = 'http://103.4.167.242/assets/imgposts/'.$tgl.'.jpeg';
 					//echo $ima[1];
 				}
 				$ada = 0;
