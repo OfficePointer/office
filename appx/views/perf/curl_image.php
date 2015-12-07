@@ -1,9 +1,9 @@
 <?php
-$url = array('http://office.pointer.co.id/gd_system/index.php',
-        'http://office.pointer.co.id/gd_system/qg_qz_tnu.php',
-        'http://office.pointer.co.id/gd_system/tgn_kd.php',
-        'http://office.pointer.co.id/gd_system/sn_mg_kai.php',
-        'http://office.pointer.co.id/gd_system/ga_jt_sj.php');
+$url = array('http://office-cron.copasin.com/index.php',
+        'http://office-cron.copasin.com/qg_qz_tnu.php',
+        'http://office-cron.copasin.com/tgn_kd.php',
+        'http://office-cron.copasin.com/sn_mg_kai.php',
+        'http://office-cron.copasin.com/ga_jt_sj.php');
 
 foreach ($url as $key) {
 $ch = curl_init($key);
@@ -25,11 +25,11 @@ curl_close($ch);
     <!-- Main content -->
     <section class="content">
       <div class="row">
-            <img src="http://office.pointer.co.id/gd_system/temp/simple<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
-            <img src="http://office.pointer.co.id/gd_system/temp/qg_qz_tnu<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
-            <img src="http://office.pointer.co.id/gd_system/temp/tgn_kd<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
-            <img src="http://office.pointer.co.id/gd_system/temp/sn_mg_kai<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
-            <img src="http://office.pointer.co.id/gd_system/temp/ga_jt_sj<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/temp/simple<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/temp/qg_qz_tnu<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/temp/tgn_kd<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/temp/sn_mg_kai<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/temp/ga_jt_sj<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
       </div>
       <!-- /.row (main row) -->
 
