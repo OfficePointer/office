@@ -64,15 +64,6 @@ class Root extends CI_Controller {
 	public function sendmail($idnya)
     {
         $this->general->logging();
-        $this->load->library('email');
-
-        $config['protocol'] = 'sendmail';
-        $config['mailpath'] = '/usr/sbin/sendmail';
-        $config['charset'] = 'iso-8859-1';
-        $config['mailtype'] = 'html';
-        $config['wordwrap'] = TRUE;
-
-        $this->email->initialize($config);
 
         $this->email->from('office@office.pointer.co.id', 'Office Pointer');
         //all service operation
