@@ -11,7 +11,7 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="<?php echo base_url("settings/division_update");?>">
+      <form method="POST" action="<?php echo base_url("pengaturan/division_update");?>">
       	<div class="form-group">
       		<label>Name</label>
           <input type="hidden" class="form-control" name="id" value="<?php echo $division['id'];?>">

@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-    <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("settings/division_add");?>">Add Division</a></span>
+    <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("pengaturan/division_add");?>">Add Division</a></span>
       <h1>
       Manage Division
       </h1>
@@ -25,8 +25,8 @@
         ?>
           <tr>
             <td><?php echo $key['name'];?></td>
-            <td><a href="<?php echo base_url("settings/division_edit/".$key['id']);?>">Edit</a></td>
-            <td><a href="<?php echo base_url("settings/division_delete/".$key['id']);?>">Delete</a></td>
+            <td><a href="<?php echo base_url("pengaturan/division_edit/".$key['id']);?>">Edit</a></td>
+            <td><a href="<?php echo base_url("pengaturan/division_delete/".$key['id']);?>">Delete</a></td>
           </tr>
         <?php
         }

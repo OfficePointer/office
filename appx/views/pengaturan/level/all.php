@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("settings/level_add");?>">Add Level</a></span>
+        <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("pengaturan/level_add");?>">Add Level</a></span>
       <h1>
       Manage Level
       </h1>
@@ -29,8 +29,8 @@
             <td><?php echo $key['name'];?></td>
             <td><?php echo $this->general->get_sys_div($key['id_division']);?></td>
             <td><?php echo $this->general->get_sys_lev($key['id_level']);?></td>
-            <td><a href="<?php echo base_url("settings/level_edit/".$key['id']);?>">Edit</a></td>
-            <td><a href="<?php echo base_url("settings/level_delete/".$key['id']);?>">Delete</a></td>
+            <td><a href="<?php echo base_url("pengaturan/level_edit/".$key['id']);?>">Edit</a></td>
+            <td><a href="<?php echo base_url("pengaturan/level_delete/".$key['id']);?>">Delete</a></td>
           </tr>
         <?php
         }

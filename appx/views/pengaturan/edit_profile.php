@@ -12,7 +12,7 @@
       <!-- Main row -->
       <div class="row">
         <div class="col-md-12">
-          <form method="POST" enctype="multipart/form-data" action="<?php echo base_url("settings/save_profile");?>">
+          <form method="POST" enctype="multipart/form-data" action="<?php echo base_url("pengaturan/save_profile");?>">
           <!-- The time line -->
           <h1>User Info</h1>
           <table class="table">

@@ -27,7 +27,7 @@
             <td><?php echo $key['name']." (".$key['email'].")";?></td>
             <td><?php echo $this->general->get_sys_div($key['id_division']);?></td>
             <td><?php echo $this->general->get_sys_lev($key['id_level']);?></td>
-            <td><a href="<?php echo base_url("settings/user_edit/".$key['ID']);?>">Edit</a> <?php if($key['password']=="16d7a4fca7442dda3ad93c9a726597e4"){?>| <a href="<?php echo base_url("root/sendmail/".$key['ID']);?>">SendMail</a><?php } ?></td>
+            <td><a href="<?php echo base_url("pengaturan/user_edit/".$key['ID']);?>">Edit</a> <?php if($key['password']=="16d7a4fca7442dda3ad93c9a726597e4"){?>| <a href="<?php echo base_url("root/sendmail/".$key['ID']);?>">SendMail</a><?php } ?></td>
           </tr>
         <?php
         }

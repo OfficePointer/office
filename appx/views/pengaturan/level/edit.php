@@ -11,7 +11,7 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="<?php echo base_url("settings/level_update");?>">
+      <form method="POST" action="<?php echo base_url("pengaturan/level_update");?>">
       	<div class="form-group">
       		<label>Name</label>
           <input type="hidden" class="form-control" name="id" value="<?php echo $data['id'];?>">
