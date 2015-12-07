@@ -30,6 +30,7 @@ class Operational extends CI_Controller {
         $a = $this->load->database('dbpointer',true);
         $hasil = $a->query('select ar_booking.id_mitra,brand_name,prefix,count(ar_booking.kode_booking) as jumlah from ar_booking left join company on company.id_mitra=ar_booking.id_mitra left join mitra on mitra.id_mitra=ar_booking.id_mitra where tgl_berangkat_takeoff>="'.date("Y-m-d").'" and ar_booking.status in (3) and id not in (select id_ar_booking from funnyname_log where status=1) group by mitra.id_mitra');
         $data = array();
+        $data['funnyname'] = array();
         foreach ($hasil->result_array() as $key) {
             $data['funnyname'][] = array('id_mitra'=>$key['id_mitra'],'jumlah'=>$key['jumlah'],'brand_name'=>$key['brand_name'],'prefix'=>$key['prefix'],'link'=>"https://admin.pointer.co.id/airline/admin/funnyname/".$key['id_mitra']."/all/all/all");            
         }
