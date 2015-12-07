@@ -97,7 +97,7 @@ class Root extends CI_Controller {
 
         $this->email->send();
 
-        redirect(base_url("settings/user_manage"));
+        redirect(base_url("pengaturan/user_manage"));
         //echo $this->email->print_debugger();
     }
 }
