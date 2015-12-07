@@ -165,7 +165,7 @@ class Pengaturan extends CI_Controller {
 	public function reset_password($id)
 	{
 		$this->db->where('ID',$id);
-		$this->db->update('data_user',array('password','16d7a4fca7442dda3ad93c9a726597e4'));
+		$this->db->update('data_user',array('password'=>'16d7a4fca7442dda3ad93c9a726597e4'));
 		redirect(base_url('pengaturan/user_manage'));
 	}
 }
