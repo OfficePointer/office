@@ -150,7 +150,7 @@ class Operational extends CI_Controller {
             $this->db->insert('email_log',$data);
         }
 
-        echo $this->email->print_debugger();
+        //echo $this->email->print_debugger();
     }
     public function kirim_surat($idnya)
 	{
