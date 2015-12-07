@@ -67,7 +67,7 @@ class Root extends CI_Controller {
 
         $this->email->from('office@office.pointer.co.id', 'Office Pointer');
         //all service operation
-        $this->db->where('id',$idnya);
+        $this->db->where('ID',$idnya);
         $em = $this->db->get('data_user');
         $em = $em->row_array();
         $this->email->to($em['email']); 
