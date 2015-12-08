@@ -469,6 +469,8 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('followup_province','');
 			$this->session->set_userdata('followup_type','');
 			$this->session->set_userdata('followup_status','');
+			$this->session->set_userdata('followup_topup','');
+			$this->session->set_userdata('followup_trx','');
 		}
 
 		if($this->input->method()=="post"){
@@ -476,6 +478,16 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('followup_brand_name',$this->input->post('brand_name'));
 		}else{
 			$this->session->set_userdata('followup_brand_name','');
+		}
+		if($this->input->post('topup')!=""){
+			$this->session->set_userdata('followup_topup',$this->input->post('topup'));
+		}else{
+			$this->session->set_userdata('followup_topup','');
+		}
+		if($this->input->post('trx')!=""){
+			$this->session->set_userdata('followup_trx',$this->input->post('trx'));
+		}else{
+			$this->session->set_userdata('followup_trx','');
 		}
 		if($this->input->post('date_activity')!="" and $this->input->post('date_activity')!=" - "){
 			$this->session->set_userdata('followup_date_activity',$this->input->post('date_activity'));
@@ -540,6 +552,12 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('followup_type')!=""){
 			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
 		}
+		if($this->session->userdata('followup_topup')!=""){
+			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
+		}
+		if($this->session->userdata('followup_trx')!=""){
+			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
+		}
 
 		if($this->session->userdata('followup_status')!=""){
 			if($this->session->userdata('followup_status')!="all"){
@@ -579,7 +597,14 @@ class Marketing extends CI_Controller {
 
 		if($this->session->userdata('followup_type')!=""){
 			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
+		}		
+		if($this->session->userdata('followup_topup')!=""){
+			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
 		}
+		if($this->session->userdata('followup_trx')!=""){
+			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
+		}
+
 
 		if($this->session->userdata('followup_status')!=""){
 			if($this->session->userdata('followup_status')!="all"){

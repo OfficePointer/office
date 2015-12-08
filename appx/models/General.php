@@ -21,7 +21,11 @@ class general extends CI_Model {
 	public function __construct()
 	{
 
+<<<<<<< HEAD
 		if(current_url()!="http://103.4.167.242/index.php/login" and current_url()!="http://103.4.167.242/index.php/login/ceklogin" and current_url()!="http://103.4.167.242/index.php/marketing/generate_tanggal"){
+=======
+		if(current_url()!="http://office.pointer/login" and current_url()!="http://office.pointer/login/ceklogin" and current_url()!="http://office.pointer/marketing/generate_tanggal"){
+>>>>>>> 3c4290e0d0a9331cfe0d52e19d3a18d01fd3a8cc
 			if($this->session->userdata('id')==0 or $this->session->userdata('id')==""){
 				$this->session->set_userdata('revert_data',0);
 				$this->session->set_userdata('sekarang',0);
