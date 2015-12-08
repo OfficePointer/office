@@ -9,7 +9,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <iframe width="100%" style="overflow:hidden;" height="1700" frameborder="0" src="<?php include '../office-cron/test_mail.php';?>"></iframe>
+        <?php include '../office-cron/test_mail.php';?>
       </div>
       <!-- /.row (main row) -->
 
