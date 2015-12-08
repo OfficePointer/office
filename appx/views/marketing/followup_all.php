@@ -39,6 +39,22 @@
             </select></td>
           </tr>
           <tr>
+            <td>Topup</td>
+            <td><select name="topup" class="form-control">
+              <option <?php echo ($this->session->userdata('followup_topup')=="")?"selected":"";?> value="">all</option>
+              <option <?php echo ($this->session->userdata('followup_topup')=="yes")?"selected":"";?> value="yes">yes</option>
+              <option <?php echo ($this->session->userdata('followup_topup')=="no")?"selected":"";?> value="no">no</option>
+            </select></td>
+          </tr>
+          <tr>
+            <td>Trx</td>
+            <td><select name="trx" class="form-control">
+              <option <?php echo ($this->session->userdata('followup_trx')=="")?"selected":"";?> value="">all</option>
+              <option <?php echo ($this->session->userdata('followup_trx')=="yes")?"selected":"";?> value="yes">yes</option>
+              <option <?php echo ($this->session->userdata('followup_trx')=="no")?"selected":"";?> value="no">no</option>
+            </select></td>
+          </tr>
+          <tr>
             <td>Provinsi</td>
             <td><input value="<?php echo $this->session->userdata('followup_province');?>" type="text" name="province" class="form-control"></td>
           </tr>
