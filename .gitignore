@@ -3,6 +3,7 @@
 
 appx/config/*
 appx/models/*
+appx/models/General.php
 
 application/cache/*
 !application/cache/index.html
