@@ -168,4 +168,26 @@ class Pengaturan extends CI_Controller {
 		$this->db->update('data_user',array('password'=>'16d7a4fca7442dda3ad93c9a726597e4'));
 		redirect(base_url('pengaturan/user_manage'));
 	}
+	public function switch_mail($id)
+	{
+		$this->db->where('ID',$id);
+		$a = $this->db->get('data_user');
+		$a = $a->row_array();
+		$baru = ($a['approved']==1)?0:1;
+		
+		$this->db->where('ID',$id);
+		$this->db->update('data_user',array('approved'=>$baru));
+		redirect(base_url('pengaturan/user_manage'));
+	}
+	public function switch_mail_type($id)
+	{
+		$this->db->where('ID',$id);
+		$a = $this->db->get('data_user');
+		$a = $a->row_array();
+		$baru = ($a['mail_type']==1)?0:1;
+		
+		$this->db->where('ID',$id);
+		$this->db->update('data_user',array('mail_type'=>$baru));
+		redirect(base_url('pengaturan/user_manage'));
+	}
 }

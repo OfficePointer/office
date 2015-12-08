@@ -16,6 +16,7 @@
             <th>Nama</th>
             <th>Divisi</th>
             <th>Jabatan</th>
+            <th>MailType</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -27,7 +28,8 @@
             <td><?php echo $key['name']." (".$key['email'].")";?></td>
             <td><?php echo $this->general->get_sys_div($key['id_division']);?></td>
             <td><?php echo $this->general->get_sys_lev($key['id_level']);?></td>
-            <td><a href="<?php echo base_url("pengaturan/reset_password/".$key['ID']);?>">Reset Password</a> | <a href="<?php echo base_url("pengaturan/user_edit/".$key['ID']);?>">Edit</a> <?php if($key['password']=="16d7a4fca7442dda3ad93c9a726597e4"){?>| <a href="<?php echo base_url("root/sendmail/".$key['ID']);?>">SendMail</a><?php } ?></td>
+            <td><?php echo (($key['approved']==1)?"Yes":"No")." (".(($key['mail_type']==1)?"To":"BCC").")";?></td>
+            <td><a title="Switch Mail Type" href="<?php echo base_url("pengaturan/switch_mail_type/".$key['ID']);?>">ST</a> | <a title="Switch Mail" href="<?php echo base_url("pengaturan/switch_mail/".$key['ID']);?>">SM</a> | <a title="Reset Password" href="<?php echo base_url("pengaturan/reset_password/".$key['ID']);?>">RP</a> | <a title="Edit User" href="<?php echo base_url("pengaturan/user_edit/".$key['ID']);?>">EU</a> <?php if($key['password']=="16d7a4fca7442dda3ad93c9a726597e4"){?>| <a title="SendMail User Account" href="<?php echo base_url("root/sendmail/".$key['ID']);?>">SE</a><?php } ?></td>
           </tr>
         <?php
         }
