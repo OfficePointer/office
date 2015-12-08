@@ -34,3 +34,4 @@ cron/*
 appx/models/*
 assets/csv
 assets/office-cron/*
+assets/imgposts/*
