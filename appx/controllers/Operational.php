@@ -22,8 +22,9 @@ class Operational extends CI_Controller {
     public function all_error()
     {
         $a = $this->db->get('data_all_error');
-        $a['error'] = $a->result_array();
-        $this->general->load('operational/data_all_error',$a);
+        $data = array();
+        $data['error'] = $a->result_array();
+        $this->general->load('operational/data_all_error',$data);
     }
 
     public function change_status()
