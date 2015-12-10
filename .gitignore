@@ -1,9 +1,7 @@
 .DS_Store
 
 
-appx/config/*
-appx/models/*
-appx/models/General.php
+appx/config/database.php
 
 application/cache/*
 !application/cache/index.html
@@ -32,7 +30,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 
 cron/*
-appx/models/*
 assets/csv
 assets/office-cron/*
 assets/imgposts/*
