@@ -114,7 +114,7 @@
                 </ul>
               </li>
               <li class="footer">
-                <a target="_blank" href="<?php echo base_url("operational/all_error");?>">View all</a>
+                <a href="<?php echo base_url("operational/all_error");?>">View all</a>
               </li>
             </ul>
           </li>
