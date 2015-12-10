@@ -19,6 +19,13 @@ class Operational extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+    public function all_error()
+    {
+        $a = $this->db->get('data_all_error');
+        $a['error'] = $a->result_array();
+        $this->general->load('operational/data_all_error',$a);
+    }
+
     public function change_status()
     {
         $this->general->logging();
