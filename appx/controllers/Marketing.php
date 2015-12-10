@@ -20,6 +20,7 @@ class Marketing extends CI_Controller {
 	 */
 	public function get_solve_note_option()
 	{
+        $this->general->logging();
 		$this->db->order_by('id','asc');
 		$a = $this->db->get('def_solve_note');
 		$a = $a->result_array();
@@ -67,6 +68,7 @@ class Marketing extends CI_Controller {
 	}
  public function export_member_monthly()
     {
+        $this->general->logging();
     					header('Content-type: application/vnd.ms-excel');
 				        header('Content-Disposition: attachment; filename=export_member_monthly_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
 						// $this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
@@ -322,6 +324,7 @@ class Marketing extends CI_Controller {
 	}
 	public function get_last_activity($id)
 	{
+        $this->general->logging();
 		$this->db->where('member_ID',$id);
 		$this->db->where('delete_by',NULL);
 		$this->db->limit(1);
@@ -626,6 +629,7 @@ class Marketing extends CI_Controller {
 
 	public function ajax_get_activity($id_mitra)
 	{
+        $this->general->logging();
 	?>
               <table class="table table-bordered table-striped" id="TBL_<?php echo $id_mitra;?>">
               <tr>
@@ -764,6 +768,7 @@ class Marketing extends CI_Controller {
 	}
 	public function member_graph_export(){
 
+        $this->general->logging();
 				        header('Content-type: application/vnd.ms-excel');
 				        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
 						// $this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
@@ -811,6 +816,7 @@ class Marketing extends CI_Controller {
 	}
 	public function member_graph_export_trx(){
 
+        $this->general->logging();
 				        header('Content-type: application/vnd.ms-excel');
 				        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_TRX_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
 						$this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
@@ -861,6 +867,7 @@ class Marketing extends CI_Controller {
 		$this->general->load('marketing/airline_graph');
 	}
 	public function airline_graph_export(){
+        $this->general->logging();
         header('Content-type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename=Export_Airline_Graph_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
 		$xa = $this->db->get('data_kode');
@@ -903,6 +910,7 @@ class Marketing extends CI_Controller {
 	}
 		public function export_trx()
 	{
+        $this->general->logging();
 		if($_GET['vendor']!="" or $_GET['date_start']!="" or $_GET['date_end']!=""){
 		$this->general->logging();
 		$this->load->library('Excel');
@@ -950,6 +958,7 @@ class Marketing extends CI_Controller {
 	}
 	public function solve_revert()
 	{
+        $this->general->logging();
 
 		$data = $this->input->post();
 		$this->db->where('id',$data['id']);

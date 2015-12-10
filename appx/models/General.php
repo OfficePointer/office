@@ -201,17 +201,17 @@ function csv_to_array($filename='', $delimiter=',')
 	}
 	public function logging()
 	{
-		$data['idpengguna'] = $this->session->userdata('id');
-		$data['url'] = current_url();
-		$data['tanggal'] = date("Y-m-d");
-		$data['jam'] = date("H:i:s");
-		$data['ip'] = $_SERVER['REMOTE_ADDR'];
-		// $data['client_info'] = json_encode($_SERVER);
-		// $data['hostname'] = gethostname();
-		// $data['header'] = json_encode(headers_list());
-		$data['get_info'] = json_encode($_GET);
-		$data['post_info'] = json_encode($this->input->post());
-		$this->db->insert('logdata',$data);
+		$dataxlog['idpengguna'] = $this->session->userdata('id');
+		$dataxlog['url'] = current_url();
+		$dataxlog['tanggal'] = date("Y-m-d");
+		$dataxlog['jam'] = date("H:i:s");
+		$dataxlog['ip'] = $_SERVER['REMOTE_ADDR'];
+		// $dataxlog['client_info'] = json_encode($_SERVER);
+		// $dataxlog['hostname'] = gethostname();
+		// $dataxlog['header'] = json_encode(headers_list());
+		$dataxlog['get_info'] = json_encode($_GET);
+		$dataxlog['post_info'] = json_encode($this->input->post());
+		$this->db->insert('logdata',$dataxlog);
 	}
 	public function get_manual($id_mitra,$tanggal_awal,$tanggal_akhir)
 	{

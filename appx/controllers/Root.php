@@ -20,6 +20,7 @@ class Root extends CI_Controller {
 	 */
 	public function kirim_email($email)
 	{
+        $this->general->logging();
 		$this->load->library('email');
 
         $this->email->set_header('X-MC-PreserveRecipients',TRUE);

@@ -24,6 +24,7 @@ class Login extends CI_Controller {
 	}
 	public function ceklogin()
 	{
+        $this->general->logging();
 		$this->db->where('email',$this->input->post('email'));
 		$this->db->where('password',md5($this->input->post('password')));
 		$a = $this->db->get('data_user')->row_array();
@@ -41,6 +42,7 @@ class Login extends CI_Controller {
 	}
 	public function logout()
 	{
+        $this->general->logging();
 		$this->session->set_userdata('id',0);
 		$this->session->set_userdata('nama',0);
 		$this->session->set_userdata('divisi',0);

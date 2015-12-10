@@ -21,6 +21,7 @@ class Operational extends CI_Controller {
 
     public function change_status()
     {
+        $this->general->logging();
         $this->db->where('id',$this->session->userdata('id'));
         $this->db->update('data_user',array('status'=>$this->input->post('status')));
         echo $this->input->post('status');
@@ -224,7 +225,6 @@ class Operational extends CI_Controller {
 		//$data['isi'] = str_replace("data:image/".$tipe[1].";base64,".$ima[1], 'http://office.pointer.co.id/perf/imgposts/'.$tgl.'.jpeg' , $data['isi']);
 		
 		$data['isi'] = str_replace($datasearch, $datarep, $data['isi']);
-		$this->general->logging();
         $data['judul'] = htmlspecialchars($this->input->post('judul'));
         $data['tanggal'] = date("Y-m-d");
         $data['jam'] = date("H:i:s");
@@ -233,6 +233,7 @@ class Operational extends CI_Controller {
         $this->db->where('id',$this->input->post('id'));
         $this->db->update('posts',$data);
         $this->sendmail($this->input->post('id'));
+		$this->general->logging();
         redirect(base_url('operational/adminkoran'));
 	}
 	public function koran_save()
@@ -286,7 +287,6 @@ class Operational extends CI_Controller {
 		$data['isi'] = str_replace($datasearch, $datarep, $data['isi']);		
 		//echo "<pre>".$data['isi']."</pre>";
 		//die();
-		$this->general->logging();
         $data['judul'] = htmlspecialchars($this->input->post('judul'));
         //$data['isi'] = $this->input->post('notes');
         $data['idpengguna'] = $this->session->userdata('id');
@@ -297,6 +297,7 @@ class Operational extends CI_Controller {
         $this->db->insert('posts',$data);
         $inid = $this->db->insert_id();
         $this->sendmail($inid);
+		$this->general->logging();
         redirect(base_url('operational/adminkoran'));
 	}
 	public function adminkoran()
@@ -320,6 +321,7 @@ class Operational extends CI_Controller {
 	}
 	public function processrekonlion()
 	{
+        $this->general->logging();
 		if(!isset($_FILES['csvlion']['name'])){
 			redirect(base_url("operational/rekonlion"));
 		}
@@ -507,6 +509,7 @@ class Operational extends CI_Controller {
     public function processrekonsj()
     {
 
+        $this->general->logging();
         $tanggal = date("Y-m-d");
         $folder = $_FILES['csvpointer']['tmp_name'];
         $lokasi = "assets/csv/csvsj/pointer/".$_FILES['csvpointer']['name'];

@@ -66,6 +66,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function division_save()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		$this->db->insert('division',$data);
 		redirect(base_url('pengaturan/division_data'));
@@ -78,6 +79,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function division_update()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		$this->db->where('id',$data['id']);
 		$this->db->update('division',$data);
@@ -85,6 +87,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function division_delete($id)
 	{
+        $this->general->logging();
 		$this->db->where('id',$id);
 		$this->db->delete('division');
 		redirect(base_url('pengaturan/division_data'));
@@ -97,6 +100,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function level_save()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		$this->db->insert('level',$data);
 		redirect(base_url('pengaturan/level_data'));
@@ -119,6 +123,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function level_update()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		$this->db->where('id',$data['id']);
 		$this->db->update('level',$data);
@@ -126,6 +131,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function user_update()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		$this->db->where('ID',$data['ID']);
 		$this->db->update('data_user',$data);
@@ -133,12 +139,14 @@ class Pengaturan extends CI_Controller {
 	}
 	public function level_delete($id)
 	{
+        $this->general->logging();
 		$this->db->where('id',$id);
 		$this->db->delete('level');
 		redirect(base_url('pengaturan/level_data'));
 	}
 	public function save_profile()
 	{
+        $this->general->logging();
 		$data = $this->input->post();
 		
 		if($_FILES['picture']['tmp_name']!=""){
@@ -164,12 +172,14 @@ class Pengaturan extends CI_Controller {
 
 	public function reset_password($id)
 	{
+        $this->general->logging();
 		$this->db->where('ID',$id);
 		$this->db->update('data_user',array('password'=>'16d7a4fca7442dda3ad93c9a726597e4'));
 		redirect(base_url('pengaturan/user_manage'));
 	}
 	public function switch_mail($id)
 	{
+        $this->general->logging();
 		$this->db->where('ID',$id);
 		$a = $this->db->get('data_user');
 		$a = $a->row_array();
@@ -181,6 +191,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function switch_mail_type($id)
 	{
+        $this->general->logging();
 		$this->db->where('ID',$id);
 		$a = $this->db->get('data_user');
 		$a = $a->row_array();
