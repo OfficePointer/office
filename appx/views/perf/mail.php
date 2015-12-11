@@ -9,7 +9,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <iframe src="http://office-cron.copasin.com/test_mail.php" style="border:0;"></iframe>
+        <iframe src="http://office-cron.copasin.com/test_mail.php" style="border:0;width:100%;overflow:hidden;height:555px"></iframe>
       </div>
       <!-- /.row (main row) -->
 
