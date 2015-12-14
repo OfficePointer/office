@@ -156,13 +156,16 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				var process = balik.process;
 				var revert = balik.revert;
 				var muncul = balik.muncul;
+				var kai = balik.kai;
 				balik = balik.data;
 
 				$("#label_processing_log").html(process.length);
+				$("#label_processing_train").html(kai.length);
 				$("#label_revert_log").html(revert.length);
 				$("#label_issued_log").html('10');
 				$("#issued_log_data").html('');
 				$("#processing_log_data").html('');
+				$("#processing_train_data").html('');
 				for(var data in balik) {
 					var url = "https://admin.pointer.co.id/hotel/admin/detail/"+balik[data].kode_booking;
 					if(balik[data].tipe=="airline"){
@@ -193,7 +196,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
                       '</h4>'+
                       '<p>'+process[data].brand_name+'</p>'+
                     '</a></li>');
-				}
+				}				
 
 				$("#revert_log_data").html('');
 					REVERT_DATA = revert.length;
@@ -203,13 +206,17 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						}else if(revert[data].airline==12 || revert[data].airline==2){
 							revert[data].airline = 'JT';
 						}
+
 						if(revert[data].status==2 || revert[data].status==21){
 							revert[data].status = 'Confirmed'; 
 						}else{
 							revert[data].status = 'Waiting';
 						}
 						var url = 'https://admin.pointer.co.id/airline/admin/viewbook/'+revert[data].id_mitra+'-'+revert[data].kode_booking;
-						
+						if(revert[data].airline=="KAI"){
+							url = 'https://admin.pointer.co.id/train/admin/viewbook/'+revert[data].id_mitra+'-'+revert[data].kode_booking;
+						}
+
 						$("#revert_log_data").append('<li><a id="revert_'+revert[data].id+'" style="color:black;cursor:pointer;" onclick=\'error_followup("'+revert[data].id+'","'+url+'","'+revert[data].kode_booking+'","'+revert[data].brand_name+'")\'>'+
 	                      '<div class="pull-left">'+
 	                        '<span style="font-size:30pt;text-align:center;color:red;" class="fa fa-exclamation-circle"></span>'+
@@ -222,8 +229,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 
 				if(muncul){
-					var inc = 0;
-					var notif = null;
+					var notif = new Array(revert.length);
 					REVERT_DATA = revert.length;
 					for(var data in revert) {
 						if(revert[data].airline==13){
@@ -238,19 +244,17 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						}
 						var url = 'https://admin.pointer.co.id/airline/admin/viewbook/'+revert[data].id_mitra+'-'+revert[data].kode_booking;
 
-						notif = new Notification(revert[data].nama+' - '+revert[data].kode_booking+' ('+revert[data].status+')', {
+					}
+					if(REVERT_DATA>0){
+						notif = new Notification('Revert Information', {
 					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-					      body: 'by '+revert[data].brand_name+' at '+revert[data].created_at,
+					      body: 'new revert GA/JS, please check :)',
 					    });
 
 					    notif.onclick = function (x) {
 					      window.focus();
-					      $("#revert_"+revert[data].id).click();
 					    };
-					    notif.onshow = function() { setTimeout(notif.close(), 5000) }
-					    inc++;
-					}
-					if(REVERT_DATA>0){
+
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
 					}
