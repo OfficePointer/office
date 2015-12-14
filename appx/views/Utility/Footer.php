@@ -156,11 +156,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				var process = balik.process;
 				var revert = balik.revert;
 				var muncul = balik.muncul;
-				var kai = balik.kai;
 				balik = balik.data;
 
 				$("#label_processing_log").html(process.length);
-				$("#label_processing_train").html(kai.length);
 				$("#label_revert_log").html(revert.length);
 				$("#label_issued_log").html('10');
 				$("#issued_log_data").html('');
