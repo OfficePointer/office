@@ -86,22 +86,6 @@
           <!-- Tasks: style can be found in dropdown.less -->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-train"></i>
-              <span id="label_processing_train" class="label label-danger">0</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">Processing</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu" id="processing_train_data">
-                </ul>
-              </li>
-              <li class="footer">
-                <a href="https://admin.pointer.co.id/train/admin/viewbooks">View all</a>
-              </li>
-            </ul>
-          </li>          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-hourglass-half"></i>
               <span id="label_processing_log" class="label label-danger">0</span>
             </a>
