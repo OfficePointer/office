@@ -18,6 +18,88 @@ class Marketing extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	 public function responseadd(){
+ 		$this->general->load('marketing/member_response_add');
+ 	}
+
+	public function responsave()
+	{
+		$dataRespon = $this->input->post();
+		$this->db->insert('data_respon',$dataRespon);
+		redirect(base_url('marketing/responseall'));
+	}
+
+	public function responedit($id){
+		$this->db->where('id',$id);
+		$dataRespon['dataRespon'] = $this->db->get('data_respon')->row_array();
+		$this->general->load('marketing/member_response_edit',$dataRespon);
+	}
+
+	public function responupdate()
+	{
+		$dataRespon = $this->input->post();
+		$this->db->where('id',$dataRespon['id']);
+		$this->db->update('data_respon',$dataRespon);
+		redirect(base_url('marketing/responseall'));
+	}
+
+	public function respondelete($id)
+	{
+		$this->db->where('id',$id);
+		$this->db->delete('data_respon');
+		redirect(base_url('marketing/responseall'));
+	}
+
+	public function responseall(){
+		$tableRespon = $this->db->get('data_respon');
+		$dataRespon['dataRespon'] = $tableRespon->result_array();
+		$this->general->load('marketing/member_response_all',$dataRespon);
+	}
+
+	//----------------------------------------------------------------------------
+
+	public function classificationadd(){
+ 		$this->general->load('marketing/member_classification_add');
+ 	}
+
+	public function classificationsave()
+	{
+		$dataClassification = $this->input->post();
+		$this->db->insert('data_klasifikasi',$dataClassification);
+		redirect(base_url('marketing/classificationall'));
+	}
+
+	public function classificationedit($id){
+		$this->db->where('id',$id);
+		$dataClassification['dataClassification'] = $this->db->get('data_klasifikasi')->row_array();
+		$this->general->load('marketing/member_classification_edit',$dataClassification);
+	}
+
+	public function classificationupdate()
+	{
+		$dataClassification = $this->input->post();
+		$this->db->where('id',$dataClassification['id']);
+		$this->db->update('data_klasifikasi',$dataClassification);
+		redirect(base_url('marketing/classificationall'));
+	}
+
+	public function classificationdelete($id)
+	{
+		$this->db->where('id',$id);
+		$this->db->delete('data_klasifikasi');
+		redirect(base_url('marketing/classificationall'));
+	}
+
+	public function classificationall(){
+		$tableClassification = $this->db->get('data_klasifikasi');
+		$dataClassification['dataClassification'] = $tableClassification->result_array();
+		$this->general->load('marketing/member_classification_all',$dataClassification);
+  }
+
+	//----------------------------------------------------------------------------
+
+
 	public function get_solve_note_option()
 	{
         $this->general->logging();
@@ -60,7 +142,7 @@ class Marketing extends CI_Controller {
 				$data['jumlah'] = $kay['sum(jml_tiket)'];
 
 				$this->db->insert('airline_member',$data);
-			}	
+			}
 
 		}
 		echo "Cron ".$tanggal." Finished";
@@ -189,50 +271,50 @@ class Marketing extends CI_Controller {
 						echo "<th>%</th>";
 						echo "<th>A</th>";
 						echo "</thead><tbody>";
-						foreach($newdata as $datanya) {		
+						foreach($newdata as $datanya) {
 							$total = 0;
 						echo "<tr>";
-						echo "<td>".utf8_decode($datanya[0])."</td>";			
-						echo "<td>".utf8_decode($datanya[1])."</td>";			
-						echo "<td>".utf8_decode($datanya[2])."</td>";			
-						echo "<td>".utf8_decode($datanya[3])."</td>";			
-						echo "<td>".utf8_decode($datanya[4])."</td>";			
-						echo "<td>".utf8_decode($datanya[5])."</td>";			
-						echo "<td>".utf8_decode($datanya[6])."</td>";			
-						echo "<td>".utf8_decode($datanya[7])."</td>";			
-						echo "<td>".utf8_decode($datanya[8])."</td>";			
-						echo "<td>".utf8_decode($datanya[9])."</td>";			
-						echo "<td>".utf8_decode($datanya[10])."</td>";			
-						echo "<td>".utf8_decode($datanya[11])."</td>";			
-						echo "<td>".utf8_decode($datanya[12])."</td>";			
-						echo "<td>".utf8_decode($datanya[13])."</td>";			
-						echo "<td>".utf8_decode($datanya[14])."</td>";			
-						echo "<td>".utf8_decode($datanya[15])."</td>";			
-						echo "<td>".utf8_decode($datanya[16])."</td>";			
-						echo "<td>".utf8_decode($datanya[17])."</td>";			
-						echo "<td>".utf8_decode($datanya[18])."</td>";			
-						echo "<td>".utf8_decode($datanya[19])."</td>";			
-						echo "<td>".utf8_decode($datanya[20])."</td>";			
-						echo "<td>".utf8_decode($datanya[21])."</td>";			
-						echo "<td>".utf8_decode($datanya[22])."</td>";			
-						echo "<td>".utf8_decode($datanya[23])."</td>";			
-						echo "<td>".utf8_decode($datanya[24])."</td>";			
-						echo "<td>".utf8_decode($datanya[25])."</td>";			
-						echo "<td>".utf8_decode($datanya[26])."</td>";			
-						echo "<td>".utf8_decode($datanya[27])."</td>";			
-						echo "<td>".utf8_decode($datanya[28])."</td>";			
-						echo "<td>".utf8_decode($datanya[29])."</td>";			
-						echo "<td>".utf8_decode($datanya[30])."</td>";			
-						echo "<td>".utf8_decode($datanya[31])."</td>";			
-						echo "<td>".utf8_decode($datanya[32])."</td>";			
-						echo "<td>".utf8_decode($datanya[33])."</td>";			
-						echo "<td>".utf8_decode($datanya[34])."</td>";			
-						echo "<td>".utf8_decode($datanya[35])."</td>";			
-						echo "<td>".utf8_decode($datanya[36])."</td>";			
-						echo "<td>".utf8_decode($datanya[37])."</td>";			
-						echo "<td>".utf8_decode($datanya[38])."</td>";			
-						echo "<td>".utf8_decode($datanya[39])."</td>";			
-						echo "<td>".utf8_decode($datanya[40])."</td>";			
+						echo "<td>".utf8_decode($datanya[0])."</td>";
+						echo "<td>".utf8_decode($datanya[1])."</td>";
+						echo "<td>".utf8_decode($datanya[2])."</td>";
+						echo "<td>".utf8_decode($datanya[3])."</td>";
+						echo "<td>".utf8_decode($datanya[4])."</td>";
+						echo "<td>".utf8_decode($datanya[5])."</td>";
+						echo "<td>".utf8_decode($datanya[6])."</td>";
+						echo "<td>".utf8_decode($datanya[7])."</td>";
+						echo "<td>".utf8_decode($datanya[8])."</td>";
+						echo "<td>".utf8_decode($datanya[9])."</td>";
+						echo "<td>".utf8_decode($datanya[10])."</td>";
+						echo "<td>".utf8_decode($datanya[11])."</td>";
+						echo "<td>".utf8_decode($datanya[12])."</td>";
+						echo "<td>".utf8_decode($datanya[13])."</td>";
+						echo "<td>".utf8_decode($datanya[14])."</td>";
+						echo "<td>".utf8_decode($datanya[15])."</td>";
+						echo "<td>".utf8_decode($datanya[16])."</td>";
+						echo "<td>".utf8_decode($datanya[17])."</td>";
+						echo "<td>".utf8_decode($datanya[18])."</td>";
+						echo "<td>".utf8_decode($datanya[19])."</td>";
+						echo "<td>".utf8_decode($datanya[20])."</td>";
+						echo "<td>".utf8_decode($datanya[21])."</td>";
+						echo "<td>".utf8_decode($datanya[22])."</td>";
+						echo "<td>".utf8_decode($datanya[23])."</td>";
+						echo "<td>".utf8_decode($datanya[24])."</td>";
+						echo "<td>".utf8_decode($datanya[25])."</td>";
+						echo "<td>".utf8_decode($datanya[26])."</td>";
+						echo "<td>".utf8_decode($datanya[27])."</td>";
+						echo "<td>".utf8_decode($datanya[28])."</td>";
+						echo "<td>".utf8_decode($datanya[29])."</td>";
+						echo "<td>".utf8_decode($datanya[30])."</td>";
+						echo "<td>".utf8_decode($datanya[31])."</td>";
+						echo "<td>".utf8_decode($datanya[32])."</td>";
+						echo "<td>".utf8_decode($datanya[33])."</td>";
+						echo "<td>".utf8_decode($datanya[34])."</td>";
+						echo "<td>".utf8_decode($datanya[35])."</td>";
+						echo "<td>".utf8_decode($datanya[36])."</td>";
+						echo "<td>".utf8_decode($datanya[37])."</td>";
+						echo "<td>".utf8_decode($datanya[38])."</td>";
+						echo "<td>".utf8_decode($datanya[39])."</td>";
+						echo "<td>".utf8_decode($datanya[40])."</td>";
 						echo "</tr>";
 						}
 						echo "</tbody></table>";
@@ -406,7 +488,7 @@ class Marketing extends CI_Controller {
 				$pg=1;
 			}
 			$start = ($pg-1)*$limit;
-		}	
+		}
 		if($this->session->userdata('brand_name')!=""){
 			$this->db->like('brand_name',$this->session->userdata('brand_name'),'both');
 		}
@@ -529,7 +611,7 @@ class Marketing extends CI_Controller {
 				$pg=1;
 			}
 			$start = ($pg-1)*$limit;
-		}			
+		}
 		$this->db->select('data_mitra.*,count(data_activity.id) as jumlah');
 		if($this->session->userdata('followup_date_activity')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
@@ -572,7 +654,7 @@ class Marketing extends CI_Controller {
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
 		$this->db->join('data_detail_mitra','data_mitra.id_mitra=data_detail_mitra.id_mitra','left');
 		$this->db->order_by('jumlah','desc');
-		$this->db->group_by('data_mitra.id_mitra');	
+		$this->db->group_by('data_mitra.id_mitra');
 		$this->db->limit($limit,$start);
 		$a = $this->db->get('data_activity');
 
@@ -600,7 +682,7 @@ class Marketing extends CI_Controller {
 
 		if($this->session->userdata('followup_type')!=""){
 			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
-		}		
+		}
 		if($this->session->userdata('followup_topup')!=""){
 			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
 		}
@@ -619,7 +701,7 @@ class Marketing extends CI_Controller {
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
 		$this->db->join('data_detail_mitra','data_mitra.id_mitra=data_detail_mitra.id_mitra','left');
 		$this->db->order_by('jumlah','desc');
-		$this->db->group_by('data_mitra.id_mitra');	
+		$this->db->group_by('data_mitra.id_mitra');
 		$data['paging'] = $this->general->pagination($this->db->get('data_activity')->num_rows(),$limit,$pg,base_url("marketing/followup_all/%d"));
 		$data['followup_data'] = $a->result_array();
 
@@ -670,7 +752,7 @@ class Marketing extends CI_Controller {
 		$this->general->logging();
 		$data = $this->input->post();
 		$data['create_at'] = date("Y-m-d H:i:s");
-		$data['create_by'] = $this->session->userdata('id');	
+		$data['create_by'] = $this->session->userdata('id');
 		$this->db->insert('data_activity',$data);
 		$id = $this->db->insert_id();
 		$dat['create_at'] = $data['create_at'];
@@ -717,7 +799,7 @@ class Marketing extends CI_Controller {
             $datatgl = array();
 
             for($i=$beg;$i<=$end;$i++){
-                
+
                 $week_start = new DateTime();
                 $week_start->setISODate($year,$i);
                 $week_end = new DateTime();
@@ -727,7 +809,7 @@ class Marketing extends CI_Controller {
                 $datatgl[] = $a;
                 //echo "<pre>".print_r($a,1)."</pre>";
             }
-            
+
              $tbl = '<table class="table table-bordered table-striped for_datatables">
                 <thead>
                   <tr>
@@ -783,7 +865,7 @@ class Marketing extends CI_Controller {
 						//echo $this->db->last_query();
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
-						echo "<th>Date Join</th>";		
+						echo "<th>Date Join</th>";
 						for($i=1;$i<=31;$i++){
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
 								echo "<th>".$i."</th>";
@@ -791,11 +873,11 @@ class Marketing extends CI_Controller {
 						}
 						echo "<th>Total</th>";
 						echo "</thead><tbody>";
-						foreach($xa as $key) {		
+						foreach($xa as $key) {
 							$total = 0;
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
-						echo "<td>".utf8_decode($key['join_date'])."</td>";		
+						echo "<td>".utf8_decode($key['join_date'])."</td>";
 							for($i = 1;$i<=31;$i++){
 
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
@@ -809,7 +891,7 @@ class Marketing extends CI_Controller {
 								echo "<td>".utf8_decode((isset($aaa['jumlah'])?$aaa['jumlah']:"0"))."</td>";
 							}
 							}
-						echo "<td>".utf8_decode($total)."</td>";		
+						echo "<td>".utf8_decode($total)."</td>";
 						echo "</tr>";
 						}
 						echo "</tbody></table>";
@@ -831,7 +913,7 @@ class Marketing extends CI_Controller {
 						//echo $this->db->last_query();
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
-						echo "<th>Date Join</th>";		
+						echo "<th>Date Join</th>";
 						for($i=1;$i<=31;$i++){
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
 								echo "<th>".$i."</th>";
@@ -839,11 +921,11 @@ class Marketing extends CI_Controller {
 						}
 						echo "<th>Total</th>";
 						echo "</thead><tbody>";
-						foreach($xa as $key) {		
+						foreach($xa as $key) {
 							$total = 0;
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
-						echo "<td>".utf8_decode($key['join_date'])."</td>";		
+						echo "<td>".utf8_decode($key['join_date'])."</td>";
 							for($i = 1;$i<=31;$i++){
 
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
@@ -857,7 +939,7 @@ class Marketing extends CI_Controller {
 								echo "<td>".utf8_decode((isset($aaa['jumlah'])?$aaa['jumlah']:"0"))."</td>";
 							}
 							}
-						echo "<td>".utf8_decode($total)."</td>";		
+						echo "<td>".utf8_decode($total)."</td>";
 						echo "</tr>";
 						}
 						echo "</tbody></table>";
@@ -874,18 +956,18 @@ class Marketing extends CI_Controller {
 		$xa = $xa->result_array();
 		//echo $this->db->last_query();
 		echo "<table><thead>";
-		echo "<th>Airline</th>";		
+		echo "<th>Airline</th>";
 		for($i=1;$i<=31;$i++){
 			if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
 				echo "<th>".$i."</th>";
 			}
 		}
-		echo "<th>Total</th>";		
+		echo "<th>Total</th>";
 		echo "</thead><tbody>";
-		foreach($xa as $key) {		
-		$total = 0;  
+		foreach($xa as $key) {
+		$total = 0;
 		echo "<tr>";
-		echo "<td>".$key['isi']."</td>";	
+		echo "<td>".$key['isi']."</td>";
 			for($i = 1;$i<=31;$i++){
 
 			if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
@@ -923,7 +1005,7 @@ class Marketing extends CI_Controller {
 							// 		$pg=1;
 							// 	}
 							// 	$start = ($pg-1)*10;
-							// }							
+							// }
 							//$dbs->limit(10,$start);
 							//$dbs->order_by('date_vend','desc');
 							//$this->db->select('mitra.*,company.brand_name');
@@ -940,7 +1022,7 @@ class Marketing extends CI_Controller {
 							$this->db->like('data_mitra.brand_name',$_GET['brand_name'],'both');
 							$this->db->like('data_mitra.prefix',$_GET['prefix'],'both');
 							$this->db->group_by('data_trx.id_mitra');
-		
+
 								// if($this->input->post('date_end')!=""){
 								// 	$this->db->where('all_selling.date_resv <=',date_format(date_create($this->input->post('date_end')),"Y-m-d"));
 								// }
@@ -986,14 +1068,14 @@ class Marketing extends CI_Controller {
 		$dataz = $this->db->get('data_all_error');
 		$dataz = $dataz->result_array();
 		if($this->session->userdata('sekarang')==0 and $this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('sekarang',1); 
+			$this->session->set_userdata('sekarang',1);
 			$hasil['muncul'] = 1;
 		}
 		if($this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('revert',sizeof($dataz)); 
+			$this->session->set_userdata('revert',sizeof($dataz));
 		}
 		if($this->session->userdata('sekarang')==1){
-			$this->session->set_userdata('sekarang',0); 
+			$this->session->set_userdata('sekarang',0);
 		}
 		$hasil['revert'] = $dataz;
 		$this->session->set_userdata('revert_data',sizeof($dataz));
@@ -1037,6 +1119,6 @@ class Marketing extends CI_Controller {
 
 		$sql = $this->db->get('data_mitra');
 
-		$this->excel->to_excel($sql, 'Data_Export_Member_'.$this->session->userdata('date_join_start').'_'.$this->session->userdata('date_join_end').'_'.$this->session->userdata('status').'_'.$this->session->userdata('province').'_'.$this->session->userdata('type').'_'.$this->session->userdata('prefix').'_by_'.$this->session->userdata('email')); 
+		$this->excel->to_excel($sql, 'Data_Export_Member_'.$this->session->userdata('date_join_start').'_'.$this->session->userdata('date_join_end').'_'.$this->session->userdata('status').'_'.$this->session->userdata('province').'_'.$this->session->userdata('type').'_'.$this->session->userdata('prefix').'_by_'.$this->session->userdata('email'));
 	}
 }

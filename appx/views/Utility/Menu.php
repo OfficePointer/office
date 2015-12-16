@@ -1,4 +1,4 @@
-<?php 
+<?php
   $all_div = array('Root','Opera','Opera+','HRD','Finan','Perf','Marketing','Feedback Service');
   $this->db->where('id',$this->session->userdata('id'));
   $ax = $this->db->get('data_user');
@@ -55,7 +55,7 @@
             </span>
             <?php } ?>
           </a>
-          <ul class="treeview-menu">                
+          <ul class="treeview-menu">
             <li><a href="<?php echo base_url('root/logdata');?>"><i class="fa fa-map-signs"></i> Logdata</a></li>
             <li><a href="<?php echo base_url('root/help/all');?>"><i class="fa fa-support"></i> Office Help</a></li>
             <li><a href="<?php echo base_url('root/get_cron');?>"><i class="fa fa-bolt"></i> Trx Cron</a></li>
@@ -78,7 +78,7 @@
             <!--li class="treeview">
               <a href="#">
                 <i class="fa fa-diamond"></i>
-                <span>Leads</span>                    
+                <span>Leads</span>
                 <?php
                 $this->db->like('create_at',date("Y-m-d"));
                 $c = $this->db->get('data_leads')->num_rows();
@@ -179,12 +179,48 @@
                 <li><a href="<?php echo base_url('marketing/member_monthly');?>"><i class="fa fa-group"></i> Member Monthly</a></li>
               </ul>
             </li>
+
+            <!-- under construction -->
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-tags"></i>
+                <span>Preferences</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+
+              <ul class="treeview-menu">
+                <li> <a href="#">
+                        <i class="fa fa-check-circle"></i>
+                        <span>Master Responses</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                  <ul class="treeview-menu">
+                    <li><a href=" <?= base_url('marketing/responseall'); ?> "> <i class="fa fa-bars"></i> All Responses</a></li>
+                    <li><a href=" <?= base_url('marketing/responseadd'); ?> "> <i class="fa fa-plus"></i> Add Responses</a></li>
+                  </ul>
+
+                </li>
+
+                <li> <a href="#">
+                        <i class="fa fa-check-circle-o"></i>
+                        <span>Master Classification</span>
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?= base_url('marketing/classificationall'); ?>"> <i class="fa fa-bars"></i> All Classification</a></li>
+                    <li><a href="<?= base_url('marketing/classificationadd'); ?>"> <i class="fa fa-plus"></i> Add Classification</a></li>
+                  </ul>
+
+                </li>
+              </ul>
+
+            </li>
             <!--li class="treeview">
               <a href="#">
                 <i class="fa fa-bar-chart"></i>
                 <span>Sales Force</span>
               </a>
-              <ul class="treeview-menu">                    
+              <ul class="treeview-menu">
                 <li class="treeview">
                   <a href="#">
                     <i class="fa fa-gear"></i>
@@ -196,7 +232,7 @@
                         <i class="fa fa-bolt"></i>
                         <span>RFM Settings</span>
                       </a>
-                      <ul class="treeview-menu">  
+                      <ul class="treeview-menu">
                         <li class="treeview">
                           <a href="#">
                             <i class="fa fa-bolt"></i>
@@ -308,7 +344,7 @@
             ?>
             <li><a href="<?php echo base_url('operational/form/'.$key['id']);?>"><i class="fa fa-pencil"></i> <?php echo $key['judul'];?></a></li>
             <?php } ?>
-            <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>          
+            <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -320,10 +356,10 @@
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
               </ul>
             </li>
-            <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->          
-            <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>          
-            <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>          
-            <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>          
+            <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
+            <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
+            <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
+            <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
           </ul>
         </li>
         <?php

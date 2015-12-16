@@ -2,6 +2,7 @@
 
 
 appx/config/database.php
+appx/config/config.php
 
 application/cache/*
 !application/cache/index.html
