@@ -556,6 +556,7 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('followup_status','');
 			$this->session->set_userdata('followup_topup','');
 			$this->session->set_userdata('followup_trx','');
+			$this->session->set_userdata('followup_respon','');
 		}
 
 		if($this->input->method()=="post"){
@@ -563,6 +564,11 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('followup_brand_name',$this->input->post('brand_name'));
 		}else{
 			$this->session->set_userdata('followup_brand_name','');
+		}
+		if($this->input->post('id_respon')!=""){
+			$this->session->set_userdata('followup_respon',$this->input->post('id_respon'));
+		}else{
+			$this->session->set_userdata('followup_respon','');
 		}
 		if($this->input->post('topup')!=""){
 			$this->session->set_userdata('followup_topup',$this->input->post('topup'));
@@ -612,7 +618,7 @@ class Marketing extends CI_Controller {
 			}
 			$start = ($pg-1)*$limit;
 		}
-		$this->db->select('data_mitra.*,count(data_activity.id) as jumlah');
+		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date');
 		if($this->session->userdata('followup_date_activity')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
 			$date_start = $daten[0];
@@ -637,6 +643,9 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('followup_type')!=""){
 			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
 		}
+		if($this->session->userdata('followup_respon')!=""){
+			$this->db->like('data_activity.id_respon',$this->session->userdata('followup_respon'),'both');
+		}
 		if($this->session->userdata('followup_topup')!=""){
 			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
 		}
@@ -652,13 +661,12 @@ class Marketing extends CI_Controller {
 			$this->db->like('data_mitra.status','active','both');
 		}
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
-		$this->db->join('data_detail_mitra','data_mitra.id_mitra=data_detail_mitra.id_mitra','left');
-		$this->db->order_by('jumlah','desc');
+		$this->db->order_by('data_activity.create_at','desc');
 		$this->db->group_by('data_mitra.id_mitra');
 		$this->db->limit($limit,$start);
 		$a = $this->db->get('data_activity');
 
-		$this->db->select('data_mitra.*,count(data_activity.id) as jumlah');
+		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date');
 		if($this->session->userdata('followup_date_activity')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
 			$date_start = $daten[0];
@@ -689,8 +697,9 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('followup_trx')!=""){
 			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
 		}
-
-
+		if($this->session->userdata('followup_respon')!=""){
+			$this->db->like('data_activity.id_respon',$this->session->userdata('followup_respon'),'both');
+		}
 		if($this->session->userdata('followup_status')!=""){
 			if($this->session->userdata('followup_status')!="all"){
 				$this->db->like('data_mitra.status',$this->session->userdata('followup_status'),'both');
@@ -699,11 +708,10 @@ class Marketing extends CI_Controller {
 			$this->db->like('data_mitra.status','active','both');
 		}
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
-		$this->db->join('data_detail_mitra','data_mitra.id_mitra=data_detail_mitra.id_mitra','left');
-		$this->db->order_by('jumlah','desc');
 		$this->db->group_by('data_mitra.id_mitra');
 		$data['paging'] = $this->general->pagination($this->db->get('data_activity')->num_rows(),$limit,$pg,base_url("marketing/followup_all/%d"));
 		$data['followup_data'] = $a->result_array();
+		$data['response'] = $this->db->get('data_respon')->result_array();
 
 		$this->general->load('marketing/followup_all',$data);
 	}
@@ -717,10 +725,11 @@ class Marketing extends CI_Controller {
               <tr>
                 <th style="width:10px;">TicketID</th>
                 <th>Type</th>
+                <th>Respon</th>
                 <th>Note / Response / Reason</th>
                 <th>PIC</th>
                 <th>DateTime</th>
-                <th class="last" style="width:80px;">Action</th>
+                <th class="last" style="width:20px;">Action</th>
               </tr>
 
               <?php
@@ -736,10 +745,11 @@ class Marketing extends CI_Controller {
               <tr id="detail_<?php echo $koka['ID'];?>">
                 <td>#<?php echo $koka['ID'];?></td>
                 <td><?php echo $koka['type'];?></td>
-                <td><?php echo $koka['reason'];?></td>
+                <td><?php echo $this->general->get_respon($koka['id_respon']);?></td>
+                <td style="max-width:300px;"><?php echo $koka['reason'];?></td>
                 <td><?php echo $this->general->get_user($koka['create_by']);?></td>
                 <td><?php echo $koka['create_at'];?></td>
-                <td class="last"><a onclick="del_followup(<?php echo $koka['ID'];?>)">Delete</a></td>
+                <td class="last"><a style="cursor:pointer" onclick="del_followup(<?php echo $koka['ID'];?>)"><i class="fa fa-times"></i></a></td>
               </tr>
               <?php
               }
@@ -765,7 +775,8 @@ class Marketing extends CI_Controller {
 		$this->general->logging();
 		$data = $this->input->post();
 		$this->db->where('id_mitra',$data['id']);
-		$dat = $this->db->get('data_mitra')->row_array();
+		$dat['profiling'] = $this->db->get('data_mitra')->row_array();
+		$dat['response'] = $this->db->get('data_respon')->result_array();
 		print_r(json_encode($dat));
 	}
 	public function ajax_del_act()

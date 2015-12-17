@@ -286,23 +286,42 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    		url:'<?php echo base_url("marketing/ajax_get_activity");?>/'+arg,
 	    		type:'POST',
 	    		success:function (data) {
+
 	    			$("#TD_TR_"+arg).html(data);
 	    			$("#TR_"+arg).fadeIn();
 					$("#FRM_"+arg).remove();
-					var isi = '<tr style="display:none;" id="FRM_'+arg+'"><td><input type="hidden" id="member_ID_'+arg+'" value="'+arg+'"></td>'+
-					'<td><div class="field"><div class="select"><select id="type_'+arg+'" class="form-control">'+
-					'<option value="call">Call</option>'+
-					'<option value="email">E-Mail</option>'+
-					'<option value="visit">Visit</option>'+
-					'<option value="sms">SMS</option>'+
-					'<option value="info">Info</option>'+
-					'<option value="chat">Chat</option>'+
-					'</select></div></div></td>'+		
-					'<td colspan=3><div class="input2"><input class="form-control" type="text" id="reason_'+arg+'"></div></td>'+
-					'<td><button class="btn btn-block btn-primary" onclick="save_data('+arg+')">Submit</button></td></tr>';
-					$("#TBL_"+arg).append(isi);
-					$("#FRM_"+arg).fadeIn();
+					$.ajax({
+						type:"POST",
+						url:'<?php echo base_url("marketing/ajax_get_profiling");?>',
+						dataType:'json',
+						data:{id:arg},
+						success:function(balik){
+							balik = balik.response;
+							var html = '';
 
+							for(var data in balik) {
+								html += '<option value="'+balik[data].id+'">'+balik[data].respon+'</option>'; 
+							}
+
+							var isi = '<tr style="display:none;" id="FRM_'+arg+'"><td><input type="hidden" id="member_ID_'+arg+'" value="'+arg+'"></td>'+
+							'<td><div class="field"><div class="select"><select id="type_'+arg+'" class="form-control">'+
+							'<option value="call">Call</option>'+
+							'<option value="email">E-Mail</option>'+
+							'<option value="visit">Visit</option>'+
+							'<option value="sms">SMS</option>'+
+							'<option value="info">Info</option>'+
+							'<option value="chat">Chat</option>'+
+							'</select></div></div></td>'+	
+							'<td><div class="field"><div class="select"><select id="respon_'+arg+'" class="form-control">'+
+							html+
+							'</select></div></div></td>'+	
+							'<td colspan=3><div class="input2"><input class="form-control" type="text" id="reason_'+arg+'"></div></td>'+
+							'<td><button class="btn btn-block btn-primary" onclick="save_data('+arg+')">Submit</button></td></tr>';
+							$("#TBL_"+arg).append(isi);
+							$("#FRM_"+arg).fadeIn();
+
+			    		}
+			    	});
 	    		}
 	    	});
 	    }
@@ -326,15 +345,17 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			var member_ID = $("#member_ID_"+id).val();
 			var type = $("#type_"+id).val();
 			var reason = $("#reason_"+id).val();
+			var respon = $("#respon_"+id).val();
+			var respon_data = $("#respon_"+id+" option:selected").html();
 
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("marketing/ajax_save_act");?>',
 				dataType:'json',
-				data:{member_ID:member_ID,type:type,reason:reason},
+				data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
 				success:function(isi){
 					var url = '<?php echo base_url("marketing/followup_del");?>';
-					$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'">Delete</a></td></tr>');
+					$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+respon_data+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'">Delete</a></td></tr>');
 					$("#detail_"+isi.ID).fadeIn();
 					$("#FRM_"+id).remove();
 				}
@@ -346,6 +367,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			//$('#modal_profiling').modal('close');
 			var member_ID = $("#member_ID_"+id).val();
 			var type = $("#type_"+id).val();
+			var respon = $("#respon_"+id).val();
 			var reason = $("#reason_"+id).val();
 
 			if(reason.replace(' ','')==""){
@@ -354,13 +376,13 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			}
 			$(this).find("#btn_modal_close").click();
 			$("#btn_fol").remove();
-					$("#btn_fol2").remove();
+			$("#btn_fol2").remove();
 
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("marketing/ajax_save_act");?>',
 				dataType:'json',
-				data:{member_ID:member_ID,type:type,reason:reason},
+				data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
 				success:function(isi){				
 
 					$("#isinya").html('Saved!');
@@ -368,7 +390,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
-	    function del_followup(id) {					
+	    function del_followup(id) {	
+	    	if(confirm('Sure to delete?')){
+
 	    	$("#detail_"+id).fadeOut();
 			$.ajax({
 				type:"POST",
@@ -378,6 +402,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				success:function(isi){
 				}
 			});
+			}
 		}
 	    function openformdetail(id) {		
 			$.ajax({
@@ -386,7 +411,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				dataType:'json',
 				data:{id:id},
 				success:function(isi){
-					console.log(isi);
+					isi = isi.profiling;
 					$("#btn_fol2").remove();
 					$("#btn_fol").remove();
 					$(".modal-footer").prepend('<button onclick="followup_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
@@ -473,14 +498,24 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		}
 	    function followup_open(id) {				
 			$(this).find("#btn_modal_close").click();
+			
 
-	
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("marketing/ajax_get_profiling");?>',
 				dataType:'json',
 				data:{id:id},
-				success:function(isi){
+				success:function(data){
+					var isi = data.profiling; 
+					console.log(isi);
+					var response = data.response; 
+
+					var html = '';
+
+					for(var data in response) {
+						html += '<option value="'+response[data].id+'">'+response[data].respon+'</option>'; 
+					}
+
 					$("#btn_fol2").remove();
 					$("#btn_fol").remove();
 					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol" onclick="save_data_from_popup('+isi.id_mitra+')">Submit</button>');
@@ -493,6 +528,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					'<option value="sms">SMS</option>'+
 					'<option value="info">Info</option>'+
 					'<option value="chat">Chat</option>'+
+					'</select></td></tr>'+		
+					'<tr><td>Respon</td><td><select id="respon_'+isi.id_mitra+'" class="form-control">'+
+					html+
 					'</select></td></tr>'+		
 					'<tr><td>Reason / Response</td><td><input class="form-control" type="text" id="reason_'+isi.id_mitra+'"></td></tr>';
 					$("#isinya").html(isi);

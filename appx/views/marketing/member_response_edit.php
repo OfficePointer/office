@@ -17,8 +17,8 @@
           <table class="table">
             <tr>
               <td>Response</td>
-              <input type="hidden" name="id" class="form-control" value=" <?= $dataRespon['id']; ?> ">
-              <td><input type="text" name="respon" class="form-control" value=" <?= $dataRespon['respon']; ?> "></td>
+              <input type="hidden" name="id" class="form-control" value="<?= $dataRespon['id']; ?>">
+              <td><input type="text" name="respon" class="form-control" value="<?= $dataRespon['respon']; ?>"></td>
             </tr>
 
             <tr>

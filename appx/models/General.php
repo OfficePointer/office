@@ -166,6 +166,16 @@ function csv_to_array($filename='', $delimiter=',')
 		$a = $this->db->get('data_mitra');
 		$a = $a->row_array();
 		return $a['brand_name'];
+	}	
+	public function get_respon($id=0)
+	{
+		if($id==0){
+			return "";
+		}
+		$this->db->where('id',$id);
+		$a = $this->db->get('data_respon');
+		$a = $a->row_array();
+		return $a['respon'];
 	}
 	public function get_airline($id)
 	{

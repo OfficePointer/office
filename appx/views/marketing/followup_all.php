@@ -10,6 +10,19 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
+        <div class="box box-solid collapsed-box">
+            <div class="box-header" style="cursor: move;">
+              <i class="fa fa-filter"></i>
+
+              <h3 class="box-title">Filter Data</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-sm" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none collapse" style="display: none;">
+
         <form method="POST" action="<?php echo base_url('marketing/followup_all');?>">
         <table class="table">
           <tr>
@@ -55,6 +68,19 @@
             </select></td>
           </tr>
           <tr>
+            <td>Response</td>
+            <td><select name="id_respon" class="form-control">
+              <option <?php echo ($this->session->userdata('followup_respon')=="")?"selected":"";?> value="">all</option>
+              <?php
+              foreach ($response as $key) {
+                ?>
+                <option <?php echo ($this->session->userdata('followup_respon')==$key['id'])?"selected":"";?> value="<?php echo $key['id'];?>"><?php echo $key['respon'];?></option>
+                <?php
+              }
+              ?>
+            </select></td>
+          </tr>
+          <tr>
             <td>Provinsi</td>
             <td><input value="<?php echo $this->session->userdata('followup_province');?>" type="text" name="province" class="form-control"></td>
           </tr>
@@ -65,6 +91,10 @@
           </tr>
         </table>
         </form>
+
+            </div>
+            <!-- /.box-footer -->
+          </div>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>
@@ -74,7 +104,7 @@
             <th style="width:400px;">Last Activity</th>
             <th style="width:5px;">TopUp</th>
             <th style="width:5px;">Trx</th>
-            <th class="last" style="width:120px;">Action</th>
+            <th class="last" style="width:40px;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -89,7 +119,7 @@
             <td id="detail_fol_<?php echo $key['id_mitra'];?>" style="width:200px !important;"></td>               
             <td style="width:50px;"><?php echo $key['topup'];?></td>
             <td style="width:50px;"><?php echo $key['trx'];?></td>
-            <td class="last"><a onclick="showactivity(<?php echo $key['id_mitra'];?>)"><span class="glyphicon glyphicon-search" title='View Details'></span> View</a> | <a onclick="openaddactivity(<?php echo $key['id_mitra'];?>)"><span class="glyphicon glyphicon-plus" title='Add New'></span> Add</a></td>
+            <td class="last"><a onclick="showactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-reorder" title='View Details'></span></a> | <a onclick="openaddactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-plus" title='Add New'></span></a></td>
           </tr>
           <tr style="display:none;" id="TR_<?php echo $key['id_mitra'];?>">
               <td colspan="7" id="TD_TR_<?php echo $key['id_mitra'];?>">

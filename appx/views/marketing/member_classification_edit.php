@@ -17,8 +17,8 @@
           <table class="table">
             <tr>
               <td>Classification</td>
-              <input type="hidden" name="id" class="form-control" value=" <?= $dataClassification['id']; ?> ">
-              <td><input type="text" name="klasifikasi" class="form-control" value=" <?= $dataClassification['klasifikasi']; ?> "></td>
+              <input type="hidden" name="id" class="form-control" value="<?= $dataClassification['id']; ?>">
+              <td><input type="text" name="klasifikasi" class="form-control" value="<?= $dataClassification['klasifikasi']; ?>"></td>
             </tr>
 
             <tr>
