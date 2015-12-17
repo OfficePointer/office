@@ -10,8 +10,22 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
+
         <?php 
         if($this->uri->segment(3)!="new"){?>
+          <div class="box box-solid collapsed-box">
+            <div class="box-header" style="cursor: move;">
+              <i class="fa fa-filter"></i>
+
+              <h3 class="box-title">Filter Data</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-sm" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none collapse" style="display: none;">
+
         <form method="POST" action="<?php echo base_url('marketing/member');?>">
         <table class="table">
           <tr>
@@ -61,6 +75,8 @@
           </tr>
         </table>
         </form>
+        </div>
+        </div>
         <?php } ?>
       <table class="table table-bordered table-striped">
         <thead>
