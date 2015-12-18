@@ -24,11 +24,10 @@
         </thead>
         <tbody>
         <?php
-        $i = 1;
         foreach ($error as $key) {
         ?>
           <tr>
-            <td><?php echo $i;?></td>
+            <td><?php echo $key['id'];?></td>
             <td><?php echo $key['kasus'];?></td>
             <td><?php echo $key['kode_booking'];?></td>
             <td><?php echo $key['created_at'];?></td>
@@ -37,7 +36,6 @@
             <td><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)" data-toggle="tooltip" data-placement="top" title="Detail Mitra">DTM</a> | <a data-toggle="tooltip" data-placement="left" title="Brand Name : <?php echo $this->general->get_member($key['id_mitra']);?> | Status : <?php echo $key['status'];?> | Error DateTime : <?php echo $key['created_at'];?> | Solve DateTime : <?php echo $key['updated_at'];?> | Solve By : <?php echo $this->general->get_user($key['updated_by']);?>">DTE</a></td>
           </tr>
         <?php
-        $i++;
         }
         ?>
         </tbody>
