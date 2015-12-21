@@ -12,6 +12,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.5 -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/jqwidgets/styles/jqx.base.css');?>" type="text/css" />
   <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/css/additional.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome-master/css/font-awesome.min.css');?>">
@@ -32,6 +33,11 @@
 <script src="<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.min.js');?>"></script>
 <script src="<?php echo base_url('assets/js/notification.js');?>"></script>
 <script src="https://cdn.datatables.net/fixedcolumns/3.1.0/js/dataTables.fixedColumns.min.js"></script>
+
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxcore.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxdata.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxtree.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxcheckbox.js');?>"></script>
 <script type="text/javascript">
     function get_activity_info (id) {
     $.ajax({
@@ -39,6 +45,50 @@
       type:'GET',
       success:function(balik){
         $("#detail_fol_"+id).html(balik);       
+      }
+    });
+  }
+
+  function get_user_assign(){
+    $.ajax({
+      url:'<?php echo base_url("operational/get_user_assign");?>',
+      type:'GET',
+      dataType:'json',
+      success:function(data){
+
+          var source =
+                {
+                    datatype: "json",
+                    datafields: [
+                        { name: 'id' },
+                        { name: 'parentid' },
+                        { name: 'text' },
+                        { name: 'value' }
+                    ],
+                    id: 'id',
+                    localdata: data
+                };
+                // create data adapter.
+                var dataAdapter = new $.jqx.dataAdapter(source);
+                // perform Data Binding.
+                dataAdapter.dataBind();
+                // get the tree items. The first parameter is the item's id. The second parameter is the parent item's id. The 'items' parameter represents 
+                // the sub items collection name. Each jqxTree item has a 'label' property, but in the JSON data, we have a 'text' field. The last parameter 
+                // specifies the mapping between the 'text' and 'label' fields.  
+                var records = dataAdapter.getRecordsHierarchy('id', 'parentid', 'items', [{ name: 'text', map: 'label'}]);
+                $('#user_assign_id').jqxTree({ checkboxes:true,source: records, width: '300px'});
+                $('#user_assign_id').jqxTree('expandAll');
+                $('#user_assign_id').jqxTree({ hasThreeStates: true });
+                $('#user_assign_id').on('checkChange',function (event)
+                {
+                var items = $('#user_assign_id').jqxTree('getCheckedItems');
+                  
+                var nilai = "";
+                for(var data in items) {
+                    nilai += items[data].id+",";
+                }
+                  $("#id_user").val(nilai);
+                });  
       }
     });
   }
