@@ -16,7 +16,6 @@
             <th>No.</th>
             <th>Kasus</th>
             <th title="Kode Booking">KB</th>
-            <th title="Error DateTime">Error DT</th>
             <th title="Solve Note">Solve NT</th>
             <th title="Solve DateTime">Solve DT</th>
             <th>Action</th>
@@ -25,15 +24,29 @@
         <tbody>
         <?php
         foreach ($error as $key) {
+            if($key['airline']==13){
+              $key['airline'] = 'GA'; 
+            }else if($key['airline']==12 or $key['airline']==2){
+              $key['airline'] = 'JT';
+            }
+
+            if($key['status']==2 or $key['status']==21){
+              $key['status'] = 'Confirmed'; 
+            }else{
+              $key['status'] = 'Waiting';
+            }
+            $url = 'https://admin.pointer.co.id/airline/admin/viewbook/'.$key['id_mitra'].'-'.$key['kode_booking'];
+            if($key['airline']=="KAI"){
+              $url = 'https://admin.pointer.co.id/train/admin/viewbook/'.$key['id_mitra'].'-'.$key['kode_booking'];
+            }
         ?>
           <tr>
             <td><?php echo $key['id'];?></td>
             <td><?php echo $key['kasus'];?></td>
-            <td><?php echo $key['kode_booking'];?></td>
-            <td><?php echo $key['created_at'];?></td>
+            <td><a onclick="error_followup('<?php echo $key["id"];?>','<?php echo $url;?>','<?php echo $key["kode_booking"];?>','<?php echo $key["brand_name"];?>')"><?php echo $key['kode_booking'];?></a></td>
             <td><?php echo $key['solve_note'];?></td>
             <td><?php echo $key['updated_at'];?></td>
-            <td><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)" data-toggle="tooltip" data-placement="top" title="Detail Mitra">DTM</a> | <a data-toggle="tooltip" data-placement="left" title="Brand Name : <?php echo $this->general->get_member($key['id_mitra']);?> | Status : <?php echo $key['status'];?> | Error DateTime : <?php echo $key['created_at'];?> | Solve DateTime : <?php echo $key['updated_at'];?> | Solve By : <?php echo $this->general->get_user($key['updated_by']);?>">DTE</a></td>
+            <td><a onclick="get_email('<?php echo $key["id"];?>','<?php echo $url;?>','<?php echo $key["kode_booking"];?>','<?php echo $key["brand_name"];?>','<?php echo $key["kasus"];?>')" data-toggle="tooltip" data-placement="top" title="Send E-Mail Solver">SEM</a> | <a onclick="openformdetail(<?php echo $key['id_mitra'];?>)" data-toggle="tooltip" data-placement="top" title="Detail Mitra">DTM</a> | <a data-toggle="tooltip" data-placement="left" title="Brand Name : <?php echo $this->general->get_member($key['id_mitra']);?> | Status : <?php echo $key['status'];?> | Error DateTime : <?php echo $key['created_at'];?> | Solve DateTime : <?php echo $key['updated_at'];?> | Solve By : <?php echo $this->general->get_user($key['updated_by']);?>">DTE</a></td>
           </tr>
         <?php
         }

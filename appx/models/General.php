@@ -157,6 +157,13 @@ function csv_to_array($filename='', $delimiter=',')
 			return $a['name'];
 		}
 	}
+	public function get_email($id)
+	{
+		$this->db->where('id',$id);
+		$a = $this->db->get('data_user');
+		$a = $a->row_array();
+		return $a['email'];
+	}
 	public function get_member($id=0)
 	{
 		if($id==0){

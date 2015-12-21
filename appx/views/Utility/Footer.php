@@ -23,7 +23,6 @@
 </div>
 <!-- jQuery 2.1.4 -->
 <!-- Bootstrap 3.3.5 -->
-
 <script src="<?php echo base_url('assets/plugins/slimScroll/jquery.slimscroll.min.js');?>"></script>
 <script src="<?php echo base_url('assets/plugins/knob/jquery.knob.js');?>"></script>
 <script src="<?php echo base_url('assets/plugins/moment/moment.js');?>"></script>
@@ -99,13 +98,19 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	// 		}
 	// 	});	
 	// }
+	function clear_btn(){
+		$("#btn_fol").remove();
+		$("#btn_fol2").remove();
+		$("#btn_fol3").remove();
+
+		$("#btn_fol").remove();
+		$("#btn_fol2").remove();
+		$("#btn_fol3").remove();
+	}
 
 	function showstatus () {
-		$("#btn_fol2").remove();
-		$("#btn_fol2").remove();
-		$("#btn_fol").remove();
+		clear_btn();
 		$(".modal-footer").prepend('<button onclick="save_status()" id="btn_fol" class="pull-left btn btn-primary">Submit</button>');
-		$("#btn_fol2").remove();
 		$("#exampleModalLabel").html('Change Status');
 		$("#isinya").html('<tr>'+
 				'<td>Status</td>'+
@@ -117,10 +122,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    $('#modal_profiling').modal('show');
 	}
 	function show_funnyname(link) {
-		$("#btn_fol2").remove();
-		$("#btn_fol2").remove();
-		$("#btn_fol").remove();
-		$("#btn_fol2").remove();
+		clear_btn();
 		$("#exampleModalLabel").html('Funnyname');
 		$("#isinya").html('<iframe style="width:1150px;height:450px;border:0px;" src="'+link+'"></iframe>');
 	    $('.modal-dialog').css('width','1200px');
@@ -375,8 +377,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				return;
 			}
 			$(this).find("#btn_modal_close").click();
-			$("#btn_fol").remove();
-			$("#btn_fol2").remove();
+			clear_btn();
 
 			$.ajax({
 				type:"POST",
@@ -404,7 +405,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			});
 			}
 		}
-	    function openformdetail(id) {		
+	    function openformdetail(id) {	
+
+			clear_btn();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("marketing/ajax_get_profiling");?>',
@@ -412,8 +415,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				data:{id:id},
 				success:function(isi){
 					isi = isi.profiling;
-					$("#btn_fol2").remove();
-					$("#btn_fol").remove();
+					clear_btn();
 					$(".modal-footer").prepend('<button onclick="followup_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
 					$("#exampleModalLabel").html(isi.brand_name);
 					$("#isinya").html('<tr>'+
@@ -454,10 +456,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		}
 		function error_followup(id,url,kode_booking,brand_name) {				
 			$(this).find("#btn_modal_close").click();
-			$("#btn_fol").remove();
-			$("#btn_fol2").remove();
-			$("#btn_fol").remove();
-			$("#btn_fol2").remove();
+			clear_btn();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("marketing/get_solve_note_option");?>',
@@ -473,10 +472,27 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
+		function get_email(id,url,kode_booking,brand_name,kasus) {				
+			$(this).find("#btn_modal_close").click();
+			clear_btn();
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("operational/get_email_templates_json");?>',
+				success:function(isi){
+					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="send_email('+id+')">Submit</button>');
+					$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
+					var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
+					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+		
+					'<tr><td>Kasus</td><td>'+kasus+'</td></tr>'+		
+					'<tr><td colspan=2>Template</td></tr>'+
+					'<tr><td colspan=2><select id="template" class="form-control">'+isi+'</select></td></tr>';
+					$("#isinya").html(isi);
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		}
 		function save_solve_note(id) {		
-			$("#btn_fol").remove();
-			$("#btn_fol2").remove();				
-			$("#btn_fol2").remove();				
+			clear_btn();		
 			$(this).find("#btn_modal_close").click();	
 			$.ajax({
 				type:"POST",
@@ -490,6 +506,22 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						get_issued_log_data();
 					}else{
 						$("#isinya").html('Too late...');
+						$('#modal_profiling').modal('show');
+						get_issued_log_data();
+					}
+				}
+			});
+		}
+		function send_email(id) {		
+			clear_btn();		
+			$(this).find("#btn_modal_close").click();	
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("operational/send_email_solver_revert");?>',
+				data:{id:id,template:$("#template").val()},
+				success:function(isi){
+					if(isi=="sent"){
+						$("#isinya").html('OK Clear!');
 						$('#modal_profiling').modal('show');
 						get_issued_log_data();
 					}
@@ -516,8 +548,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						html += '<option value="'+response[data].id+'">'+response[data].respon+'</option>'; 
 					}
 
-					$("#btn_fol2").remove();
-					$("#btn_fol").remove();
+					clear_btn();
+					clear_btn();
 					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol" onclick="save_data_from_popup('+isi.id_mitra+')">Submit</button>');
 					$("#exampleModalLabel").html(isi.brand_name);
 					var isi = '<tr id="FRM_'+isi.id_mitra+'"><td>Brand Name</td><td>'+isi.brand_name+'<input type="hidden" id="member_ID_'+isi.id_mitra+'" value="'+isi.id_mitra+'"></td></tr>'+
