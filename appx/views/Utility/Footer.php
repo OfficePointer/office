@@ -65,16 +65,6 @@
 	    },1000);
 	    <?php 
 		}
-          if(in_array($this->session->userdata('group'), array('Service Operation','Finance'))){
-		?>
-	    get_saldo_airline();
-
-	    //get_processing_log_data();
-	    setInterval(function () {
-	    	get_saldo_airline();
-	    },1000*5);
-	    <?php 
-		}
 		?>
 	    // setInterval(function () {
 	    // 	if(FIRST_CODE!=""){
@@ -156,30 +146,6 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			}
 		});
 	}
-
-	function get_saldo_airline(){
-		$.ajax({
-			url:'<?php echo base_url("operational/cek_deposit");?>',
-			type:'GET',
-			dataType:'json',
-			success:function(balik){
-				var saldo = balik.saldo;
-				$("#deposit_data").html('');
-				$("#deposit_data").html('');
-				$("#deposit_data").html('');
-				$("#deposit_data").html('');
-				$("#label_deposit_data").html(saldo.length);
-				for(var data in saldo) {
-					$("#deposit_data").append('<li>'+
-													'<a style="color:black;" onclick="update_saldo("'+saldo[data].code+'")">'+
-			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
-													'</a>'+
-												'</li>');
-				}
-			}
-		});
-	}
-
 
 	function get_issued_log_data (date) {
 		$.ajax({

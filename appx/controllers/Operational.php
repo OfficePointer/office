@@ -18,35 +18,6 @@ class Operational extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
-    public function cek_deposit()
-    {
-        $this->db->order_by('airline','asc');
-        $data = $this->db->get('cek_deposit');
-        $data = $data->result_array();
-        $baru = array();
-        foreach ($data as $key) {
-            $baru[] = array('code'=>$key['code'],
-                            'airline'=>$key['airline'],
-                            'saldo'=>'Rp. '.number_format($key['saldo'],2));
-        }
-
-        $all = array();
-
-        $all['muncul'] = 0;
-        if($this->session->userdata('saldosekarang')==0 and $this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldosekarang',1);
-            $all['muncul'] = 1;
-        }
-        if($this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldo',sizeof($baru));
-        }
-        if($this->session->userdata('saldosekarang')==1){
-            $this->session->set_userdata('saldosekarang',0);
-        }
-
-        $all['saldo'] = $baru;
-        echo json_encode($all);
-    }
     public function get_web_page($url)
     {
         //echo "curl:url<pre>".$url."</pre><BR>";
