@@ -18,6 +18,8 @@ class Operational extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+<<<<<<< HEAD
+=======
 
     public function get_user_assign()
     {
@@ -78,6 +80,7 @@ class Operational extends CI_Controller {
         $all['saldo'] = $baru;
         echo json_encode($all);
     }
+>>>>>>> origin/master
     public function get_web_page($url)
     {
         //echo "curl:url<pre>".$url."</pre><BR>";
