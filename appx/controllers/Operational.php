@@ -24,122 +24,7 @@ class Operational extends CI_Controller {
 
     }
 
-    public function get_user_assign()
-    {
-        $data = array();
-        // $a = $this->db->get('division')->result_array();
-        // foreach ($a as $key) {
-        //     $data[] = array('id'=>$key['id'],'parentid'=>-1,'text'=>$key['name'],'value'=>'!'.$key['id'].'!');
-        //     $x = $this->db->where('id_division',$key['id'])->get('level')->result_array();
-        //     foreach ($x as $kay) {
-        //         $data[] = array('id',$key['id'].$kay['id'],'parentid'=>$key['id'],'text'=>$kay['name'],'value'=>'@'.$kay['id'].'@');
-        //         // $s = $this->db->where('id_division',$key['id'])->where('id_level',$kay['id'])->get('data_user')->result_array();
-        //         // foreach ($s as $kuy) {
-        //         //     $data[] = array('id'=>$key['id'].$kay['id'].$kuy['ID'],'parentid'=>$key['id'].$kay['id'],'text'=>$kuy['name'],'value'=>'|'.$kuy['ID'].'|');
-        //         // }
-        //     }
-        // }
-        $a = $this->db->get('level')->result_array();
-        foreach ($a as $key) {
-            $data[] = array('id'=>"DIVLEV".$key['id'].$key['id_division'].$key['id_division'].$key['id_division'],'parentid'=>($key['id_level']==0)?"DIV".$key['id_division'].$key['id_division'].$key['id_division']:("DIVLEV".$key['id_level'].$key['id_division'].$key['id_division'].$key['id_division']),'text'=>$key['name'],'value'=>'!'.$key['id'].'!');
-        }
-        $a = $this->db->get('division')->result_array();
-        foreach ($a as $key) {
-            $data[] = array('id'=>"DIV".$key['id'].$key['id'].$key['id'],'parentid'=>-1,'text'=>$key['name'],'value'=>'!'.$key['id'].'!');
-        }
-        $a = $this->db->where('id_level !=',0)->get('data_user')->result_array();
-        foreach ($a as $key) {
-            $data[] = array('id'=>$key['ID'],'parentid'=>"DIVLEV".$key['id_level'].$key['id_division'].$key['id_division'].$key['id_division'],'text'=>$key['name'],'value'=>'@'.$key['ID'].'@');
-        }
 
-        echo json_encode($data);
-    }
-    public function cek_deposit()
-    {
-        $this->db->order_by('airline','asc');
-        $data = $this->db->get('cek_deposit');
-        $data = $data->result_array();
-        $baru = array();
-        foreach ($data as $key) {
-            $baru[] = array('code'=>$key['code'],
-                            'airline'=>$key['airline'],
-                            'saldo'=>'Rp. '.number_format($key['saldo'],2));
-        }
-
-        $all = array();
-
-        $all['muncul'] = 0;
-        if($this->session->userdata('saldosekarang')==0 and $this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldosekarang',1);
-            $all['muncul'] = 1;
-        }
-        if($this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldo',sizeof($baru));
-        }
-        if($this->session->userdata('saldosekarang')==1){
-            $this->session->set_userdata('saldosekarang',0);
-        }
-
-        $all['saldo'] = $baru;
-        echo json_encode($all);
-    }
-    public function get_email_templates_json()
-    {
-        $data = $this->db->get('email_templates')->result_array();
-        foreach ($data as $key) {
-            echo "<option value='".$key['id']."'>".$key['judul']."</option>";
-        }
-    }
-
-    public function send_email_solver_revert()
-    {
-        $data = $this->input->post();
-        $this->db->where('id',$data['id']);
-        $a = $this->db->get('data_all_error')->row_array();
-        $this->db->where('id',$data['template']);
-        $temp = $this->db->get('email_templates')->row_array();
-
-        $kode_booking = $a['kode_booking'];
-        $kasus = $a['kasus'];
-        $template = $temp['template'];
-        $subject = $temp['judul'];
-        $tujuan = $temp['id_user'];
-
-        $template = str_replace("{{kode_booking}}", $kode_booking, $template);
-        $template = str_replace("{{name}}", $this->session->userdata('nama'), $template);
-
-        $subject = str_replace("{{kode_booking}}", $kode_booking, $subject);
-
-        $to = explode(",", $tujuan);
-        $em = array();
-        foreach ($to as $key) {
-            $em[] = $this->general->get_email($key);
-        }
-        $em[] = $this->session->userdata('email');
-
-        $this->kirim_email_solver_revert($em,$subject,$template);
-        echo "sent";
-
-    }
-    public function kirim_email_solver_revert($email,$subject,$body)
-    {
-        $this->general->logging();
-        $this->load->library('email');
-
-        $this->email->set_header('X-MC-PreserveRecipients',TRUE);
-        $this->email->from('qa.dev.pointer@outlook.com', $this->session->userdata('nama'));
-        $this->email->to($email); 
-        //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false)); 
-        //$this->email->bcc('them@their-example.com'); 
-
-        $body .= "<div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
-     </b></span></span></span></span></span></span></b></span></span></span>
-</span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>";
-        $this->email->subject($subject);
-        $this->email->message($body);  
-
-        $this->email->send();
-    }
     public function all_error($new="")
     {
         if($new=="clear"){
@@ -228,13 +113,6 @@ class Operational extends CI_Controller {
 
     }
 
-    public function change_status()
-    {
-        $this->general->logging();
-        $this->db->where('id',$this->session->userdata('id'));
-        $this->db->update('data_user',array('status'=>$this->input->post('status')));
-        echo $this->input->post('status');
-    }
     public function funnyname()
     {
         $a = $this->load->database('dbpointer',true);

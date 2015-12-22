@@ -339,4 +339,24 @@ function csv_to_array($filename='', $delimiter=',')
 	    return array('arr'=>$dataRange);
 	}
 
+	public function kirim_email_solver_revert($email,$subject,$body)
+    {
+        $this->logging();
+        $this->load->library('email');
+
+        $this->email->set_header('X-MC-PreserveRecipients',TRUE);
+        $this->email->from('qa.dev.pointer@outlook.com', $this->session->userdata('nama'));
+        $this->email->to($email); 
+        //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false)); 
+        //$this->email->bcc('them@their-example.com'); 
+
+        $body .= "<div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
+     </b></span></span></span></span></span></span></b></span></span></span>
+</span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>";
+        $this->email->subject($subject);
+        $this->email->message($body);  
+
+        $this->email->send();
+    }
+
 }

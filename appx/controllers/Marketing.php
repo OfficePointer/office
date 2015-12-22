@@ -100,16 +100,7 @@ class Marketing extends CI_Controller {
 	//----------------------------------------------------------------------------
 
 
-	public function get_solve_note_option()
-	{
-        $this->general->logging();
-		$this->db->order_by('id','asc');
-		$a = $this->db->get('def_solve_note');
-		$a = $a->result_array();
-		foreach ($a as $key) {
-			echo "<option value='".$key['isi']."'>".$key['isi']."</option>";
-		}
-	}
+
 	public function generate_tanggal()
 	{
 		$tanggal = $this->input->post('tanggal');
@@ -715,70 +706,7 @@ class Marketing extends CI_Controller {
 
 		$this->general->load('marketing/followup_all',$data);
 	}
-
-
-	public function ajax_get_activity($id_mitra)
-	{
-        $this->general->logging();
-	?>
-              <table class="table table-bordered table-striped" id="TBL_<?php echo $id_mitra;?>">
-              <tr>
-                <th style="width:10px;">TicketID</th>
-                <th>Type</th>
-                <th>Respon</th>
-                <th>Note / Response / Reason</th>
-                <th>PIC</th>
-                <th>DateTime</th>
-                <th class="last" style="width:20px;">Action</th>
-              </tr>
-
-              <?php
-
-              $this->db->where('member_ID',$id_mitra);
-              $this->db->where('delete_by',NULL);
-              $this->db->where('delete_at',NULL);
-              $this->db->order_by('create_at','desc');
-              $aa = $this->db->get('data_activity');
-              $aa = $aa->result_array();
-              foreach ($aa as $koka) {
-              ?>
-              <tr id="detail_<?php echo $koka['ID'];?>">
-                <td>#<?php echo $koka['ID'];?></td>
-                <td><?php echo $koka['type'];?></td>
-                <td><?php echo $this->general->get_respon($koka['id_respon']);?></td>
-                <td style="max-width:300px;"><?php echo $koka['reason'];?></td>
-                <td><?php echo $this->general->get_user($koka['create_by']);?></td>
-                <td><?php echo $koka['create_at'];?></td>
-                <td class="last"><a style="cursor:pointer" onclick="del_followup(<?php echo $koka['ID'];?>)"><i class="fa fa-times"></i></a></td>
-              </tr>
-              <?php
-              }
-              ?>
-              </table>
-              <?php
-	}
-	public function ajax_save_act()
-	{
-		$this->general->logging();
-		$data = $this->input->post();
-		$data['create_at'] = date("Y-m-d H:i:s");
-		$data['create_by'] = $this->session->userdata('id');
-		$this->db->insert('data_activity',$data);
-		$id = $this->db->insert_id();
-		$dat['create_at'] = $data['create_at'];
-		$dat['ID'] = $id;
-		$dat['PIC'] = $this->general->get_user($this->session->userdata('id'));
-		print_r(json_encode($dat));
-	}
-	public function ajax_get_profiling()
-	{
-		$this->general->logging();
-		$data = $this->input->post();
-		$this->db->where('id_mitra',$data['id']);
-		$dat['profiling'] = $this->db->get('data_mitra')->row_array();
-		$dat['response'] = $this->db->get('data_respon')->result_array();
-		print_r(json_encode($dat));
-	}
+	
 	public function ajax_del_act()
 	{
 		$this->general->logging();
@@ -1049,52 +977,8 @@ class Marketing extends CI_Controller {
 							redirect(base_url("index.php/marketing/transaction"));
 						}
 	}
-	public function solve_revert()
-	{
-        $this->general->logging();
 
-		$data = $this->input->post();
-		$this->db->where('id',$data['id']);
-		$a = $this->db->get('data_all_error');
-		$a = $a->row_array();
-		if($a['updated_at']==NULL){
-			$data['updated_at'] = date("Y-m-d H:i:s");
-			$data['updated_by'] = $this->session->userdata('id');
-			$this->db->where('id',$data['id']);
-			$this->db->update('data_all_error',$data);
-			echo "good";
-		}else{
-			echo "bad";
-		}
-	}
-	public function issued_log_data()
-	{
-		$datax = $this->db->get('temp_issued_today');
-		$datax = $datax->result_array();
-		$hasil['data'] = $datax;
-		$this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
-		$this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
-		$this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
-		$this->db->where('updated_at',NULL);
-		$dataz = $this->db->get('data_all_error');
-		$dataz = $dataz->result_array();
-		if($this->session->userdata('sekarang')==0 and $this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('sekarang',1);
-			$hasil['muncul'] = 1;
-		}
-		if($this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('revert',sizeof($dataz));
-		}
-		if($this->session->userdata('sekarang')==1){
-			$this->session->set_userdata('sekarang',0);
-		}
-		$hasil['revert'] = $dataz;
-		$this->session->set_userdata('revert_data',sizeof($dataz));
-		$datay = $this->db->get('temp_processing_issued');
-		$datay = $datay->result_array();
-		$hasil['process'] = $datay;
-		echo json_encode($hasil);
-	}
+
 		public function export_excel()
 	{
 		$this->general->logging();
