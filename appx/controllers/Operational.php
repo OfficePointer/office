@@ -19,6 +19,11 @@ class Operational extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+    public function check_diff()
+    {
+
+    }
+
     public function get_user_assign()
     {
         $data = array();
@@ -78,41 +83,6 @@ class Operational extends CI_Controller {
         $all['saldo'] = $baru;
         echo json_encode($all);
     }
-    public function get_web_page($url)
-    {
-        //echo "curl:url<pre>".$url."</pre><BR>";
-        $options = array(
-            CURLOPT_RETURNTRANSFER => true,     // return web page
-            CURLOPT_HEADER         => false,    // don't return headers
-            CURLOPT_FOLLOWLOCATION => true,     // follow redirects
-            CURLOPT_ENCODING       => "",       // handle all encodings
-            CURLOPT_USERAGENT      => "spider", // who am i
-            CURLOPT_AUTOREFERER    => true,     // set referer on redirect
-            CURLOPT_CONNECTTIMEOUT => 15,      // timeout on connect
-            CURLOPT_TIMEOUT        => 15,      // timeout on response
-            CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
-
-        );
-
-        $ch      = curl_init($url);
-        curl_setopt_array( $ch, $options );
-        $content = curl_exec( $ch );
-        $err     = curl_errno( $ch );
-        $errmsg  = curl_error( $ch );
-        $header  = curl_getinfo( $ch,CURLINFO_EFFECTIVE_URL );
-        curl_close( $ch );
-
-        $header['errno']   = $err;
-        $header['errmsg']  = $errmsg;
-
-        //change errmsg here to errno
-        if ($errmsg)
-        {
-            echo "CURL:".$errmsg."<BR>";
-        }
-        return $content;
-
-    }
     public function get_email_templates_json()
     {
         $data = $this->db->get('email_templates')->result_array();
@@ -170,15 +140,92 @@ class Operational extends CI_Controller {
 
         $this->email->send();
     }
-    public function all_error()
-    {       
+    public function all_error($new="")
+    {
+        if($new=="clear"){
+            $this->session->set_userdata('date_error','');
+        }
+
+        if($this->input->post('date_error')!=""){
+            $daten = explode(" - ",$this->input->post('date_error'));
+            $this->session->set_userdata('all_error_date_start',$daten[0]);
+            $this->session->set_userdata('all_error_date_end',$daten[1]);
+        }else{
+            $this->session->set_userdata('all_error_date_start','');
+            $this->session->set_userdata('all_error_date_end','');
+        }
+
         $this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
         $this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
         $this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
+        if($this->session->userdata('all_error_date_start')!=""){
+            $this->db->where('DATE_FORMAT(data_all_error.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d"));
+        }
+        if($this->session->userdata('all_error_date_end')!=""){
+            $this->db->where('DATE_FORMAT(data_all_error.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d"));
+        }
         $a = $this->db->get('data_all_error');
         $data = array();
         $data['error'] = $a->result_array();
         $this->general->load('operational/data_all_error',$data);
+    }
+
+    public function expr_all_error()
+    {
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename=export_all_error_'.date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
+                    
+        $this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
+        $this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
+        $this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
+        if($this->session->userdata('all_error_date_start')!=""){
+            $this->db->where('DATE_FORMAT(data_all_error.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d"));
+        }
+        if($this->session->userdata('all_error_date_end')!=""){
+            $this->db->where('DATE_FORMAT(data_all_error.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d"));
+        }
+        $this->db->order_by('id','desc');
+        $a = $this->db->get('data_all_error');
+        $data = array();
+        $data['error'] = $a->result_array();
+        ?>
+        <table>
+            <thead>
+                <th>ID</th>
+                <th>Brand Name</th>
+                <th>Kasus</th>
+                <th>Kode Booking</th>
+                <th>Status</th>
+                <th>Tanggal Error</th>
+                <th>Airline</th>
+                <th>Solve Note</th>
+                <th>Date Solved</th>
+                <th>Solved by</th>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($data['error'] as $key) {
+            ?>
+                <tr>
+                    <td><?php echo $key['id'];?></td>
+                    <td><?php echo $this->general->get_member($key['id_mitra']);?></td>
+                    <td><?php echo $key['kasus'];?></td>
+                    <td><?php echo $key['kode_booking'];?></td>
+                    <td><?php echo $key['status'];?></td>
+                    <td><?php echo $key['created_at'];?></td>
+                    <td><?php echo $key['airline'];?></td>
+                    <td><?php echo $key['solve_note'];?></td>
+                    <td><?php echo $key['updated_at'];?></td>
+                    <td><?php echo $this->general->get_user($key['updated_by']);?></td>
+                </tr>
+            <?php 
+            }
+            ?>
+            </tbody>
+        </table>
+
+        <?php
+
     }
 
     public function change_status()

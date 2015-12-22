@@ -10,6 +10,37 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
+          <div class="box box-solid collapsed-box">
+            <div class="box-header" style="cursor: move;">
+              <i class="fa fa-filter"></i>
+
+              <h3 class="box-title">Filter Data</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-sm" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="box-body border-radius-none collapse" style="display: none;">
+
+        <form method="POST" action="<?php echo base_url('operational/all_error');?>">
+        <table class="table">
+          <tr>
+            <td>Date Error</td>
+            <td><input value="<?php echo date_format(date_create($this->session->userdata('all_error_date_start')),"m/d/Y");?> - <?php echo date_format(date_create($this->session->userdata('all_error_date_end')),"m/d/Y");?>" type="text" name="date_error" class="datepicker form-control"></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td><button class="btn btn-primary">Search</button>
+            <a class="btn btn-warning" href="<?php echo base_url("operational/all_error/clear");?>">Reset</a>
+            <a class="btn btn-success" href="<?php echo base_url("operational/expr_all_error");?>">Export</a></td>
+          </tr>
+        </table>
+        </form>
+
+            </div>
+            <!-- /.box-footer -->
+          </div>
       <table class="table table-bordered table-striped for_datatables">
         <thead>
           <tr>
