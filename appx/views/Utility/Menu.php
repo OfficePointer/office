@@ -56,6 +56,17 @@
             <?php } ?>
           </a>
           <ul class="treeview-menu">
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-plane"></i>
+                <span>Airline Info</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/airline_status_all');?>"><i class="fa fa-th-list"></i> All Airline Status</a></li>
+                <li><a href="<?php echo base_url('operational/airline_add');?>"><i class="fa fa-pencil"></i> Add New</a></li>
+              </ul>
+            </li>
             <li>
               <a href="#">
                 <i class="fa fa-envelope-o"></i>
@@ -396,17 +407,6 @@
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/rekonlion');?>"><i class="fa fa-plane"></i> Lion Air</a></li>
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-plane"></i>
-                <span>Airline Info</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('operational/airline_status_all');?>"><i class="fa fa-th-list"></i> All Airline Status</a></li>
-                <li><a href="<?php echo base_url('operational/airline_add');?>"><i class="fa fa-pencil"></i> Add New</a></li>
               </ul>
             </li>
             <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
