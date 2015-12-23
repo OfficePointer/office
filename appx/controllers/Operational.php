@@ -31,7 +31,7 @@ class Operational extends CI_Controller {
         $data['id_user'] = $this->session->userdata('id');
         $data['created_at'] = date("Y-m-d H:i:s");
         $this->db->insert('info_airline',$data);
-        redirect(base_url('operational/airline_status_all'));
+        redirect(base_url('operational/airline_status/'.$this->db->insert_id()));
     }
     public function airline_status($id)
     {        
@@ -63,6 +63,7 @@ class Operational extends CI_Controller {
             }
             $start = ($pg-1)*$limit;
         }   
+        $this->db->order_by('id','desc');
         $data['info'] = $this->db->get('info_airline')->result_array();
         $count = $this->db->get('info_airline');
         $count = $count->num_rows();
