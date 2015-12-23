@@ -14,7 +14,7 @@
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="<?php echo base_url('assets/jqwidgets/styles/jqx.base.css');?>" type="text/css" />
   <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.css');?>">
-  <link rel="stylesheet" href="<?php echo base_url('assets/css/additional.css');?>">
+  <!-- <link rel="stylesheet" href="<?php echo base_url('assets/css/additional.css');?>"> -->
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome-master/css/font-awesome.min.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/AdminLTE.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/skins/_all-skins.min.css');?>">
@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/datepicker/datepicker3.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/daterangepicker/daterangepicker-bs3.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.css');?>">
+  <link rel="stylesheet" href="<?php echo base_url('assets/waves/waves.min.css');?>">
   <link href="<?php echo base_url('assets/favicon.png');?>" rel="shortcut icon">
   <link href="<?php echo base_url('assets/favicon.png');?>" rel="favicon">
 <script src="<?php echo base_url('assets/plugins/jQuery/jQuery-2.1.4.min.js');?>"></script>
@@ -38,6 +39,7 @@
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxdata.js');?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxtree.js');?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxcheckbox.js');?>"></script>
+<script src="<?php echo base_url('assets/waves/waves.min.js');?>"></script>
 <?php
   include 'Header_script.php';
 ?>

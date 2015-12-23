@@ -1,7 +1,12 @@
 <script type="text/javascript">
 
+	Waves.attach('button');
+	Waves.init();
+    Waves.attach('button', ['waves-button', 'waves-float']);
 
 	$(document).ready(function(){
+
+
 		if(Notification.permission !== 'granted'){
 			Notification.requestPermission();
 		}
