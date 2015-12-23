@@ -3,6 +3,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Xhr_ajax extends CI_Controller {
 
+//------------------------------------------------------------------------------
+
+  public function ajax_get_klasifikasi(){
+    $this->general->logging();
+		$data = $this->input->post();
+		$this->db->where('id_mitra',$data['id']);
+		$datklas['getMemberKlas'] = $this->db->get('data_mitra')->row_array();
+		$datklas['getKlasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+		print_r(json_encode($datklas));
+  }
+
+//------------------------------------------------------------------------------
+
+public function ajax_save_klasifikasi()
+{
+  $this->general->logging();
+  $data = $this->input->post();
+  $data['tgl_update'] = date("Y-m-d H:i:s");
+  $data['created_by'] = $this->session->userdata('id');
+  $this->db->insert('klasifikasi_member',$data);
+  print_r(json_encode($data));
+}
+
+//------------------------------------------------------------------------------
+
    public function cek_deposit()
     {
         $this->db->select('cek_deposit.*,vendor.min_first,vendor.min_second,vendor.min_third');
@@ -147,7 +172,7 @@ class Xhr_ajax extends CI_Controller {
 	}
 	public function get_solve_note_option()
 	{
-        $this->general->logging();
+    $this->general->logging();
 		$this->db->order_by('id','asc');
 		$a = $this->db->get('def_solve_note');
 		$a = $a->result_array();
@@ -186,7 +211,7 @@ class Xhr_ajax extends CI_Controller {
 
         echo json_encode($data);
     }
- 
+
     public function get_email_templates_json()
     {
         $data = $this->db->get('email_templates')->result_array();

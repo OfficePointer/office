@@ -19,7 +19,7 @@ class Marketing extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
-	 public function responseadd(){
+	public function responseadd(){
  		$this->general->load('marketing/member_response_add');
  	}
 
@@ -98,8 +98,6 @@ class Marketing extends CI_Controller {
   }
 
 	//----------------------------------------------------------------------------
-
-
 
 	public function generate_tanggal()
 	{
@@ -693,7 +691,7 @@ class Marketing extends CI_Controller {
 
 		$this->general->load('marketing/followup_all',$data);
 	}
-	
+
 	public function ajax_del_act()
 	{
 		$this->general->logging();

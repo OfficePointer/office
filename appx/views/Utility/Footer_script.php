@@ -27,16 +27,16 @@
 	    		$('.modal-dialog').css('width','600px');
 	    	}
 	    },1000);
-	    <?php 
+	    <?php
 		}
 		if(in_array($this->session->userdata('group'), array('Service Operation','Finance'))){
  		?>
  	    get_saldo_airline();
- 
+
  	    setInterval(function () {
  	    	get_saldo_airline();
  	    },1000*5);
- 	    <?php 
+ 	    <?php
  		}
  		?>
 
@@ -112,7 +112,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 				$("#status_").html('<i class="fa fa-circle text-'+data+'"></i> '+balik);
 
-				$(document).find("#btn_modal_close").click();	
+				$(document).find("#btn_modal_close").click();
 			}
 		});
 	}
@@ -154,7 +154,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}else if(process[data].tipe=="train"){
 						url = 'https://admin.pointer.co.id/train/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking;
 					}
-					
+
 					$("#processing_log_data").append('<li><a style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
                       '<div class="pull-left">'+
                         '<span style="font-size:30pt;text-align:center;color:orange;" class="fa fa-exclamation-circle"></span>'+
@@ -164,19 +164,19 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
                       '</h4>'+
                       '<p>'+process[data].brand_name+'</p>'+
                     '</a></li>');
-				}				
+				}
 
 				$("#revert_log_data").html('');
 					REVERT_DATA = revert.length;
 					for(var data in revert) {
 						if(revert[data].airline==13){
-							revert[data].airline = 'GA'; 
+							revert[data].airline = 'GA';
 						}else if(revert[data].airline==12 || revert[data].airline==2){
 							revert[data].airline = 'JT';
 						}
 
 						if(revert[data].status==2 || revert[data].status==21){
-							revert[data].status = 'Confirmed'; 
+							revert[data].status = 'Confirmed';
 						}else{
 							revert[data].status = 'Waiting';
 						}
@@ -201,12 +201,12 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					REVERT_DATA = revert.length;
 					for(var data in revert) {
 						if(revert[data].airline==13){
-							revert[data].airline = 'GA'; 
+							revert[data].airline = 'GA';
 						}else if(revert[data].airline==12 || revert[data].airline==2){
 							revert[data].airline = 'JT';
 						}
 						if(revert[data].status==2 || revert[data].status==21){
-							revert[data].status = 'Confirmed'; 
+							revert[data].status = 'Confirmed';
 						}else{
 							revert[data].status = 'Waiting';
 						}
@@ -230,7 +230,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			}
 		});
 	}
-		function openaddactivity (arg) {	    	
+		function openaddactivity (arg) {
 			$.ajax({
 	    		url:'<?php echo base_url("xhr_ajax/ajax_get_activity");?>/'+arg,
 	    		type:'POST',
@@ -249,7 +249,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							var html = '';
 
 							for(var data in balik) {
-								html += '<option value="'+balik[data].id+'">'+balik[data].respon+'</option>'; 
+								html += '<option value="'+balik[data].id+'">'+balik[data].respon+'</option>';
 							}
 
 							var isi = '<tr style="display:none;" id="FRM_'+arg+'"><td><input type="hidden" id="member_ID_'+arg+'" value="'+arg+'"></td>'+
@@ -260,10 +260,10 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							'<option value="sms">SMS</option>'+
 							'<option value="info">Info</option>'+
 							'<option value="chat">Chat</option>'+
-							'</select></div></div></td>'+	
+							'</select></div></div></td>'+
 							'<td><div class="field"><div class="select"><select id="respon_'+arg+'" class="form-control">'+
 							html+
-							'</select></div></div></td>'+	
+							'</select></div></div></td>'+
 							'<td colspan=3><div class="input2"><input class="form-control" type="text" id="reason_'+arg+'"></div></td>'+
 							'<td><button class="btn btn-block btn-primary" onclick="save_data('+arg+')">Submit</button></td></tr>';
 							$("#TBL_"+arg).append(isi);
@@ -331,14 +331,14 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				url:'<?php echo base_url("xhr_ajax/ajax_save_act");?>',
 				dataType:'json',
 				data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
-				success:function(isi){				
+				success:function(isi){
 
 					$("#isinya").html('Saved!');
 					$('#modal_profiling').modal('show');
 				}
 			});
 		}
-	    function del_followup(id) {	
+	    function del_followup(id) {
 	    	if(confirm('Sure to delete?')){
 
 	    	$("#detail_"+id).fadeOut();
@@ -352,17 +352,26 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			});
 			}
 		}
-	    function openformdetail(id) {	
+	    function openformdetail(id) {
 
-			clear_btn();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/ajax_get_profiling");?>',
 				dataType:'json',
 				data:{id:id},
 				success:function(isi){
-					isi = isi.profiling;
+					isi     = isi.profiling;
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/ajax_get_klasifikasi");?>',
+				dataType:'json',
+				data:{id:id},
+				success:function(isiklas){
+					isiklas = isiklas.getMemberKlas;
+
 					clear_btn();
+					$(".modal-footer").prepend('<button onclick="update_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-success " >Update</button>');
 					$(".modal-footer").prepend('<button onclick="followup_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
 					$("#exampleModalLabel").html(isi.brand_name);
 					$("#isinya").html('<tr>'+
@@ -398,10 +407,13 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 										'<td>'+isi.province+'</td>'+
 									'</tr>');
 				    $('#modal_profiling').modal('show');
+
+						}
+					});
 				}
 			});
 		}
-		function error_followup(id,url,kode_booking,brand_name) {				
+		function error_followup(id,url,kode_booking,brand_name) {
 			$(this).find("#btn_modal_close").click();
 			clear_btn();
 			$.ajax({
@@ -411,7 +423,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="save_solve_note('+id+')">Submit</button><a class="btn pull-left btn-primary" target="_blank" href="'+url+'" id="btn_fol2">View Reservation</a>');
 					$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
 					var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
-					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+		
+					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
 					'<tr><td colspan=2>Solve Note</td></tr>'+
 					'<tr><td colspan=2><select id="solve_note" class="form-control">'+isi+'</select></td></tr>';
 					$("#isinya").html(isi);
@@ -419,7 +431,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
-		function get_email(id,url,kode_booking,brand_name,kasus) {				
+		function get_email(id,url,kode_booking,brand_name,kasus) {
 			$(this).find("#btn_modal_close").click();
 			clear_btn();
 			$.ajax({
@@ -429,8 +441,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="send_email('+id+')">Submit</button>');
 					$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
 					var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
-					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+		
-					'<tr><td>Kasus</td><td>'+kasus+'</td></tr>'+		
+					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
+					'<tr><td>Kasus</td><td>'+kasus+'</td></tr>'+
 					'<tr><td colspan=2>Template</td></tr>'+
 					'<tr><td colspan=2><select id="template" class="form-control">'+isi+'</select></td></tr>';
 					$("#isinya").html(isi);
@@ -438,9 +450,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
-		function save_solve_note(id) {		
-			clear_btn();		
-			$(this).find("#btn_modal_close").click();	
+		function save_solve_note(id) {
+			clear_btn();
+			$(this).find("#btn_modal_close").click();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/solve_revert");?>',
@@ -459,9 +471,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
-		function send_email(id) {		
-			clear_btn();		
-			$(this).find("#btn_modal_close").click();	
+		function send_email(id) {
+			clear_btn();
+			$(this).find("#btn_modal_close").click();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/send_email_solver_revert");?>',
@@ -475,9 +487,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
-	    function followup_open(id) {				
+	    function followup_open(id) {
 			$(this).find("#btn_modal_close").click();
-			
+
 
 			$.ajax({
 				type:"POST",
@@ -485,14 +497,14 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				dataType:'json',
 				data:{id:id},
 				success:function(data){
-					var isi = data.profiling; 
+					var isi = data.profiling;
 					console.log(isi);
-					var response = data.response; 
+					var response = data.response;
 
 					var html = '';
 
 					for(var data in response) {
-						html += '<option value="'+response[data].id+'">'+response[data].respon+'</option>'; 
+						html += '<option value="'+response[data].id+'">'+response[data].respon+'</option>';
 					}
 
 					clear_btn();
@@ -507,14 +519,78 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					'<option value="sms">SMS</option>'+
 					'<option value="info">Info</option>'+
 					'<option value="chat">Chat</option>'+
-					'</select></td></tr>'+		
+					'</select></td></tr>'+
 					'<tr><td>Respon</td><td><select id="respon_'+isi.id_mitra+'" class="form-control">'+
 					html+
-					'</select></td></tr>'+		
+					'</select></td></tr>'+
 					'<tr><td>Reason / Response</td><td><input class="form-control" type="text" id="reason_'+isi.id_mitra+'"></td></tr>';
 					$("#isinya").html(isi);
 				    $('#modal_profiling').modal('show');
 				}
 			});
 		}
+
+//------------------------------------------------------------------------------
+		function update_open(id){
+			$(this).find("#btn_modal_close").click();
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/ajax_get_klasifikasi");?>',
+				dataType:'json',
+				data:{id:id},
+				success:function(data){
+
+					var isi = data.getMemberKlas;
+					console.log(isi);
+					var klasifikasi = data.getKlasifikasi;
+
+					var html = '';
+
+					for(var data in klasifikasi) {
+						html += '<option value="'+klasifikasi[data].id+'">'+klasifikasi[data].klasifikasi+'</option>';
+					}
+
+					clear_btn();
+					clear_btn();
+
+					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol" onclick="save_dataklas_from_popup('+isi.id_mitra+')">Submit</button>');
+					$("#exampleModalLabel").html(isi.brand_name);
+
+					var isi	 = '<tr id="FRM_'+isi.id_mitra+'"><td>Brand Name</td><td>'+isi.brand_name+'</td></tr>'+
+					'<tr><td>classification</td><td><select id="klasifikasi_'+isi.id_mitra+'" class="form-control">'+
+					html+
+					'</select></td></tr>';
+
+					$("#isinya").html(isi);
+					$('#modal_profiling').modal('show');
+
+				}
+			});
+		}
+//------------------------------------------------------------------------------
+
+		function save_dataklas_from_popup (id) {
+
+			var member_klas_id = $("#klasifikasi_"+id).val();
+			var member_mitra_id = id;
+
+			$(this).find("#btn_modal_close").click();
+			clear_btn();
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/ajax_save_klasifikasi");?>',
+				dataType:'json',
+				data:{id_klasifikasi:member_klas_id,id_mitra:member_mitra_id},
+				success:function(isi){
+
+					$("#isinya").html('Saved!');
+					$('#modal_profiling').modal('show');
+				}
+			});
+
+		}
+
+//------------------------------------------------------------------------------
 </script>
