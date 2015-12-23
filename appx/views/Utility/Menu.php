@@ -56,8 +56,6 @@
             <?php } ?>
           </a>
           <ul class="treeview-menu">
-            <li><a href="<?php echo base_url('root/logdata');?>"><i class="fa fa-map-signs"></i> Logdata</a></li>
-            <li><a href="<?php echo base_url('root/help/all');?>"><i class="fa fa-support"></i> Office Help</a></li>
             <li>
               <a href="#">
                 <i class="fa fa-envelope-o"></i>
@@ -69,6 +67,39 @@
                 <li><a href="<?php echo base_url('root/email_templates_add');?>"><i class="fa fa-plus"></i> Add New</a></li>
               </ul>
             </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-gears"></i>
+                <span>Service Desk System</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">   
+                <li>
+                  <a href="#">
+                    <i class="fa fa-info"></i>
+                    <span>Infosys</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url('servicedesk/infosys');?>"><i class="fa fa-navicon"></i> All Infosys</a></li>
+                    <li><a href="<?php echo base_url('servicedesk/infosys_add');?>"><i class="fa fa-plus"></i> Add New</a></li>
+                  </ul>
+                </li>
+                <li>
+                  <a href="#">
+                    <i class="fa fa-sort-numeric-asc"></i>
+                    <span>Flowsys</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url('servicedesk/flowsys');?>"><i class="fa fa-navicon"></i> All Flowsys</a></li>
+                    <li><a href="<?php echo base_url('servicedesk/flowsys_add');?>"><i class="fa fa-plus"></i> Add New</a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li><a href="<?php echo base_url('root/logdata');?>"><i class="fa fa-map-signs"></i> Logdata</a></li>
+            <li><a href="<?php echo base_url('root/help/all');?>"><i class="fa fa-support"></i> Office Help</a></li>
             <li><a href="<?php echo base_url('root/get_cron');?>"><i class="fa fa-bolt"></i> Trx Cron</a></li>
             <li><a href="<?php echo base_url('root/get_cron_member');?>"><i class="fa fa-bolt"></i> Member Cron</a></li>
             <li><a href="<?php echo base_url('root/get_fetch_trx');?>"><i class="fa fa-bolt"></i> Fetch Trx Cron</a></li>

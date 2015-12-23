@@ -359,4 +359,19 @@ function csv_to_array($filename='', $delimiter=',')
         $this->email->send();
     }
 
+    public function get_infosys($id)
+    {
+    	return $this->db->where('id',$id)->get('infosys')->row_array()['title'];
+    }
+    public function parse_user($user)
+    {
+    	$assign_user = array();
+    	$ex = explode(",", $user);
+		foreach ($ex as $key) {
+			if(strlen($key)<3 and $key!=""){
+				$assign_user[] = $key;
+			}
+		}
+		return implode(",", $assign_user);
+    }
 }
