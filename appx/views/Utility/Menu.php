@@ -398,6 +398,17 @@
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
               </ul>
             </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-plane"></i>
+                <span>Airline Info</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/airline_status_all');?>"><i class="fa fa-th-list"></i> All Airline Status</a></li>
+                <li><a href="<?php echo base_url('operational/airline_add');?>"><i class="fa fa-pencil"></i> Add New</a></li>
+              </ul>
+            </li>
             <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
             <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
