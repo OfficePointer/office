@@ -395,20 +395,7 @@ class Marketing extends CI_Controller {
 		$data['membersummary'] = $dat;
 		$this->general->load('marketing/member_summary',$data);
 	}
-	public function get_last_activity($id)
-	{
-        $this->general->logging();
-		$this->db->where('member_ID',$id);
-		$this->db->where('delete_by',NULL);
-		$this->db->limit(1);
-		$a = $this->db->get('data_activity');
-		$a = $a->row_array();
-		if(empty($a)){
-			echo "No one follow up";
-		}else{
-			echo $a['type']." : ".$a['reason'];
-		}
-	}
+
 	public function member_statistic(){
 		$this->db->select('type, count(id_mitra) as jumlah');
 		$this->db->where('status','active');

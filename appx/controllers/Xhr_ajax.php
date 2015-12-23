@@ -230,4 +230,18 @@ class Xhr_ajax extends CI_Controller {
         echo "sent";
 
     }
+    public function get_last_activity($id)
+    {
+        $this->general->logging();
+        $this->db->where('member_ID',$id);
+        $this->db->where('delete_by',NULL);
+        $this->db->limit(1);
+        $a = $this->db->get('data_activity');
+        $a = $a->row_array();
+        if(empty($a)){
+            echo "No one follow up";
+        }else{
+            echo $a['type']." : ".$a['reason'];
+        }
+    }
 }
