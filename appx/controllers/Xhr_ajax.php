@@ -5,14 +5,29 @@ class Xhr_ajax extends CI_Controller {
 
    public function cek_deposit()
     {
+        $this->db->select('cek_deposit.*,vendor.min_first,vendor.min_second,vendor.min_third');
+        $this->db->join('vendor','vendor.id=cek_deposit.id','left');
         $this->db->order_by('airline','asc');
         $data = $this->db->get('cek_deposit');
         $data = $data->result_array();
         $baru = array();
         foreach ($data as $key) {
+            $muncul = 0;
+            if($key['saldo']<$key['min_first']){
+                $muncul = 1;
+            }
+            if($key['saldo']<$key['min_second']){
+                $muncul = 2;
+            }
+            if($key['saldo']<$key['min_third']){
+                $muncul = 3;
+            }
+
             $baru[] = array('code'=>$key['code'],
                             'airline'=>$key['airline'],
-                            'saldo'=>'Rp. '.number_format($key['saldo'],2));
+                            'id'=>$key['id'],
+                            'saldo'=>'Rp. '.number_format($key['saldo'],2),
+                            'muncul'=>$muncul);
         }
 
         $all = array();

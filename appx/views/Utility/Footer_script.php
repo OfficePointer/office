@@ -53,7 +53,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		$("#btn_fol3").remove();
 	}
 
-function get_saldo_airline(){
+	function get_saldo_airline(){
  		$.ajax({
  			url:'<?php echo base_url("xhr_ajax/cek_deposit");?>',
  			type:'GET',
@@ -66,8 +66,8 @@ function get_saldo_airline(){
  				$("#deposit_data").html('');
  				$("#label_deposit_data").html(saldo.length);
  				for(var data in saldo) {
- 					$("#deposit_data").append('<li>'+
- 													'<a style="color:black;" onclick="update_saldo("'+saldo[data].code+'")">'+
+ 					$("#deposit_data").append('<li id="'+saldo[data].id+'">'+
+ 													'<a class="text-black" onclick="update_saldo("'+saldo[data].code+'")">'+
  			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
  													'</a>'+
  												'</li>');

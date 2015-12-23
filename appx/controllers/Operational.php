@@ -19,9 +19,55 @@ class Operational extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
-    public function check_diff()
+    public function airline_add()
     {
-
+        $data['ckeditor'] = $this->_setup_ckeditor('info');
+        $this->general->load('operational/create_info',$data);
+    }    
+    public function airline_save()
+    {
+        $this->general->logging();
+        $data = $this->input->post();
+        $data['id_user'] = $this->session->userdata('id');
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $this->db->insert('info_airline',$data);
+        redirect(base_url('operational/airline_status_all'));
+    }
+    public function airline_status($id)
+    {        
+        $limit = 5;
+        $pg = 1;
+        $start = 0;
+        if($this->uri->segment(3)!=""){
+            $pg = $this->uri->segment(3);
+            if($pg<=0){
+                $pg=1;
+            }
+            $start = ($pg-1)*$limit;
+        }  
+        $data['info'] = $this->db->where('id',$id)->get('info_airline')->result_array();
+        $count = $this->db->get('info_airline');
+        $count = $count->num_rows();
+        $data['paging'] = $this->general->pagination($count,$limit,$pg,base_url("operational/airline_status_all/%d"));
+        $this->general->load('operational/detail_airline',$data);
+    }
+    public function airline_status_all()
+    {       
+        $limit = 5;
+        $pg = 1;
+        $start = 0;
+        if($this->uri->segment(3)!=""){
+            $pg = $this->uri->segment(3);
+            if($pg<=0){
+                $pg=1;
+            }
+            $start = ($pg-1)*$limit;
+        }   
+        $data['info'] = $this->db->get('info_airline')->result_array();
+        $count = $this->db->get('info_airline');
+        $count = $count->num_rows();
+        $data['paging'] = $this->general->pagination($count,$limit,$pg,base_url("operational/airline_status_all/%d"));
+        $this->general->load('operational/detail_airline',$data);
     }
 
 
