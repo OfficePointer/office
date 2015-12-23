@@ -1,5 +1,5 @@
 <script type="text/javascript">
-
+var muncul_deposit = 0;
 	Waves.attach('button');
 	Waves.init();
     Waves.attach('button', ['waves-button', 'waves-float']);
@@ -40,7 +40,7 @@
 
  	    setInterval(function () {
  	    	get_saldo_airline();
- 	    },1000*5);
+ 	    },1000*60);
  	    <?php
  		}
  		?>
@@ -59,24 +59,54 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	}
 
 	function get_saldo_airline(){
+
  		$.ajax({
  			url:'<?php echo base_url("xhr_ajax/cek_deposit");?>',
  			type:'GET',
  			dataType:'json',
  			success:function(balik){
  				var saldo = balik.saldo;
+ 				var muncul = balik.muncul;
  				$("#deposit_data").html('');
  				$("#deposit_data").html('');
  				$("#deposit_data").html('');
  				$("#deposit_data").html('');
  				$("#label_deposit_data").html(saldo.length);
  				for(var data in saldo) {
- 					$("#deposit_data").append('<li id="'+saldo[data].id+'">'+
- 													'<a class="text-black" onclick="update_saldo("'+saldo[data].code+'")">'+
+ 					var color = "";
+ 					var click = "";
+ 					if(saldo[data].muncul==1){
+ 						color = "bg-green";
+ 					}
+ 					if(saldo[data].muncul==2){
+ 						color = "bg-orange";
+ 					}
+ 					if(saldo[data].muncul==3){
+ 						color = "bg-red";
+ 					}
+
+ 					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
+ 													'<a class="text-black">'+
  			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
  													'</a>'+
  												'</li>');
+
+	 				if(muncul && saldo[data].muncul>0){
+					
+						notif = new Notification('Alert Top Up Saldo Vendor', {
+					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+					      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
+					    });
+
+					    notif.onclick = function (x) {
+					      window.focus();
+					    };
+
+						// var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
+						// audio.play();
+					}
  				}
+
  			}
  		});
  	}
@@ -93,6 +123,42 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				'</td>'+
 			'</tr>');
 	    $('#modal_profiling').modal('show');
+	}	
+	function update_saldo (id,code,airline) {
+		clear_btn();
+		$(".modal-footer").prepend('<button onclick="save_saldo('+id+')" id="btn_fol" class="pull-left btn btn-primary">Submit</button>');
+		$("#exampleModalLabel").html('Update Top Up Saldo vendor');
+		$("#isinya").html('<tr>'+
+				'<td>Airline</td>'+
+				'<td>'+code+' - '+airline+'</td>'+
+			'</tr>'+
+			'<tr>'+
+				'<td>Jumlah</td>'+
+				'<td><div type="text" class="form-control" id="jumlah_saldo"></div></td>'+
+			'</tr>');
+
+        $("#jumlah_saldo").jqxNumberInput({ width: '90%', height: '25px', digits: 20, max:9999999999999999999999999,symbol:'Rp. '});
+	    $('#modal_profiling').modal('show');
+	}
+    function save_saldo (id) {
+		var vendor = id;
+		var saldo = $("#jumlah_saldo").jqxNumberInput('getDecimal');
+
+		alert(saldo);
+
+
+		// $.ajax({
+		// 	type:"POST",
+		// 	url:'<?php echo base_url("xhr_ajax/ajax_save_act");?>',
+		// 	dataType:'json',
+		// 	data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
+		// 	success:function(isi){
+		// 		var url = '<?php echo base_url("marketing/followup_del");?>';
+		// 		$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+respon_data+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'">Delete</a></td></tr>');
+		// 		$("#detail_"+isi.ID).fadeIn();
+		// 		$("#FRM_"+id).remove();
+		// 	}
+		// });
 	}
 	function show_funnyname(link) {
 		clear_btn();

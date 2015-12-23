@@ -20,11 +20,15 @@ class general extends CI_Model {
 	 */
 	public function __construct()
 	{
-		if($this->uri->segment(1)!="login" and $this->uri->segment(2)!="generate_tanggal"){
+		if($this->uri->segment(1)!="login" 
+			and $this->uri->segment(2)!="generate_tanggal"
+			and $this->uri->segment(2)!="cron_cek_deposit"){
 			if($this->session->userdata('id')==0 or $this->session->userdata('id')==""){
 				$this->session->set_userdata('revert_data',0);
 				$this->session->set_userdata('sekarang',0);
 				$this->session->set_userdata('revert',0);
+				$this->session->set_userdata('saldo',0);
+				$this->session->set_userdata('saldosekarang',0);
 				redirect(base_url("login"));
 			}
 		}
@@ -373,5 +377,9 @@ function csv_to_array($filename='', $delimiter=',')
 			}
 		}
 		return implode(",", $assign_user);
+    }
+    public function comment_msg($pesan)
+    {
+    	return "Created by ".$pesan." (".date("D, d F Y H:i:s").")";
     }
 }

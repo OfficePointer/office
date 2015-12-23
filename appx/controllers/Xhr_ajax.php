@@ -30,7 +30,9 @@ public function ajax_save_klasifikasi()
 
    public function cek_deposit()
     {
-        $this->db->select('cek_deposit.*,vendor.min_first,vendor.min_second,vendor.min_third');
+        $jumlah_muncul = $this->session->userdata('saldo');
+        $muncul = 0;
+        $this->db->select('cek_deposit.*,vendor.nama,vendor.min_first,vendor.min_second,vendor.min_third');
         $this->db->join('vendor','vendor.id=cek_deposit.id','left');
         $this->db->order_by('airline','asc');
         $data = $this->db->get('cek_deposit');
@@ -48,6 +50,10 @@ public function ajax_save_klasifikasi()
                 $muncul = 3;
             }
 
+            if($muncul>0 and $muncul != $jumlah_muncul){
+                $jumlah_muncul = $muncul;
+            }
+
             $baru[] = array('code'=>$key['code'],
                             'airline'=>$key['airline'],
                             'id'=>$key['id'],
@@ -55,22 +61,133 @@ public function ajax_save_klasifikasi()
                             'muncul'=>$muncul);
         }
 
+
         $all = array();
 
         $all['muncul'] = 0;
-        if($this->session->userdata('saldosekarang')==0 and $this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldosekarang',1);
+        if($this->session->userdata('saldo')!=$jumlah_muncul){
+            $this->session->set_userdata('saldo',$jumlah_muncul);
             $all['muncul'] = 1;
         }
-        if($this->session->userdata('saldo')!=sizeof($baru)){
-            $this->session->set_userdata('saldo',sizeof($baru));
-        }
-        if($this->session->userdata('saldosekarang')==1){
-            $this->session->set_userdata('saldosekarang',0);
-        }
-
         $all['saldo'] = $baru;
         echo json_encode($all);
+    }
+//------------------------------------------------------------------------------
+
+   public function cron_cek_deposit()
+    {
+        $this->db->select('cek_deposit.*,vendor.nama,vendor.min_first,vendor.min_second,vendor.min_third');
+        $this->db->join('vendor','vendor.id=cek_deposit.id','left');
+        $this->db->order_by('airline','asc');
+        $data = $this->db->get('cek_deposit');
+        $data = $data->result_array();
+        $baru = array();
+        foreach ($data as $key) {
+            $muncul = 0;
+            if($key['saldo']<$key['min_first']){
+                $muncul = 1;
+            }
+            if($key['saldo']<$key['min_second']){
+                $muncul = 2;
+            }
+            if($key['saldo']<$key['min_third']){
+                $muncul = 3;
+            }
+
+            if($muncul>0){
+
+
+                $this->db->where_in('actionsys.id_flowsys',array(7,8,9));
+                $this->db->where('actionsys.vendor',$key['id']);
+                $this->db->where('actionsys.status','0');
+                $cek = $this->db->get('actionsys')->result_array();
+                if(sizeof($cek)==0){
+                    $input = array();
+                    $input['id_user'] = 0;
+                    $input['id_flowsys'] = 7;
+                    $input['info'] = "Alert 1 Top Up Saldo Vendor ".$key['nama'];
+                    $input['user_view'] = 0;
+                    $input['assign_view'] = 0;
+                    $input['comment'] = $this->general->comment_msg("System");
+                    $input['status'] = 0;
+                    $input['vendor'] = $key['id'];
+                    $input['created_at'] = date("Y-m-d H:i:s");
+                    $input['id_ticket'] = "#".uniqid();
+                    $this->db->insert('actionsys',$input);
+                    $log['id_user'] = 0;
+                    $log['info'] = "Create alert 1 top up saldo vendor ".$key['nama'];
+                    $log['created_at'] = date("Y-m-d H:i:s");
+                    $this->db->insert('actionsyslog',$log);
+                }else{
+                    if($muncul==2){
+
+                        $this->db->where_in('actionsys.id_flowsys',array(7,8,9));
+                        $this->db->where('actionsys.vendor',$key['id']);
+                        $this->db->where('actionsys.status','0');
+                        $cek2 = $this->db->get('actionsys')->row_array();
+                        if(empty($cek2)){
+                            
+                            $input['id_user'] = 0;
+                            $input['id_flowsys'] = 8;
+                            $input['info'] = "Alert 2 Top Up Saldo Vendor ".$key['nama'];
+                            $input['user_view'] = 0;
+                            $input['assign_view'] = 0;
+                            $input['comment'] = $this->general->comment_msg("System");
+                            $input['status'] = 0;
+                            $input['created_at'] = date("Y-m-d H:i:s");
+                            $input['id_ticket'] = "#".uniqid();
+
+                            $this->db->where('actionsys.id_flowsys',7);
+                            $this->db->where('actionsys.vendor',$key['id']);
+                            $this->db->where('actionsys.status','0');
+                            $this->db->update('actionsys',$input);
+
+                            $log['id_user'] = 0;
+                            $log['info'] = "Create alert 2 top up saldo vendor ".$key['nama'];
+                            $log['created_at'] = date("Y-m-d H:i:s");
+                            $this->db->insert('actionsyslog',$log);
+                        }
+                    }
+                    if($muncul==3){
+
+                        $this->db->where_in('actionsys.id_flowsys',array(7,8,9));
+                        $this->db->where('actionsys.vendor',$key['id']);
+                        $this->db->where('actionsys.status','0');
+                        $cek2 = $this->db->get('actionsys')->row_array();
+                        if(empty($cek2)){
+
+                            $input['id_user'] = 0;
+                            $input['id_flowsys'] = 9;
+                            $input['info'] = "Alert 3 Top Up Saldo Vendor ".$key['nama'];
+                            $input['user_view'] = 0;
+                            $input['assign_view'] = 0;
+                            $input['comment'] = $this->general->comment_msg("System");
+                            $input['status'] = 0;
+                            $input['created_at'] = date("Y-m-d H:i:s");
+                            $input['id_ticket'] = "#".uniqid();
+
+                            $this->db->where('actionsys.id_flowsys',8);
+                            $this->db->where('actionsys.vendor',$key['id']);
+                            $this->db->where('actionsys.status','0');
+                            $this->db->update('actionsys',$input);
+
+                            $log['id_user'] = 0;
+                            $log['info'] = "Create alert 3 top up saldo vendor ".$key['nama'];
+                            $log['created_at'] = date("Y-m-d H:i:s");
+                            $this->db->insert('actionsyslog',$log);
+                        }
+                    }
+                }
+            }
+
+            $baru[] = array('code'=>$key['code'],
+                            'airline'=>$key['airline'],
+                            'id'=>$key['id'],
+                            'saldo'=>'Rp. '.number_format($key['saldo'],2),
+                            'muncul'=>$muncul);
+        }
+
+        echo json_encode($baru);
     }
 
     public function change_status()

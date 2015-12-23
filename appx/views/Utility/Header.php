@@ -39,6 +39,8 @@
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxdata.js');?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxtree.js');?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxcheckbox.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxnumberinput.js');?>"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxbuttons.js');?>"></script>
 <script src="<?php echo base_url('assets/waves/waves.min.js');?>"></script>
 <?php
   include 'Header_script.php';
