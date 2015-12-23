@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Publish Koran
+      Publish Info Airline
       </h1>
     </section>
     <!-- Main content -->
