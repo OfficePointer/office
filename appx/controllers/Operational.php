@@ -46,6 +46,7 @@ class Operational extends CI_Controller {
             $start = ($pg-1)*$limit;
         }  
         $data['info'] = $this->db->where('id',$id)->get('info_airline')->result_array();
+        $this->db->where('id',$id);
         $count = $this->db->get('info_airline');
         $count = $count->num_rows();
         $data['paging'] = $this->general->pagination($count,$limit,$pg,base_url("operational/airline_status_all/%d"));
