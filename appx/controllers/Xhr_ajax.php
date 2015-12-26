@@ -392,13 +392,30 @@ public function ajax_save_klasifikasi()
         $this->general->logging();
         $this->db->where('member_ID',$id);
         $this->db->where('delete_by',NULL);
+        $this->db->order_by('id','desc');
         $this->db->limit(1);
         $a = $this->db->get('data_activity');
         $a = $a->row_array();
+        $data = array();
         if(empty($a)){
-            echo "No one follow up";
+            $data['followup'] = "No one follow up";
         }else{
-            echo $a['type']." : ".$a['reason'];
+            $data['followup'] = $a['type']." : ".$a['reason'];
         }
+
+        $this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+        $this->db->where('id_mitra',$id);
+        $this->db->order_by('klasifikasi_member.id','desc');
+        $this->db->limit(1);
+        $a = $this->db->get('klasifikasi_member');
+        $a = $a->row_array();
+        if(empty($a)){
+            $data['klasifikasi'] = "No Data";
+        }else{
+            $data['klasifikasi'] = $a['klasifikasi'];
+        }
+
+        echo json_encode($data);
+
     }
 }

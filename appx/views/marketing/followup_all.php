@@ -100,6 +100,7 @@
           <tr>
             <th style="width:5px;">No.</th>
             <th style="width:50px;">Member Name</th>
+            <th style="width:50px;">Klasifikasi</th>
             <th style="width:30px;">Date Join</th>
             <th style="width:400px;">Last Activity</th>
             <th style="width:5px;">TopUp</th>
@@ -115,6 +116,7 @@
           <tr>
             <td style="text-align:center"><?php echo $i;?></td>
             <td style="width:200px;"><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)"><?php echo $key['brand_name'];?></a></td>
+            <td id="detail_class_<?php echo $key['id_mitra'];?>" style="width:50px !important;"></td>               
             <td style="width:90px;"><?php echo $key['join_date'];?></td>
             <td id="detail_fol_<?php echo $key['id_mitra'];?>" style="width:200px !important;"></td>               
             <td style="width:50px;"><?php echo $key['topup'];?></td>
@@ -122,7 +124,7 @@
             <td class="last"><a onclick="showactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-reorder" title='View Details'></span></a> | <a onclick="openaddactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-plus" title='Add New'></span></a></td>
           </tr>
           <tr style="display:none;" id="TR_<?php echo $key['id_mitra'];?>">
-              <td colspan="7" id="TD_TR_<?php echo $key['id_mitra'];?>">
+              <td colspan="8" id="TD_TR_<?php echo $key['id_mitra'];?>">
               </td>
           </tr>
         <?php

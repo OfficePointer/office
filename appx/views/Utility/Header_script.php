@@ -3,8 +3,10 @@
     $.ajax({
       url:'<?php echo base_url("xhr_ajax/get_last_activity");?>/'+id,
       type:'GET',
+      dataType:'json',
       success:function(balik){
-        $("#detail_fol_"+id).html(balik);       
+        $("#detail_fol_"+id).html(balik.followup);       
+        $("#detail_class_"+id).html(balik.klasifikasi);       
       }
     });
   }
