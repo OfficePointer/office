@@ -1,8 +1,39 @@
+<?php
+//----------------------------PHP Script---------------------------------------
+
+$this->db->where_in('id',array(7,8,9,10));
+$this->db->order_by('id','asc');
+$us = $this->db->get('flowsys')->result_array();
+$group_alert = array();
+foreach ($us as $key) {
+	if($key['id']==7){
+		$group_alert['alert_topup_1'] = explode(",", $key['assign_user']);
+	}
+	if($key['id']==8){
+		$group_alert['alert_topup_2'] = explode(",", $key['assign_user']);
+	}
+	if($key['id']==9){
+		$group_alert['alert_topup_3'] = explode(",", $key['assign_user']);
+	}
+	if($key['id']==10){
+		$group_alert['alert_topup_finops'] = explode(",", $key['assign_user']);
+	}
+}
+
+
+
+
+
+//-----------------------------------------------------------------------------
+?>
+
 <script type="text/javascript">
+//----------------------------JavaScript---------------------------------------
 var muncul_deposit = 0;
 	Waves.attach('button');
-	Waves.init();
     Waves.attach('button', ['waves-button', 'waves-float']);
+    Waves.attach('.btn', ['waves-button', 'waves-float']);
+	Waves.init();
 
 	$(document).ready(function(){
 
@@ -86,25 +117,36 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  					}
 
  					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
- 													'<a class="text-black">'+
+ 													'<a class="text-black waves-eff-li">'+
  			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
  													'</a>'+
  												'</li>');
+ 					<?php
+ 					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_1'])
+ 						or in_array($this->session->userdata('id'), $group_alert['alert_topup_2'])
+ 						or in_array($this->session->userdata('id'), $group_alert['alert_topup_3'])){
+ 					?>
 
-	 				if(muncul && saldo[data].muncul>0){
-					
-						notif = new Notification('Alert Top Up Saldo Vendor', {
-					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-					      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
-					    });
+			 				if(muncul && saldo[data].muncul>0){
+							
+								notif = new Notification('Alert Top Up Saldo Vendor', {
+							      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+							      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
+							    });
 
-					    notif.onclick = function (x) {
-					      window.focus();
-					    };
+							    notif.onclick = function (x) {
+							      window.focus();
+							    };
 
-						// var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
-						// audio.play();
+							    if(saldo[data].muncul==3){
+								 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+								 audio_saldo.play();
+								}
+							}
+
+					<?php
 					}
+					?>
  				}
 
  			}
@@ -127,7 +169,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	function update_saldo (id,code,airline) {
 		clear_btn();
 		$(".modal-footer").prepend('<button onclick="save_saldo('+id+')" id="btn_fol" class="pull-left btn btn-primary">Submit</button>');
-		$("#exampleModalLabel").html('Update Top Up Saldo vendor');
+		$("#exampleModalLabel").html('Update Top Up Saldo '+airline);
 		$("#isinya").html('<tr>'+
 				'<td>Airline</td>'+
 				'<td>'+code+' - '+airline+'</td>'+
@@ -192,8 +234,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		$.ajax({
 			url:'<?php echo base_url("xhr_ajax/issued_log_data");?>',
 			type:'GET',
+			dataType:'json',
 			success:function(balik){
-				var balik = jQuery.parseJSON(balik);
 				var process = balik.process;
 				var revert = balik.revert;
 				var muncul = balik.muncul;
@@ -212,8 +254,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}else if(balik[data].tipe=="train"){
 						url = 'https://admin.pointer.co.id/train/admin/viewbook/'+balik[data].id_mitra+'-'+balik[data].kode_booking;
 					}
-					$("#issued_log_data").append('<li>'+
-													'<a style="color:black;" target="_blank" href="'+url+'">'+
+					$("#issued_log_data").append('<li >'+
+													'<a style="color:black;" target="_blank" href="'+url+'" class="waves-eff-li">'+
 			  											'<i class="fa fa-ticket text-aqua"></i> '+balik[data].kode_booking+' - '+balik[data].brand_name+
 													'</a>'+
 												'</li>');
@@ -226,7 +268,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						url = 'https://admin.pointer.co.id/train/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking;
 					}
 
-					$("#processing_log_data").append('<li><a style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
+					$("#processing_log_data").append('<li><a class="waves-eff-li" style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
                       '<div class="pull-left">'+
                         '<span style="font-size:30pt;text-align:center;color:orange;" class="fa fa-exclamation-circle"></span>'+
                       '</div>'+
@@ -256,7 +298,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							url = 'https://admin.pointer.co.id/train/admin/viewbook/'+revert[data].id_mitra+'-'+revert[data].kode_booking;
 						}
 
-						$("#revert_log_data").append('<li><a id="revert_'+revert[data].id+'" style="color:black;cursor:pointer;" onclick=\'error_followup("'+revert[data].id+'","'+url+'","'+revert[data].kode_booking+'","'+revert[data].brand_name+'")\'>'+
+						$("#revert_log_data").append('<li><a class="waves-eff-li" id="revert_'+revert[data].id+'" style="color:black;cursor:pointer;" onclick=\'error_followup("'+revert[data].id+'","'+url+'","'+revert[data].kode_booking+'","'+revert[data].brand_name+'")\'>'+
 	                      '<div class="pull-left">'+
 	                        '<span style="font-size:30pt;text-align:center;color:red;" class="fa fa-exclamation-circle"></span>'+
 	                      '</div>'+
