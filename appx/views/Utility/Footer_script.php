@@ -138,7 +138,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							      window.focus();
 							    };
 
-							    if(saldo[data].muncul==3){
+							    if(saldo[data].muncul==3 || saldo[data].muncul==2){
 								 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
 								 audio_saldo.play();
 								}
