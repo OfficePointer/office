@@ -16,7 +16,28 @@
       </div>
       <div class="modal-footer">
         <button type="button" id="btn_fol" class="pull-left btn btn-default">Follow Up</button>
-        <button type="button" id="btn_modal_close" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id="btn_modal_close" class="btn_modal_close btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> 
+<div class="modal fade" id="modal_funnyname" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabelFunnyname">New message</h4>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered table-striped" id="isinyafunnyname">
+          <tr>
+            <td></td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn_fol" class="pull-left btn btn-default">Follow Up</button>
+        <button type="button" id="btn_modal_close_funnyname" class="btn_modal_close btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>

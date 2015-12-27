@@ -487,13 +487,15 @@ class Marketing extends CI_Controller {
 			$this->db->where('data_mitra.type',$this->session->userdata('type'));
 		}
 		if($new=="new"){
-			$this->db->where('join_date >',date('Y-m-d',strtotime('-1 day')));
+			$this->db->where('join_date >',date('Y-m-d',strtotime('-3 day')));
 		}else{
 			$this->db->limit($limit,$start);
 		}
 		$data['mitra'] = $this->db->get('data_mitra')->result_array();
+		
+		$this->db->select('count(id_mitra) as jumlah, status');
 		if($new=="new"){
-			$this->db->where('join_date >',date('Y-m-d',strtotime('-1 day')));
+			$this->db->where('join_date >',date('Y-m-d',strtotime('-3 day')));
 		}
 		if($this->session->userdata('brand_name')!=""){
 			$this->db->like('brand_name',$this->session->userdata('brand_name'),'both');
@@ -516,7 +518,14 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('type')!=""){
 			$this->db->where('data_mitra.type',$this->session->userdata('type'));
 		}
-		$data['paging'] = $this->general->pagination($this->db->get('data_mitra')->num_rows(),$limit,$pg,base_url("marketing/member/%d"));
+		$this->db->group_by('status');
+		$jum = 0;
+		$data['summary'] = $this->db->get('data_mitra')->result_array();
+		foreach($data['summary'] as $keya){
+			$jum+=$keya['jumlah'];
+		}
+
+		$data['paging'] = $this->general->pagination($jum,$limit,$pg,base_url("marketing/member/%d"));
 		$this->general->load('marketing/member',$data);
 	}
 	public function followup_all($new='')

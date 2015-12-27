@@ -28,7 +28,7 @@
             <td><?php echo $this->general->get_infosys($key['id_info']);?></td>
             <td><?php echo $key['type'];?></td>
             <td><?php echo $key['description'];?></td>
-            <td><a href="<?php echo base_url("servicedesk/flowsys_delete/".$key['id']);?>">Delete</a></td>
+            <td><a href="<?php echo base_url("servicedesk/flowsys_edit/".$key['id']);?>">Edit</a> <a href="<?php echo base_url("servicedesk/flowsys_delete/".$key['id']);?>">Delete</a></td>
           </tr>
         <?php
         }

@@ -49,6 +49,9 @@ var muncul_deposit = 0;
 	    	});
 	    $("a").css('cursor','pointer');
 	    $('#modal_profiling').modal({'show':false});
+	    $('#modal_funnyname').modal({'show':false});
+
+		$('#modal_funnyname .modal-dialog').css('width','1200px');
 	    $(".datepicker").daterangepicker();
 	    <?php
           if(in_array($this->session->userdata('group'), array('Service Operation'))){
@@ -58,11 +61,7 @@ var muncul_deposit = 0;
 	    setInterval(function () {
 	    	get_issued_log_data();
 	    },1000*5);
-	    setInterval(function(){
-	    	if($("#modal_profiling").css('display')=='none'){
-	    		$('.modal-dialog').css('width','600px');
-	    	}
-	    },1000);
+	    
 	    <?php
 		}
 		if(in_array($this->session->userdata('group'), array('Service Operation','Finance'))){
@@ -80,6 +79,10 @@ var muncul_deposit = 0;
 var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 	function clear_btn(){
+		$("#btn_fol").remove();
+		$("#btn_fol2").remove();
+		$("#btn_fol3").remove();
+
 		$("#btn_fol").remove();
 		$("#btn_fol2").remove();
 		$("#btn_fol3").remove();
@@ -204,13 +207,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	}
 	function show_funnyname(link) {
 		clear_btn();
-		$("#exampleModalLabel").html('Funnyname');
-		$("#isinya").html('<iframe style="width:1150px;height:450px;border:0px;" src="'+link+'"></iframe>');
-	    $('.modal-dialog').css('width','1200px');
-	    $('#modal_profiling').modal('show');
-	    $("#modal_profiling").on('hide',function(){
-	    	$('.modal-dialog').css('width','600px');
-	    });
+		$("#exampleModalLabelFunnyname").html('Funnyname');
+		$("#isinyafunnyname").html('<iframe style="width:1150px;height:450px;border:0px;" src="'+link+'"></iframe>');
+	    $('#modal_funnyname').modal('show');
 	}
 
 	function save_status () {
@@ -225,7 +224,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 				$("#status_").html('<i class="fa fa-circle text-'+data+'"></i> '+balik);
 
-				$(document).find("#btn_modal_close").click();
+				close_popup();
 			}
 		});
 	}
@@ -436,7 +435,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				alert('Please fill response');
 				return;
 			}
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			clear_btn();
 
 			$.ajax({
@@ -451,6 +450,14 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 		}
+	    function close_popup() {
+	    	clear_btn();
+	    	clear_btn();
+	    	$(this).find("#btn_modal_close").click();
+	    	$(this).find("#btn_modal_close_funnyname").click();
+	    	$(document).find("#btn_modal_close").click();
+	    	$(document).find("#btn_modal_close_funnyname").click();
+	    }
 	    function del_followup(id) {
 	    	if(confirm('Sure to delete?')){
 
@@ -473,35 +480,36 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				dataType:'json',
 				data:{id:id},
 				success:function(isi){
+					var dm = isi.detail_mitra;
 					isi     = isi.profiling;
 
-			$.ajax({
-				type:"POST",
-				url:'<?php echo base_url("xhr_ajax/ajax_get_klasifikasi");?>',
-				dataType:'json',
-				data:{id:id},
-				success:function(isiklas){
-					isiklas = isiklas.getMemberKlas;
-
 					clear_btn();
-					$(".modal-footer").prepend('<button onclick="update_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-success " >Update</button>');
+					$(".modal-footer").prepend('<button onclick="update_open('+isi.id_mitra+')" id="btn_fol2" class="pull-left btn btn-success " >Update</button>');
 					$(".modal-footer").prepend('<button onclick="followup_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
-					$("#exampleModalLabel").html(isi.brand_name);
-					$("#isinya").html('<tr>'+
+					$("#exampleModalLabelFunnyname").html(isi.brand_name);
+					$("#isinyafunnyname").html('<tr>'+
 										'<td>Prefix</td>'+
 										'<td>'+isi.prefix+'</td>'+
+										'<td>Company Type</td>'+
+										'<td>'+dm.tipe+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Join Date</td>'+
 										'<td>'+isi.join_date+'</td>'+
+										'<td>Info</td>'+
+										'<td>'+dm.info+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Type</td>'+
 										'<td>'+isi.type+'</td>'+
+										'<td>Last Used System</td>'+
+										'<td>'+dm.lastsystem+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>E-Mail</td>'+
 										'<td>'+isi.email+'</td>'+
+										'<td>Other Info</td>'+
+										'<td>'+dm.otherinfo+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Address</td>'+
@@ -518,16 +526,21 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 									'<tr>'+
 										'<td>Province</td>'+
 										'<td>'+isi.province+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Classification</td>'+
+										'<td>'+isi.klasifikasi+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Bank</td>'+
+										'<td>'+dm.bank+'</td>'+
 									'</tr>');
-				    $('#modal_profiling').modal('show');
-
-						}
-					});
+				    $('#modal_funnyname').modal('show');
 				}
 			});
 		}
 		function error_followup(id,url,kode_booking,brand_name) {
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			clear_btn();
 			$.ajax({
 				type:"POST",
@@ -545,7 +558,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			});
 		}
 		function get_email(id,url,kode_booking,brand_name,kasus) {
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			clear_btn();
 			$.ajax({
 				type:"POST",
@@ -565,7 +578,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		}
 		function save_solve_note(id) {
 			clear_btn();
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/solve_revert");?>',
@@ -586,7 +599,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		}
 		function send_email(id) {
 			clear_btn();
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/send_email_solver_revert");?>',
@@ -601,7 +614,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			});
 		}
 	    function followup_open(id) {
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 
 
 			$.ajax({
@@ -645,7 +658,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 //------------------------------------------------------------------------------
 		function update_open(id){
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 
 			$.ajax({
 				type:"POST",
@@ -688,7 +701,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			var member_klas_id = $("#klasifikasi_"+id).val();
 			var member_mitra_id = id;
 
-			$(this).find("#btn_modal_close").click();
+			close_popup();
 			clear_btn();
 
 			$.ajax({

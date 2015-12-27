@@ -190,7 +190,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('marketing/member/all');?>"><i class="fa fa-navicon"></i> All Member</a></li>
-                <li><a href="<?php echo base_url('marketing/member/new');?>"><i class="fa fa-user"></i> New Member</a></li>
+                <li><a href="<?php echo base_url('marketing/member/new');?>"><i class="fa fa-user"></i> Last 3 days</a></li>
               </ul>
             </li>
             <li class="treeview">

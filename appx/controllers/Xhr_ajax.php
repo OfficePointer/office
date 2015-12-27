@@ -284,7 +284,23 @@ public function ajax_save_klasifikasi()
 		$data = $this->input->post();
 		$this->db->where('id_mitra',$data['id']);
 		$dat['profiling'] = $this->db->get('data_mitra')->row_array();
-		$dat['response'] = $this->db->get('data_respon')->result_array();
+
+        $this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+        $this->db->where('id_mitra',$data['id']);
+        $this->db->order_by('klasifikasi_member.id','desc');
+        $class = $this->db->get('klasifikasi_member')->row_array();
+		$dat['profiling']['klasifikasi'] = !empty($class['klasifikasi'])?$class['klasifikasi']:"No Data";
+        $this->db->where('id_mitra',$data['id']);
+        $data_detail = $this->db->get('data_detail_mitra')->row_array();
+        if(empty($data_detail)){
+            $data_detail = array('bank'=>'No Data',
+                                    'tipe'=>'No Data',
+                                    'lastsystem'=>'No Data',
+                                    'info'=>'No Data',
+                                    'otherinfo'=>'No Data');
+        }
+        $dat['detail_mitra'] = $data_detail;
+        $dat['response'] = $this->db->get('data_respon')->result_array();
 		print_r(json_encode($dat));
 	}
 	public function get_solve_note_option()

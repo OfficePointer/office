@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <?php echo ($this->uri->segment(3)=="new")?"New":"All";?> Member
+        <?php echo ($this->uri->segment(3)=="new")?"Last 3 Days":"All";?> Member
       </h1>
     </section>
     <!-- Main content -->
@@ -48,6 +48,9 @@
               <option <?php echo ($this->session->userdata('status')=="pending")?"selected":"";?> value="pending">pending</option>
               <option <?php echo ($this->session->userdata('status')=="rejected")?"selected":"";?> value="rejected">rejected</option>
               <option <?php echo ($this->session->userdata('status')=="blocked")?"selected":"";?> value="blocked">blocked</option>
+              <option <?php echo ($this->session->userdata('status')=="banned")?"selected":"";?> value="banned">banned</option>
+              <option <?php echo ($this->session->userdata('status')=="expired")?"selected":"";?> value="expired">expired</option>
+              <option <?php echo ($this->session->userdata('status')=="trial")?"selected":"";?> value="trial">trial</option>
             </select></td>
           </tr>
           <tr>
@@ -104,7 +107,16 @@
         ?>
         </tbody>
       </table>
-      <?php echo ($this->uri->segment(3)!="new")?$paging:"";?>
+      <?php
+      foreach ($summary as $key) {
+      ?>
+      <span class="btn"><?php echo $key['status']." : ".$key['jumlah'];?></span>
+      <?php 
+      }
+      ?>
+      <hr>
+      <?php
+       echo ($this->uri->segment(3)!="new")?$paging:"";?>
       </div>
       </div>
       <!-- /.row (main row) -->
