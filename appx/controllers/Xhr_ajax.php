@@ -6,14 +6,28 @@ class Xhr_ajax extends CI_Controller {
     public function update_action_done()
     {
         $id = $this->input->post('id');
+
+        $this->db->where('id',$id);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        $data['comment'] = $dat['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+
         $data['status'] = 2;
         $this->db->where('id',$id);
         $this->db->update('actionsys',$data);
+
+
         echo "OK";
     }
     public function update_action_open()
     {
         $id = $this->input->post('id');
+
+        $this->db->where('id',$id);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        $data['comment'] = $dat['comment']."\r\nOpen by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+
         $data['status'] = 0;
         $data['assign_view'] = 0;
         $data['id_assign'] = 0;
@@ -38,6 +52,8 @@ class Xhr_ajax extends CI_Controller {
             $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "OPEN";
             $dat['data'] = $data;
+
+            $upt['comment'] = $data['comment']."\r\nHold by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
 
             $upt['id_assign'] = $this->session->userdata('id');
             $upt['assign_view'] = 1;
