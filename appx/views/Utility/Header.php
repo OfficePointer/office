@@ -109,7 +109,7 @@
               <span id="label_revert_log" class="label label-danger">0</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">Revert GA &amp; JT, Please Check</li>
+              <li class="header">Revert GA, JT &amp; KAI. Please Check</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu" id="revert_log_data">
@@ -134,6 +134,23 @@
                </li>
                <li class="footer">
                  <a href="https://admin.pointer.co.id/finance/airline/collection">View all</a>
+              </li>
+             </ul>
+           </li>
+          <li class="dropdown messages-menu">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               <i class="fa fa-tasks"></i>
+               <span id="label_pending" class="label label-danger">0</span>
+             </a>
+             <ul class="dropdown-menu">
+               <li class="header">Pending Action/Tasks</li>
+               <li>
+                 <!-- inner menu: contains the actual data -->
+                 <ul class="menu" id="pending_data">
+                 </ul>
+               </li>
+               <li class="footer">
+                 <a>View all</a>
               </li>
              </ul>
            </li>

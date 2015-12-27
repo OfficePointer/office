@@ -60,6 +60,7 @@ var muncul_deposit = 0;
 
 	    setInterval(function () {
 	    	get_issued_log_data();
+	    	get_pending_action();
 	    },1000*5);
 	    
 	    <?php
@@ -155,6 +156,63 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  			}
  		});
  	}
+	function get_pending_action(){
+
+ 		$.ajax({
+ 			url:'<?php echo base_url("xhr_ajax/ajax_get_pending_action");?>',
+ 			type:'GET',
+ 			dataType:'json',
+ 			success:function(balik){
+ 				var action = balik.action;
+ 				var muncul = balik.muncul;
+ 				$("#pending_data").html('');
+ 				$("#label_pending").html(action.length);
+ 				for(var data in action) {
+ 					<?php
+ 					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_finops'])){
+ 					?>
+	 					if(action[data].trx_info=='topup'){
+	 						color="";
+	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
+	 							color = 'bg-blue';
+	 						}
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0){
+	 							color = 'bg-green';
+	 						}
+
+	 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" onclick="show_update_saldo('+action[data].id+')" style="cursor:pointer;">'+
+	 													'<a class="text-black waves-eff-li">'+
+	 			  											'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+	 													'</a>'+
+	 												'</li>');
+
+
+			 				if(muncul){
+							
+								notif = new Notification('Update Top Up Saldo', {
+							      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+							      body: action[data].info,
+							    });
+
+							    notif.onclick = function (x) {
+							      window.focus();
+							    };
+							}
+
+						}
+
+					<?php
+					}
+					?>
+ 				}
+ 				if(muncul){
+					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+					 //audio_saldo.play();
+				}
+
+ 			}
+ 		});
+ 	}
 
 	function showstatus () {
 		clear_btn();
@@ -170,6 +228,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    $('#modal_profiling').modal('show');
 	}	
 	function update_saldo (id,code,airline) {
+		close_popup();
 		clear_btn();
 		$(".modal-footer").prepend('<button onclick="save_saldo('+id+')" id="btn_fol" class="pull-left btn btn-primary">Submit</button>');
 		$("#exampleModalLabel").html('Update Top Up Saldo '+airline);
@@ -179,31 +238,101 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			'</tr>'+
 			'<tr>'+
 				'<td>Jumlah</td>'+
-				'<td><div type="text" class="form-control" id="jumlah_saldo"></div></td>'+
+				'<td><div class="form-control" id="jumlah_saldo"></div></td>'+
 			'</tr>');
 
-        $("#jumlah_saldo").jqxNumberInput({ width: '90%', height: '25px', digits: 20, max:9999999999999999999999999,symbol:'Rp. '});
+        $("#jumlah_saldo").jqxNumberInput({ width: '330px', height: '25px', digits: 20, max:9999999999999999999,symbol:'Rp. '});
 	    $('#modal_profiling').modal('show');
 	}
     function save_saldo (id) {
-		var vendor = id;
-		var saldo = $("#jumlah_saldo").jqxNumberInput('getDecimal');
 
-		alert(saldo);
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			var vendor = id;				
+			var saldo = $("#jumlah_saldo").jqxNumberInput('getDecimal');
+			var info = $("#exampleModalLabel").html();
+			//alert(saldo);
 
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/ajax_actionsys_save");?>',
+				dataType:'json',
+				data:{info:info,act_budget:saldo,vendor:vendor,id_flowsys:10,user_view:1,assign_view:0,trx_info:'topup'},
+				success:function(isi){
 
-		// $.ajax({
-		// 	type:"POST",
-		// 	url:'<?php echo base_url("xhr_ajax/ajax_save_act");?>',
-		// 	dataType:'json',
-		// 	data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
-		// 	success:function(isi){
-		// 		var url = '<?php echo base_url("marketing/followup_del");?>';
-		// 		$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+respon_data+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'">Delete</a></td></tr>');
-		// 		$("#detail_"+isi.ID).fadeIn();
-		// 		$("#FRM_"+id).remove();
-		// 	}
-		// });
+					$("#exampleModalLabel").html(info);
+					$("#isinya").html(isi.status+" - "+isi.msg);
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
+    function show_update_saldo (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/ajax_get_actionsys_data_open");?>',
+				dataType:'json',
+				data:{id:id},
+				success:function(isi){
+					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
+						$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+						$(".modal-footer").prepend('<button onclick="update_action_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+						$("#exampleModalLabel").html(isi.data.info);
+						$("#isinya").html(isi.data.info+" - "+isi.data.act_budget);
+					    $('#modal_profiling').modal('show');
+					}else{
+						$("#exampleModalLabel").html(isi.data.info);
+						$("#isinya").html('This Action is viewed by '+isi.by);
+					    $('#modal_profiling').modal('show');
+					}
+				}
+			});
+		},1000);
+	}
+    function update_action_open (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_action_open");?>',
+				data:{id:id},
+				success:function(isi){
+					$("#exampleModalLabel").html('Status');
+					$("#isinya").html('OK, Revert to open');
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
+    function update_action_done (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_action_done");?>',
+				data:{id:id},
+				success:function(isi){
+					$("#exampleModalLabel").html('Status');
+					$("#isinya").html('OK Clear!');
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
 	}
 	function show_funnyname(link) {
 		clear_btn();
@@ -457,6 +586,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    	$(this).find("#btn_modal_close_funnyname").click();
 	    	$(document).find("#btn_modal_close").click();
 	    	$(document).find("#btn_modal_close_funnyname").click();
+	    	$('#modal_profiling').modal('hide');
+	    	$('#modal_profiling_funnyname').modal('hide');
 	    }
 	    function del_followup(id) {
 	    	if(confirm('Sure to delete?')){

@@ -28,6 +28,7 @@ class general extends CI_Model {
 				$this->session->set_userdata('sekarang',0);
 				$this->session->set_userdata('revert',0);
 				$this->session->set_userdata('saldo',0);
+				$this->session->set_userdata('pending',0);
 				$this->session->set_userdata('saldosekarang',0);
 				redirect(base_url("login"));
 			}

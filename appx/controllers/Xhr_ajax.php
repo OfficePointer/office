@@ -3,6 +3,89 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Xhr_ajax extends CI_Controller {
 
+    public function update_action_done()
+    {
+        $id = $this->input->post('id');
+        $data['status'] = 2;
+        $this->db->where('id',$id);
+        $this->db->update('actionsys',$data);
+        echo "OK";
+    }
+    public function update_action_open()
+    {
+        $id = $this->input->post('id');
+        $data['status'] = 0;
+        $data['assign_view'] = 0;
+        $data['id_assign'] = 0;
+        $this->db->where('id',$id);
+        $this->db->update('actionsys',$data);
+        echo "OK";
+    }
+    public function ajax_get_actionsys_data($id)
+    {
+        $this->db->where('id',$id);
+        $data = $this->db->get('actionsys');
+        $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
+        echo json_encode($data);
+    }
+
+    public function ajax_get_actionsys_data_open()
+    {
+        $id = $this->input->post('id');
+        $this->db->where('id',$id);
+        $data = $this->db->get('actionsys')->row_array();
+        if($data['assign_view']==0){
+            $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
+            $dat['status'] = "OPEN";
+            $dat['data'] = $data;
+
+            $upt['id_assign'] = $this->session->userdata('id');
+            $upt['assign_view'] = 1;
+            $this->db->where('id',$id);
+            $this->db->update('actionsys',$upt);
+            echo json_encode($dat);
+        }else{
+            $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
+            $dat['status'] = "VIEW";
+            $dat['data'] = $data;
+            $dat['by'] = $this->general->get_user($data['id_assign']);
+            echo json_encode($dat);
+        }
+    }
+
+    public function ajax_get_pending_action()
+    {
+        $data = array();
+        $this->db->where_in('status',array(0,1));
+        $data['action'] = $this->db->get('actionsys')->result_array();
+
+        $jumlah = sizeof($data['action']);
+        $data['muncul'] = 0;
+        if($this->session->userdata('pending')<$jumlah){
+            $this->session->set_userdata('pending',$jumlah);
+            $data['muncul'] = 1;
+        }
+        $this->session->set_userdata('pending',$jumlah);
+        echo json_encode($data);
+    }
+
+    public function ajax_actionsys_save()
+    {
+        $data = $this->input->post();
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['id_ticket'] = uniqid();
+        $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        if(empty($data['tgl_info'])){
+            $data['tgl_info'] = date("Y-m-d H:i:s");
+        }
+        $data['id_user'] = $this->session->userdata('id');
+        $this->db->insert('actionsys',$data);
+        if($this->db->insert_id()!=""){
+            echo json_encode(array('status'=>'OK','msg'=>'Request Saved!'));
+        }else{
+            echo json_encode(array('status'=>'ER','msg'=>'Request failed to save'));
+        }
+    }
 //------------------------------------------------------------------------------
 
   public function ajax_get_klasifikasi(){
@@ -65,10 +148,11 @@ public function ajax_save_klasifikasi()
         $all = array();
 
         $all['muncul'] = 0;
-        if($this->session->userdata('saldo')!=$jumlah_muncul){
+        if($this->session->userdata('saldo')<$jumlah_muncul){
             $this->session->set_userdata('saldo',$jumlah_muncul);
             $all['muncul'] = 1;
         }
+        $this->session->set_userdata('saldo',$jumlah_muncul);
         $all['saldo'] = $baru;
         echo json_encode($all);
     }
@@ -208,16 +292,14 @@ public function ajax_save_klasifikasi()
 		$this->db->where('updated_at',NULL);
 		$dataz = $this->db->get('data_all_error');
 		$dataz = $dataz->result_array();
-		if($this->session->userdata('sekarang')==0 and $this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('sekarang',1);
-			$hasil['muncul'] = 1;
-		}
-		if($this->session->userdata('revert')!=sizeof($dataz)){
-			$this->session->set_userdata('revert',sizeof($dataz));
-		}
-		if($this->session->userdata('sekarang')==1){
-			$this->session->set_userdata('sekarang',0);
-		}
+
+        $hasil['muncul'] = 0;
+        if($this->session->userdata('revert')<sizeof($dataz)){
+            $this->session->set_userdata('revert',sizeof($dataz));
+            $hasil['muncul'] = 1;
+        }
+        $this->session->set_userdata('revert',sizeof($dataz));
+
 		$hasil['revert'] = $dataz;
 		$this->session->set_userdata('revert_data',sizeof($dataz));
 		$datay = $this->db->get('temp_processing_issued');
