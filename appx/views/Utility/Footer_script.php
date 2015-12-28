@@ -52,13 +52,13 @@ var muncul_deposit = 0;
 	    $(".datepicker").daterangepicker();
 
 	    setInterval(function () {
-			<?php if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log']){?>
+			<?php if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log'])){?>
 	    	get_issued_log_data();
 	    	<?php }
-			if(in_array($this->session->userdata('id'), $group_alert['notif_pending_log']){?>
+			if(in_array($this->session->userdata('id'), $group_alert['notif_pending_log'])){?>
 	    	get_pending_action();
 	    	<?php }
-	    	if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log']){?>
+	    	if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log'])){?>
  	    	get_saldo_airline();
  	    	<?php } ?>
 	    },1000*5);
@@ -110,13 +110,13 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  					var clock = new Date().getHours();
  					var minutes = new Date().getMinutes();
 
- 					if(saldo[data].muncul>0 || clock==4){
+ 					if(saldo[data].muncul>0 || clock==16){
 
- 					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
- 													'<a class="text-black waves-eff-li">'+
- 			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
- 													'</a>'+
- 												'</li>');
+	 					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
+	 													'<a class="text-black waves-eff-li">'+
+	 			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
+	 													'</a>'+
+	 												'</li>');
 
  					}
 
@@ -202,7 +202,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  				}
  				if(muncul){
 					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-					 //audio_saldo.play();
+					 audio_saldo.play();
 				}
 
  			}
