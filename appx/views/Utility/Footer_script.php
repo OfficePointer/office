@@ -120,11 +120,16 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  						color = "bg-red";
  					}
 
+ 					if(saldo[data].muncul>0){
+
  					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
  													'<a class="text-black waves-eff-li">'+
  			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
  													'</a>'+
  												'</li>');
+
+ 					}
+
  					<?php
  					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_1'])
  						or in_array($this->session->userdata('id'), $group_alert['alert_topup_2'])
@@ -142,10 +147,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							      window.focus();
 							    };
 
-							    if(saldo[data].muncul==3 || saldo[data].muncul==2){
-								 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-								 audio_saldo.play();
-								}
+								var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+								audio_saldo.play();
+								 
 							}
 
 					<?php
@@ -518,18 +522,23 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    function showactivity (arg) {
 
 	    	var disp = $("#TR_"+arg).css('display');
-	    	if(disp=='none'){
-	    	$.ajax({
-	    		url:'<?php echo base_url("xhr_ajax/ajax_get_activity");?>/'+arg,
-	    		type:'POST',
-	    		success:function (data) {
-	    			$("#TD_TR_"+arg).html(data);
-	    			$("#TR_"+arg).fadeIn();
-	    		}
-	    	});
-	    	}else{
-	    			$("#TR_"+arg).fadeOut();
-	    	}
+
+			setTimeout(function(){
+
+		    	if(disp=='none'){
+			    	$.ajax({
+			    		url:'<?php echo base_url("xhr_ajax/ajax_get_activity");?>/'+arg,
+			    		type:'POST',
+			    		success:function (data) {
+			    			$("#TD_TR_"+arg).html(data);
+			    			$("#TR_"+arg).fadeIn();
+			    		}
+			    	});
+		    	}else{
+		    			$("#TR_"+arg).fadeOut();
+		    	}
+	    	
+			},1000);
 	    }
 	    function save_data (id) {
 			var member_ID = $("#member_ID_"+id).val();
@@ -537,6 +546,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			var reason = $("#reason_"+id).val();
 			var respon = $("#respon_"+id).val();
 			var respon_data = $("#respon_"+id+" option:selected").html();
+
+			setTimeout(function(){
 
 			$.ajax({
 				type:"POST",
@@ -550,6 +561,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					$("#FRM_"+id).remove();
 				}
 			});
+
+			},1000);
 		}
 	    function save_data_from_popup (id) {
 			//$('#modal_profiling').modal('hide');
@@ -567,17 +580,21 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			close_popup();
 			clear_btn();
 
-			$.ajax({
-				type:"POST",
-				url:'<?php echo base_url("xhr_ajax/ajax_save_act");?>',
-				dataType:'json',
-				data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
-				success:function(isi){
+			setTimeout(function(){
 
-					$("#isinya").html('Saved!');
-					$('#modal_profiling').modal('show');
-				}
-			});
+				$.ajax({
+					type:"POST",
+					url:'<?php echo base_url("xhr_ajax/ajax_save_act");?>',
+					dataType:'json',
+					data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
+					success:function(isi){
+
+						$("#isinya").html('Saved!');
+						$('#modal_profiling').modal('show');
+					}
+				});
+
+			},1000);
 		}
 	    function close_popup() {
 	    	clear_btn();
@@ -588,6 +605,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    	$(document).find("#btn_modal_close_funnyname").click();
 	    	$('#modal_profiling').modal('hide');
 	    	$('#modal_profiling_funnyname').modal('hide');
+	    	$(".modal-backdrop fade in").remove();
+	    	$(".modal-backdrop fade in").remove();
 	    }
 	    function del_followup(id) {
 	    	if(confirm('Sure to delete?')){
@@ -673,43 +692,53 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		function error_followup(id,url,kode_booking,brand_name) {
 			close_popup();
 			clear_btn();
-			$.ajax({
-				type:"POST",
-				url:'<?php echo base_url("xhr_ajax/get_solve_note_option");?>',
-				success:function(isi){
-					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="save_solve_note('+id+')">Submit</button><a class="btn pull-left btn-primary" target="_blank" href="'+url+'" id="btn_fol2">View Reservation</a>');
-					$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
-					var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
-					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
-					'<tr><td colspan=2>Solve Note</td></tr>'+
-					'<tr><td colspan=2><select id="solve_note" class="form-control">'+isi+'</select></td></tr>';
-					$("#isinya").html(isi);
-				    $('#modal_profiling').modal('show');
-				}
-			});
+			setTimeout(function(){
+				$.ajax({
+					type:"POST",
+					url:'<?php echo base_url("xhr_ajax/get_solve_note_option");?>',
+					success:function(isi){
+						$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="save_solve_note('+id+')">Submit</button><a class="btn pull-left btn-primary" target="_blank" href="'+url+'" id="btn_fol2">View Reservation</a>');
+						$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
+						var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
+						'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
+						'<tr><td colspan=2>Solve Note</td></tr>'+
+						'<tr><td colspan=2><select id="solve_note" class="form-control">'+isi+'</select></td></tr>';
+						$("#isinya").html(isi);
+					    $('#modal_profiling').modal('show');
+					}
+				});
+			},1000);
 		}
 		function get_email(id,url,kode_booking,brand_name,kasus) {
 			close_popup();
 			clear_btn();
-			$.ajax({
-				type:"POST",
-				url:'<?php echo base_url("xhr_ajax/get_email_templates_json");?>',
-				success:function(isi){
-					$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="send_email('+id+')">Submit</button>');
-					$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
-					var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
-					'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
-					'<tr><td>Kasus</td><td>'+kasus+'</td></tr>'+
-					'<tr><td colspan=2>Template</td></tr>'+
-					'<tr><td colspan=2><select id="template" class="form-control">'+isi+'</select></td></tr>';
-					$("#isinya").html(isi);
-				    $('#modal_profiling').modal('show');
-				}
-			});
+
+			setTimeout(function(){
+
+				$.ajax({
+					type:"POST",
+					url:'<?php echo base_url("xhr_ajax/get_email_templates_json");?>',
+					success:function(isi){
+						$(".modal-footer").prepend('<button class="btn pull-left btn-primary" id="btn_fol2" onclick="send_email('+id+')">Submit</button>');
+						$("#exampleModalLabel").html(kode_booking+' - '+brand_name);
+						var isi = '<tr><td>Brand Name</td><td>'+brand_name+'</td></tr>'+
+						'<tr><td>Kode Booking</td><td>'+kode_booking+'</td></tr>'+
+						'<tr><td>Kasus</td><td>'+kasus+'</td></tr>'+
+						'<tr><td colspan=2>Template</td></tr>'+
+						'<tr><td colspan=2><select id="template" class="form-control">'+isi+'</select></td></tr>';
+						$("#isinya").html(isi);
+					    $('#modal_profiling').modal('show');
+					}
+				});
+
+			},1000);
 		}
 		function save_solve_note(id) {
 			clear_btn();
 			close_popup();
+
+			setTimeout(function(){
+
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/solve_revert");?>',
@@ -727,10 +756,14 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 				}
 			});
+
+			},1000);
 		}
 		function send_email(id) {
 			clear_btn();
 			close_popup();
+
+			setTimeout(function(){
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/send_email_solver_revert");?>',
@@ -743,10 +776,14 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 				}
 			});
+
+			},1000);
 		}
 	    function followup_open(id) {
 			close_popup();
 
+
+			setTimeout(function(){
 
 			$.ajax({
 				type:"POST",
@@ -785,11 +822,15 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				    $('#modal_profiling').modal('show');
 				}
 			});
+
+			},1000);
 		}
 
 //------------------------------------------------------------------------------
 		function update_open(id){
 			close_popup();
+
+			setTimeout(function(){
 
 			$.ajax({
 				type:"POST",
@@ -824,6 +865,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 				}
 			});
+
+			},1000);
 		}
 //------------------------------------------------------------------------------
 
@@ -834,6 +877,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 			close_popup();
 			clear_btn();
+
+			setTimeout(function(){
 
 			$.ajax({
 				type:"POST",
@@ -846,6 +891,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					$('#modal_profiling').modal('show');
 				}
 			});
+
+			},1000);
 
 		}
 

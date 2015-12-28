@@ -122,23 +122,6 @@
           </li>
           <li class="dropdown messages-menu">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-               <i class="fa fa-credit-card"></i>
-               <span id="label_deposit_data" class="label label-danger">0</span>
-             </a>
-             <ul class="dropdown-menu">
-               <li class="header">Deposit Vendor</li>
-               <li>
-                 <!-- inner menu: contains the actual data -->
-                 <ul class="menu" id="deposit_data">
-                 </ul>
-               </li>
-               <li class="footer">
-                 <a href="https://admin.pointer.co.id/finance/airline/collection">View all</a>
-              </li>
-             </ul>
-           </li>
-          <li class="dropdown messages-menu">
-             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                <i class="fa fa-tasks"></i>
                <span id="label_pending" class="label label-danger">0</span>
              </a>
@@ -154,7 +137,29 @@
               </li>
              </ul>
            </li>
+          <?php 
+          }
+          if(in_array($this->session->userdata('group'), array('Finance'))){
+          ?>
+          <li class="dropdown messages-menu">
+             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+               <i class="fa fa-credit-card"></i>
+               <span id="label_deposit_data" class="label label-danger">0</span>
+             </a>
+             <ul class="dropdown-menu">
+               <li class="header">Deposit Vendor</li>
+               <li>
+                 <!-- inner menu: contains the actual data -->
+                 <ul class="menu" id="deposit_data">
+                 </ul>
+               </li>
+               <li class="footer">
+                 <a href="https://admin.pointer.co.id/finance/airline/collection">View all</a>
+              </li>
+             </ul>
+           </li>
           <?php } ?>
+
           <!-- Messages: style can be found in dropdown.less-->
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
