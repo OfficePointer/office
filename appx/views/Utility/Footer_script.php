@@ -85,6 +85,10 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 	function get_saldo_airline(){
 
+		var clock = new Date().getHours();
+		var minutes = new Date().getMinutes();
+		var second = new Date().getSeconds();
+
  		$.ajax({
  			url:'<?php echo base_url("xhr_ajax/cek_deposit");?>',
  			type:'GET',
@@ -110,47 +114,33 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  						color = "bg-red";
  					}
 
- 					var clock = new Date().getHours();
- 					var minutes = new Date().getMinutes();
- 					var second = new Date().getSeconds();
-
  					if(saldo[data].muncul>0 || clock==15){
 
- 					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
- 													'<a class="text-black waves-eff-li">'+
- 			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
- 													'</a>'+
- 												'</li>');
+ 						$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
+	 													'<a class="text-black waves-eff-li">'+
+	 			  											'<i class="fa fa-money text-aqua"></i> '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo+
+	 													'</a>'+
+	 												'</li>');
 
  					}
 
 					//console.log(clock+' '+minutes+' '+second);
-	 				if((muncul && saldo[data].muncul>0) || (clock==15 && minutes==30 && (second>30 && second<35))){
-						notif = new Notification('Alert Top Up Saldo Vendor', {
-					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-					      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
-					    });
-
-					    notif.onclick = function (x) {
-					      window.focus();
-					    };
-
-	 					if((muncul && saldo[data].muncul>0)){
-
-							var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-							audio_saldo.play();
-
-						}
-					}
-
-					if(clock==15 && minutes==30 && (second>30 && second<35)){
-
-						var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-						audio_saldo.play();
-
-					}
 
  				}
+ 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<35))){
+					notif = new Notification('Alert Top Up Saldo Airlines', {
+				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+				      body: 'Alert Top Up Saldo Airlines, Please Check',
+				    });
+
+				    notif.onclick = function (x) {
+				      window.focus();
+				    };
+
+					var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+					audio_saldo.play();
+
+				}
 
  			}
  		});
@@ -167,9 +157,6 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  				$("#pending_data").html('');
  				$("#label_pending").html(action.length);
  				for(var data in action) {
- 					<?php
- 					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_finops'])){
- 					?>
 	 					if(action[data].trx_info=='topup'){
 	 						color="";
 	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
@@ -200,9 +187,6 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 						}
 
-					<?php
-					}
-					?>
  				}
  				if(muncul){
 					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
@@ -286,9 +270,13 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						$("#exampleModalLabel").html(isi.data.info);
 						$("#isinya").html(isi.data.info+" - "+isi.data.act_budget);
 					    $('#modal_profiling').modal('show');
+					}else if(isi.status=="FINISH"){
+						$("#exampleModalLabel").html(isi.data.info);
+						$("#isinya").html('This task has done by '+isi.by);
+					    $('#modal_profiling').modal('show');
 					}else{
 						$("#exampleModalLabel").html(isi.data.info);
-						$("#isinya").html('This Action is viewed by '+isi.by);
+						$("#isinya").html('This task is viewed by '+isi.by);
 					    $('#modal_profiling').modal('show');
 					}
 				}

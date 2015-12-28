@@ -48,21 +48,30 @@ class Xhr_ajax extends CI_Controller {
         $id = $this->input->post('id');
         $this->db->where('id',$id);
         $data = $this->db->get('actionsys')->row_array();
-        if($data['assign_view']==0){
+        if($data['status']==0){
             $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "OPEN";
             $dat['data'] = $data;
 
             $upt['comment'] = $data['comment']."\r\nHold by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
 
-            $upt['id_assign'] = $this->session->userdata('id');
+            if($data['id_assign']==0 or $data['id_assign']==$this->session->userdata('id')){
+                $upt['id_assign'] = $this->session->userdata('id');
+            }else{
+                $upt['id_user'] = $this->session->userdata('id');
+            }
             $upt['assign_view'] = 1;
             $this->db->where('id',$id);
             $this->db->update('actionsys',$upt);
             echo json_encode($dat);
-        }else{
+        }elseif($data['status']==1){
             $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "VIEW";
+            $dat['data'] = $data;
+            $dat['by'] = $this->general->get_user($data['id_assign']);
+            echo json_encode($dat);
+        }elseif($data['status']==2){
+            $dat['status'] = "FINISH";
             $dat['data'] = $data;
             $dat['by'] = $this->general->get_user($data['id_assign']);
             echo json_encode($dat);
@@ -72,15 +81,29 @@ class Xhr_ajax extends CI_Controller {
     public function ajax_get_pending_action()
     {
         $data = array();
-        $this->db->select('actionsys.*');
+        $this->db->select('actionsys.*,flowsys.assign_user');
         $this->db->join('flowsys','flowsys.id=actionsys.id_flowsys','left');
-        $this->db->group_start();
-        $this->db->like('flowsys.assign_user',','.$this->session->userdata('id').',','both');
-        $this->db->or_like('flowsys.assign_user',$this->session->userdata('id').',','after');
-        $this->db->or_like('flowsys.assign_user',','.$this->session->userdata('id'),'before');
-        $this->db->group_end();
+        // $this->db->group_start();
+        // $this->db->like('flowsys.assign_user',','.$this->session->userdata('id').',','both');
+        // $this->db->or_like('flowsys.assign_user',$this->session->userdata('id').',','after');
+        // $this->db->or_like('flowsys.assign_user',','.$this->session->userdata('id'),'before');
+        // $this->db->or_like('actionsys.id_user',$this->session->userdata('id'));
+        // $this->db->or_like('actionsys.id_assign',$this->session->userdata('id'));
+        // $this->db->group_end();
         $this->db->where_in('status',array(0,1));
         $data['action'] = $this->db->get('actionsys')->result_array();
+
+        $d = array();
+        foreach ($data['action'] as $key) {
+            $assign_user = explode(",", $key['assign_user']);
+            if($key['id_assign']==0 and in_array($this->session->userdata('id'), $assign_user)
+                or $key['id_assign']==$this->session->userdata('id') and $key['assign_view']==0
+                or $key['id_user']==$this->session->userdata('id') and $key['user_view']==0){
+                $d[] = $key;
+            }
+        }
+
+        $data['action'] = $d;
         //echo $this->db->last_query();
         $jumlah = sizeof($data['action']);
         $data['muncul'] = 0;
