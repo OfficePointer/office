@@ -72,6 +72,12 @@ class Xhr_ajax extends CI_Controller {
     public function ajax_get_pending_action()
     {
         $data = array();
+        $this->db->join('flowsys','flowsys.id=actionsys.id_flowsys','left');
+        $this->db->group_start();
+        $this->db->like('flowsys.assign_user','%,'.$this->session->userdata('id').',%');
+        $this->db->or_like('flowsys.assign_user',$this->session->userdata('id').',%');
+        $this->db->or_like('flowsys.assign_user','%,'.$this->session->userdata('id'));
+        $this->db->group_end();
         $this->db->where_in('status',array(0,1));
         $data['action'] = $this->db->get('actionsys')->result_array();
 
