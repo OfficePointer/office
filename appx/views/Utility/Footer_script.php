@@ -163,9 +163,6 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  				$("#pending_data").html('');
  				$("#label_pending").html(action.length);
  				for(var data in action) {
- 					<?php
- 					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_finops'])){
- 					?>
 	 					if(action[data].trx_info=='topup'){
 	 						color="";
 	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
@@ -196,9 +193,6 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
 						}
 
-					<?php
-					}
-					?>
  				}
  				if(muncul){
 					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
