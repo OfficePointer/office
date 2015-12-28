@@ -120,7 +120,10 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  						color = "bg-red";
  					}
 
- 					if(saldo[data].muncul>0){
+ 					var clock = new Date().getHours();
+ 					var minutes = new Date().getMinutes();
+
+ 					if(saldo[data].muncul>0 || clock==4){
 
  					$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
  													'<a class="text-black waves-eff-li">'+
@@ -136,7 +139,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  						or in_array($this->session->userdata('id'), $group_alert['alert_topup_3'])){
  					?>
 
-			 				if(muncul && saldo[data].muncul>0){
+			 				if((muncul && saldo[data].muncul>0) || clock==16){
 							
 								notif = new Notification('Alert Top Up Saldo Vendor', {
 							      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
@@ -147,9 +150,19 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							      window.focus();
 							    };
 
+			 					if((muncul && saldo[data].muncul>0)){
+
+									var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+									audio_saldo.play();
+
+								}
+							}
+
+							if(clock==16 && minutes==0){
+
 								var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
 								audio_saldo.play();
-								 
+
 							}
 
 					<?php
