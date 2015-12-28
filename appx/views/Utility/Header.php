@@ -2,6 +2,26 @@
   if($this->session->userdata('revert_data')==""){
     $this->session->set_userdata('revert_data',0);
   }
+
+//----------------------------PHP Script---------------------------------------
+
+$this->db->where_in('id',array(15,16,17));
+$this->db->order_by('id','asc');
+$us = $this->db->get('flowsys')->result_array();
+$group_alert = array();
+foreach ($us as $key) {
+  if($key['id']==15){
+    $group_alert['notif_issued_process_revert_log'] = explode(",", $key['assign_user']);
+  }
+  if($key['id']==16){
+    $group_alert['notif_pending_log'] = explode(",", $key['assign_user']);
+  }
+  if($key['id']==17){
+    $group_alert['notif_saldo_log'] = explode(",", $key['assign_user']);
+  }
+}
+
+//-----------------------------------------------------------------------------
 ?>
 <!DOCTYPE html>
 <html>
@@ -67,8 +87,8 @@
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
-        <?php 
-          if(in_array($this->session->userdata('group'), array('Service Operation'))){
+          <?php 
+          if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log'])){
           ?>
           <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -85,7 +105,10 @@
               <li class="footer"><a target="_blank" href="https://admin.pointer.co.id/airline/admin/selling">View all</a></li>
             </ul>
           </li>
-          <!-- Tasks: style can be found in dropdown.less -->
+          <?php
+          } 
+          if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log'])){
+          ?>
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-hourglass-half"></i>
@@ -103,6 +126,10 @@
               </li>
             </ul>
           </li>
+          <?php
+          } 
+          if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log'])){
+          ?>
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-exclamation-circle"></i>
@@ -120,6 +147,10 @@
               </li>
             </ul>
           </li>
+          <?php 
+          }
+          if(in_array($this->session->userdata('id'), $group_alert['notif_pending_log'])){
+          ?>
           <li class="dropdown messages-menu">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                <i class="fa fa-tasks"></i>
@@ -139,7 +170,7 @@
            </li>
           <?php 
           }
-          if(in_array($this->session->userdata('group'), array('Finance'))){
+          if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log'])){
           ?>
           <li class="dropdown messages-menu">
              <a href="#" class="dropdown-toggle" data-toggle="dropdown">

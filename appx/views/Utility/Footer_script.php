@@ -1,22 +1,19 @@
 <?php
 //----------------------------PHP Script---------------------------------------
 
-$this->db->where_in('id',array(7,8,9,10));
+$this->db->where_in('id',array(7,8,9,15,16,17));
 $this->db->order_by('id','asc');
 $us = $this->db->get('flowsys')->result_array();
 $group_alert = array();
 foreach ($us as $key) {
-	if($key['id']==7){
-		$group_alert['alert_topup_1'] = explode(",", $key['assign_user']);
+	if($key['id']==15){
+		$group_alert['notif_issued_process_revert_log'] = explode(",", $key['assign_user']);
 	}
-	if($key['id']==8){
-		$group_alert['alert_topup_2'] = explode(",", $key['assign_user']);
+	if($key['id']==16){
+		$group_alert['notif_pending_log'] = explode(",", $key['assign_user']);
 	}
-	if($key['id']==9){
-		$group_alert['alert_topup_3'] = explode(",", $key['assign_user']);
-	}
-	if($key['id']==10){
-		$group_alert['alert_topup_finops'] = explode(",", $key['assign_user']);
+	if($key['id']==17){
+		$group_alert['notif_saldo_log'] = explode(",", $key['assign_user']);
 	}
 }
 
@@ -53,28 +50,18 @@ var muncul_deposit = 0;
 
 		$('#modal_funnyname .modal-dialog').css('width','1200px');
 	    $(".datepicker").daterangepicker();
-	    <?php
-          if(in_array($this->session->userdata('group'), array('Service Operation'))){
-		?>
-	    get_issued_log_data();
 
 	    setInterval(function () {
+			<?php if(in_array($this->session->userdata('id'), $group_alert['notif_issued_process_revert_log']){?>
 	    	get_issued_log_data();
+	    	<?php }
+			if(in_array($this->session->userdata('id'), $group_alert['notif_pending_log']){?>
 	    	get_pending_action();
-	    },1000*5);
-	    
-	    <?php
-		}
-		if(in_array($this->session->userdata('group'), array('Service Operation','Finance'))){
- 		?>
- 	    get_saldo_airline();
-
- 	    setInterval(function () {
+	    	<?php }
+	    	if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log']){?>
  	    	get_saldo_airline();
- 	    },1000*60);
- 	    <?php
- 		}
- 		?>
+ 	    	<?php } ?>
+	    },1000*5);
 
 	});
 var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
@@ -133,41 +120,32 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
  					}
 
- 					<?php
- 					if(in_array($this->session->userdata('id'), $group_alert['alert_topup_1'])
- 						or in_array($this->session->userdata('id'), $group_alert['alert_topup_2'])
- 						or in_array($this->session->userdata('id'), $group_alert['alert_topup_3'])){
- 					?>
+	 				if((muncul && saldo[data].muncul>0) || clock==16){
+					
+						notif = new Notification('Alert Top Up Saldo Vendor', {
+					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+					      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
+					    });
 
-			 				if((muncul && saldo[data].muncul>0) || clock==16){
-							
-								notif = new Notification('Alert Top Up Saldo Vendor', {
-							      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-							      body: 'Alert '+saldo[data].muncul+' Top Up Saldo '+saldo[data].code+' - '+saldo[data].airline+' - '+saldo[data].saldo,
-							    });
+					    notif.onclick = function (x) {
+					      window.focus();
+					    };
 
-							    notif.onclick = function (x) {
-							      window.focus();
-							    };
+	 					if((muncul && saldo[data].muncul>0)){
 
-			 					if((muncul && saldo[data].muncul>0)){
+							var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+							audio_saldo.play();
 
-									var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-									audio_saldo.play();
-
-								}
-							}
-
-							if(clock==16 && minutes==0){
-
-								var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-								audio_saldo.play();
-
-							}
-
-					<?php
+						}
 					}
-					?>
+
+					if(clock==16 && minutes==0){
+
+						var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+						audio_saldo.play();
+
+					}
+
  				}
 
  			}
