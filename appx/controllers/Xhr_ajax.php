@@ -74,13 +74,13 @@ class Xhr_ajax extends CI_Controller {
         $data = array();
         $this->db->join('flowsys','flowsys.id=actionsys.id_flowsys','left');
         $this->db->group_start();
-        $this->db->like('flowsys.assign_user','%,'.$this->session->userdata('id').',%');
-        $this->db->or_like('flowsys.assign_user',$this->session->userdata('id').',%');
-        $this->db->or_like('flowsys.assign_user','%,'.$this->session->userdata('id'));
+        $this->db->like('flowsys.assign_user',','.$this->session->userdata('id').',','both');
+        $this->db->or_like('flowsys.assign_user',$this->session->userdata('id').',','after');
+        $this->db->or_like('flowsys.assign_user',','.$this->session->userdata('id'),'before');
         $this->db->group_end();
         $this->db->where_in('status',array(0,1));
         $data['action'] = $this->db->get('actionsys')->result_array();
-
+        //echo $this->db->last_query();
         $jumlah = sizeof($data['action']);
         $data['muncul'] = 0;
         if($this->session->userdata('pending')<$jumlah){
