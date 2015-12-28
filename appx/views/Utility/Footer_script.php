@@ -267,7 +267,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 			});
 		},1000);
 	}
-    function show_update_saldo (id) {
+    function show_update_saldo(id) {
 
 		close_popup();
 		clear_btn();
