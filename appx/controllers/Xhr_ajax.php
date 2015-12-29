@@ -19,6 +19,16 @@ class Xhr_ajax extends CI_Controller {
 
         echo "OK";
     }
+    public function lookup_code($value)
+    {
+        $dbs = $this->load->database('dbpointer',TRUE);
+        $dbs->where('kode_booking',$value);
+        $data['ar_booking'] = $dbs->get('ar_booking')->row_array();
+        $dbs->where('id_booking',$data['ar_booking']['id']);
+        $data['ar_booking_pnr'] = $dbs->get('ar_booking_pnr')->result_array();
+        echo "<pre>".print_r(json_encode($data),1)."</pre>";
+
+    }
     public function update_action_open()
     {
         $id = $this->input->post('id');

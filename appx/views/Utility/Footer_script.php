@@ -100,7 +100,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  				$("#deposit_data").html('');
  				$("#deposit_data").html('');
  				$("#deposit_data").html('');
- 				$("#label_deposit_data").html(saldo.length);
+ 				var jml_dt = 0;
  				for(var data in saldo) {
  					var color = "";
  					var click = "";
@@ -125,8 +125,9 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
  					}
 
 					//console.log(clock+' '+minutes+' '+second);
-
+					jml_dt++;
  				}
+ 				$("#label_deposit_data").html(jml_dt);
  				if(muncul || (clock==15 && minutes==30 && (second>30 && second<35))){
 					notif = new Notification('Alert Top Up Saldo Airlines', {
 				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
@@ -162,7 +163,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
 	 							color = 'bg-blue';
 	 						}
-	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0){
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
 	 							color = 'bg-green';
 	 						}
 
@@ -186,11 +187,38 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 							}
 
 						}
+						else if(action[data].trx_info=='rebook'){
+							if(action[data].id_assign==0){
+			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+										'<a class="text-black waves-eff-li">'+
+											'<i class="fa fa-money text-aqua"></i> ambil baru '+action[data].info+
+										'</a>'+
+									'</li>');
+		 					}else if(action[data].status==1 && action[data].user_view==0){
+			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+										'<a class="text-black waves-eff-li">'+
+											'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
+										'</a>'+
+									'</li>');
+		 					}
+						}
+						else if(action[data].trx_info=='...'){
+							//other transaction info.................
+						}
+						else{
+							// if doesn't find trx info
+		 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+										'<div class="btn pull-right" onclick="alert(\'Transaction is not defined\')">OK</div>'+
+									'</a>'+
+								'</li>');
+						}
 
  				}
  				if(muncul){
 					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-					 //audio_saldo.play();
+					 audio_saldo.play();
 				}
 
  			}
