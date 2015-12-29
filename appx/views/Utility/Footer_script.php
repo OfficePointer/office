@@ -122,10 +122,10 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	 													'</a>'+
 	 												'</li>');
 
+					jml_dt++;
  					}
 
 					//console.log(clock+' '+minutes+' '+second);
-					jml_dt++;
  				}
  				$("#label_deposit_data").html(jml_dt);
  				if(muncul || (clock==15 && minutes==30 && (second>30 && second<35))){
