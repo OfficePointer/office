@@ -366,8 +366,8 @@ public function ajax_save_klasifikasi()
 
         $newdatay = array();
         foreach ($datay as $key) {
-            $strStart = $key['waktu']; 
-            $strEnd   = date("Y-m-d H:i:s"); 
+            $strStart = date("Y-m-d H:i:s"); 
+            $strEnd   = $key['waktu']; 
 
             $dteStart = new DateTime($strStart); 
             $dteEnd   = new DateTime($strEnd); 
