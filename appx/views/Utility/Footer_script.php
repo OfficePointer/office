@@ -390,6 +390,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				$("#issued_log_data").html('');
 				$("#processing_log_data").html('');
 				$("#processing_train_data").html('');
+				var abu = 0;
 				for(var data in balik) {
 					var url = "https://admin.pointer.co.id/hotel/admin/detail/"+balik[data].kode_booking;
 					if(balik[data].tipe=="airline"){
@@ -411,15 +412,22 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						url = 'https://admin.pointer.co.id/train/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking;
 					}
 
-					$("#processing_log_data").append('<li><a class="waves-eff-li" style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
-                      '<div class="pull-left">'+
-                        '<span style="font-size:30pt;text-align:center;color:orange;" class="fa fa-exclamation-circle"></span>'+
-                      '</div>'+
-                      '<h4>'+process[data].kode_booking+
-                        '<small><i class="fa fa-clock-o"></i> '+process[data].waktu+'</small>'+
-                      '</h4>'+
-                      '<p>'+process[data].brand_name+'</p>'+
-                    '</a></li>');
+					var merah = ""; 
+
+					if(parseInt(process[data].diff)>0){
+						merah = "bg-red";
+						abu = 1;
+					}
+
+						$("#processing_log_data").append('<li class="'+merah+'"><a class="waves-eff-li" style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
+	                      '<div class="pull-left">'+
+	                        '<span style="font-size:30pt;text-align:center;color:orange;" class="fa fa-exclamation-circle"></span>'+
+	                      '</div>'+
+	                      '<h4>'+process[data].kode_booking+
+	                        '<small><i class="fa fa-clock-o"></i> '+process[data].waktu+'</small>'+
+	                      '</h4>'+
+	                      '<p>'+process[data].brand_name+'</p>'+
+	                    '</a></li>');
 				}
 
 				$("#revert_log_data").html('');
@@ -473,6 +481,19 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 						notif = new Notification('Revert Information', {
 					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 					      body: 'new revert GA/JS, please check :)',
+					    });
+
+					    notif.onclick = function (x) {
+					      window.focus();
+					    };
+
+						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
+						audio.play();
+					}
+					if(abu>0){
+						notif = new Notification('Kode Abu-abu', {
+					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+					      body: 'Informasi Kode Booking Abu-abu',
 					    });
 
 					    notif.onclick = function (x) {
