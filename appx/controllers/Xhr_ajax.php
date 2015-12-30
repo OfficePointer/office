@@ -370,8 +370,10 @@ public function ajax_save_klasifikasi()
             $dteEnd   = new DateTime($strEnd); 
 
             $pre="";
-            if($dteStart>$dteEnd){
-                $pre = "-";
+            if($dteDiff->format("%i")>0){
+                if($dteStart>$dteEnd){
+                    $pre = "-";
+                }
             }
 
             $dteDiff  = $dteStart->diff($dteEnd); 
