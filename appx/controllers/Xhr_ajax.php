@@ -356,10 +356,28 @@ public function ajax_save_klasifikasi()
         }
         $this->session->set_userdata('revert',sizeof($dataz));
 
+
+
+
 		$hasil['revert'] = $dataz;
 		$this->session->set_userdata('revert_data',sizeof($dataz));
 		$datay = $this->db->get('temp_processing_issued');
 		$datay = $datay->result_array();
+
+        $newdatay = array();
+        foreach ($datay as $key) {
+            $strStart = $key['waktu']; 
+            $strEnd   = date("Y-m-d H:i:s"); 
+
+            $dteStart = new DateTime($strStart); 
+            $dteEnd   = new DateTime($strEnd); 
+
+            $dteDiff  = $dteStart->diff($dteEnd); 
+
+            $newdatay[] = $key+array('diff'=>($dteDiff->format("%I")*60)+$dteDiff->format("%S"));
+        }
+
+
 		$hasil['process'] = $datay;
 		echo json_encode($hasil);
 	}
