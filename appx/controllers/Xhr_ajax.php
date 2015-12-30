@@ -369,9 +369,14 @@ public function ajax_save_klasifikasi()
             $dteStart = new DateTime($strStart); 
             $dteEnd   = new DateTime($strEnd); 
 
+            $pre="";
+            if($dteStart>$dteEnd){
+                $pre = "-";
+            }
+
             $dteDiff  = $dteStart->diff($dteEnd); 
 
-            $newdatay[] = $key+array('diff'=>$dteDiff->format("%I"));
+            $newdatay[] = $key+array('diff'=>$pre.$dteDiff->format("%i"));
         }
         $datay = $newdatay;
 
