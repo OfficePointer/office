@@ -371,7 +371,7 @@ public function ajax_save_klasifikasi()
 
             $dteDiff  = $dteStart->diff($dteEnd); 
 
-            $newdatay[] = $key+array('diff'=>($dteDiff->format("%I")*60)+$dteDiff->format("%S"));
+            $newdatay[] = $key+array('diff'=>$dteDiff->format("%I"));
         }
         $datay = $newdatay;
 
