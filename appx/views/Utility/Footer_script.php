@@ -128,7 +128,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					//console.log(clock+' '+minutes+' '+second);
  				}
  				$("#label_deposit_data").html(jml_dt);
- 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<35))){
+ 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<37))){
 					notif = new Notification('Alert Top Up Saldo Airlines', {
 				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 				      body: 'Alert Top Up Saldo Airlines, Please Check',

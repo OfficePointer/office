@@ -577,7 +577,7 @@ public function ajax_save_klasifikasi()
         if(empty($a)){
             $data['followup'] = "No one follow up";
         }else{
-            $data['followup'] = $a['type']." : ".$a['reason'];
+            $data['followup'] = $a['type']." : ".$this->general->get_respon($a['id_respon'])." : ".$a['reason'];
         }
 
         $this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
