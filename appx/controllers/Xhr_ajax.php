@@ -179,14 +179,16 @@ public function ajax_save_klasifikasi()
         $baru = array();
         foreach ($data as $key) {
             $muncul = 0;
-            if($key['saldo']<$key['min_first']){
-                $muncul = 1;
-            }
-            if($key['saldo']<$key['min_second']){
-                $muncul = 2;
-            }
-            if($key['saldo']<$key['min_third']){
-                $muncul = 3;
+            if($key['saldo']>0 or $key['saldo']<0){
+                if($key['saldo']<$key['min_first']){
+                    $muncul = 1;
+                }
+                if($key['saldo']<$key['min_second']){
+                    $muncul = 2;
+                }
+                if($key['saldo']<$key['min_third']){
+                    $muncul = 3;
+                }
             }
 
             if($muncul>0 and $muncul != $jumlah_muncul){
