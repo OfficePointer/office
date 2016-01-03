@@ -120,7 +120,7 @@ function csv_to_array($filename='', $delimiter=',')
 		$xa = $xa->result_array();
 		return $xa;
 	}
-	public function get_klasifikasi($id_mitra=0,$time="last",$tgl_update="")
+	public function get_klasifikasi($id_mitra=0,$time="last")
 	{
 		$this->db->select('klasifikasi');
 		$this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
@@ -130,7 +130,7 @@ function csv_to_array($filename='', $delimiter=',')
 			$this->db->limit(1);
 		}else{
 			$this->db->order_by('klasifikasi_member.id','desc');
-			$this->db->like('klasifikasi_member.tgl_update',$tgl_update,"after");
+			$this->db->like('klasifikasi_member.tgl_update',$time,"after");
 			$this->db->limit(1);
 		}
 		$xa = $this->db->get('klasifikasi_member');
