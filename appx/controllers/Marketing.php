@@ -415,6 +415,7 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('province','');
 			$this->session->set_userdata('type','');
 			$this->session->set_userdata('status','');
+			$this->session->set_userdata('klasifikasi','');
 		}
 
 		if($this->input->method()=="post"){
@@ -451,6 +452,11 @@ class Marketing extends CI_Controller {
 		}else{
 			$this->session->set_userdata('status','');
 		}
+		if($this->input->post('klasifikasi')!=""){
+			$this->session->set_userdata('klasifikasi',$this->input->post('klasifikasi'));
+		}else{
+			$this->session->set_userdata('klasifikasi','');
+		}
 
 		}
 
@@ -465,6 +471,12 @@ class Marketing extends CI_Controller {
 			}
 			$start = ($pg-1)*$limit;
 		}
+		
+		$this->db->select("data_mitra.*,data_klasifikasi.klasifikasi, data_klasifikasi.id as id_klasifikasi");
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->where('k2.id',NULL);
 		if($this->session->userdata('brand_name')!=""){
 			$this->db->like('brand_name',$this->session->userdata('brand_name'),'both');
 		}
@@ -486,16 +498,29 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('type')!=""){
 			$this->db->where('data_mitra.type',$this->session->userdata('type'));
 		}
+		if($this->session->userdata('klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
+		}
 		if($new=="new"){
-			$this->db->where('join_date >',date('Y-m-d',strtotime('-3 day')));
+			$this->db->where('data_mitra.join_date >',date('Y-m-d',strtotime('-3 day')));
 		}else{
 			$this->db->limit($limit,$start);
 		}
+		//$this->db->group_by('id_mitra');
+
+
 		$data['mitra'] = $this->db->get('data_mitra')->result_array();
 		
-		$this->db->select('count(id_mitra) as jumlah, status');
+//		echo "<pre>".print_r($data['mitra'],1)."<pre>";
+//die();
+
+		$this->db->select('count(data_mitra.id_mitra) as jumlah, status');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->where('k2.id',NULL);
 		if($new=="new"){
-			$this->db->where('join_date >',date('Y-m-d',strtotime('-3 day')));
+			$this->db->where('data_mitra.join_date >',date('Y-m-d',strtotime('-3 day')));
 		}
 		if($this->session->userdata('brand_name')!=""){
 			$this->db->like('brand_name',$this->session->userdata('brand_name'),'both');
@@ -517,6 +542,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('type')!=""){
 			$this->db->where('data_mitra.type',$this->session->userdata('type'));
+		}
+		if($this->session->userdata('klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
 		}
 		$this->db->group_by('status');
 		$jum = 0;
@@ -526,6 +554,7 @@ class Marketing extends CI_Controller {
 		}
 
 		$data['paging'] = $this->general->pagination($jum,$limit,$pg,base_url("marketing/member/%d"));
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
 		$this->general->load('marketing/member',$data);
 	}
 	public function followup_all($new='')
@@ -542,6 +571,7 @@ class Marketing extends CI_Controller {
 			$this->session->set_userdata('followup_topup','');
 			$this->session->set_userdata('followup_trx','');
 			$this->session->set_userdata('followup_respon','');
+			$this->session->set_userdata('followup_klasifikasi','');
 		}
 
 		if($this->input->method()=="post"){
@@ -590,6 +620,16 @@ class Marketing extends CI_Controller {
 		}else{
 			$this->session->set_userdata('followup_status','');
 		}
+		if($this->input->post('province')!=""){
+			$this->session->set_userdata('followup_province',$this->input->post('province'));
+		}else{
+			$this->session->set_userdata('followup_province','');
+		}
+		if($this->input->post('klasifikasi')!=""){
+			$this->session->set_userdata('followup_klasifikasi',$this->input->post('klasifikasi'));
+		}else{
+			$this->session->set_userdata('followup_klasifikasi','');
+		}
 
 		}
 
@@ -603,7 +643,17 @@ class Marketing extends CI_Controller {
 			}
 			$start = ($pg-1)*$limit;
 		}
-		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date');
+		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date,data_klasifikasi.klasifikasi, a1.reason, a1.type,data_respon.respon');
+		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->join('data_activity a1','a1.member_ID=data_mitra.id_mitra','left');
+		$this->db->join('data_activity a2','a2.member_ID=data_mitra.id_mitra and a1.ID<a2.ID and ISNULL(a1.delete_at)','left outer');
+		$this->db->join('data_respon','data_respon.id=a1.id_respon','left');
+		$this->db->where('k2.id',NULL);
+		$this->db->where('a2.ID',NULL);
+		
 		if($this->session->userdata('followup_date_activity')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
 			$date_start = $daten[0];
@@ -637,6 +687,12 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('followup_trx')!=""){
 			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
 		}
+		if($this->session->userdata('followup_province')!=""){
+			$this->db->like('data_mitra.province',$this->session->userdata('followup_province'),'both');
+		}
+		if($this->session->userdata('followup_klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
+		}
 
 		if($this->session->userdata('followup_status')!=""){
 			if($this->session->userdata('followup_status')!="all"){
@@ -645,13 +701,24 @@ class Marketing extends CI_Controller {
 		}else{
 			$this->db->like('data_mitra.status','active','both');
 		}
-		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
 		$this->db->order_by('data_activity.create_at','desc');
 		$this->db->group_by('data_mitra.id_mitra');
 		$this->db->limit($limit,$start);
 		$a = $this->db->get('data_activity');
 
-		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date');
+		//die("<pre>".print_r($a->result_array(),1)."</pre>");
+
+		$this->db->select('data_mitra.brand_name,data_mitra.id_mitra,data_mitra.topup,data_mitra.trx,data_mitra.join_date,data_klasifikasi.klasifikasi, a1.reason, a1.type,data_respon.respon');
+		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->join('data_activity a1','a1.member_ID=data_mitra.id_mitra','left');
+		$this->db->join('data_activity a2','a2.member_ID=data_mitra.id_mitra and a1.ID<a2.ID and ISNULL(a1.delete_at)','left outer');
+		$this->db->join('data_respon','data_respon.id=a1.id_respon','left');
+		$this->db->where('k2.id',NULL);
+		$this->db->where('a2.ID',NULL);		
+
 		if($this->session->userdata('followup_date_activity')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
 			$date_start = $daten[0];
@@ -685,6 +752,12 @@ class Marketing extends CI_Controller {
 		if($this->session->userdata('followup_respon')!=""){
 			$this->db->like('data_activity.id_respon',$this->session->userdata('followup_respon'),'both');
 		}
+		if($this->session->userdata('followup_province')!=""){
+			$this->db->like('data_mitra.province',$this->session->userdata('followup_province'),'both');
+		}
+		if($this->session->userdata('followup_klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
+		}
 		if($this->session->userdata('followup_status')!=""){
 			if($this->session->userdata('followup_status')!="all"){
 				$this->db->like('data_mitra.status',$this->session->userdata('followup_status'),'both');
@@ -692,22 +765,83 @@ class Marketing extends CI_Controller {
 		}else{
 			$this->db->like('data_mitra.status','active','both');
 		}
-		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
 		$this->db->group_by('data_mitra.id_mitra');
 		$data['paging'] = $this->general->pagination($this->db->get('data_activity')->num_rows(),$limit,$pg,base_url("marketing/followup_all/%d"));
 		$data['followup_data'] = $a->result_array();
+
+
+		$this->db->select('data_activity.create_by, count(data_activity.ID) as jumlah');
+		$this->db->join('data_mitra','data_mitra.id_mitra=data_activity.member_ID','right');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->join('data_activity a1','a1.member_ID=data_mitra.id_mitra','left');
+		$this->db->join('data_activity a2','a2.member_ID=data_mitra.id_mitra and a1.ID<a2.ID and ISNULL(a1.delete_at)','left outer');
+		$this->db->join('data_respon','data_respon.id=a1.id_respon','left');
+		$this->db->where('k2.id',NULL);
+		$this->db->where('a2.ID',NULL);
+		
+		if($this->session->userdata('followup_date_activity')!=""){
+			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
+			$date_start = $daten[0];
+			$date_end = $daten[1];
+			$this->db->where('data_activity.create_at>=',date_format(date_create($date_start),"Y-m-d"));
+			$this->db->where('data_activity.create_at<=',date_format(date_create($date_end),"Y-m-d"));
+		}
+		if($this->session->userdata('followup_date_join')!=""){
+			$daten = explode(" - ", $this->session->userdata('followup_date_join'));
+			$date_start = $daten[0];
+			$date_end = $daten[1];
+			$this->db->where('data_mitra.join_date>=',date_format(date_create($date_start),"Y-m-d"));
+			$this->db->where('data_mitra.join_date<=',date_format(date_create($date_end),"Y-m-d"));
+		}
+		if($this->session->userdata('followup_brand_name')!=""){
+			$this->db->like('data_mitra.brand_name',$this->session->userdata('followup_brand_name'),'both');
+		}
+		if($this->session->userdata('followup_prefix')!=""){
+			$this->db->like('data_mitra.prefix',$this->session->userdata('followup_prefix'),'both');
+		}
+
+		if($this->session->userdata('followup_type')!=""){
+			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
+		}
+		if($this->session->userdata('followup_topup')!=""){
+			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
+		}
+		if($this->session->userdata('followup_trx')!=""){
+			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
+		}
+		if($this->session->userdata('followup_respon')!=""){
+			$this->db->like('data_activity.id_respon',$this->session->userdata('followup_respon'),'both');
+		}
+		if($this->session->userdata('followup_province')!=""){
+			$this->db->like('data_mitra.province',$this->session->userdata('followup_province'),'both');
+		}
+		if($this->session->userdata('followup_klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
+		}
+		if($this->session->userdata('followup_status')!=""){
+			if($this->session->userdata('followup_status')!="all"){
+				$this->db->like('data_mitra.status',$this->session->userdata('followup_status'),'both');
+			}
+		}else{
+			$this->db->like('data_mitra.status','active','both');
+		}
+		$this->db->group_by('data_activity.create_by');
+
+
+		$data['followup_by'] = $this->db->get('data_activity')->result_array();
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+
+		//die("<pre>".print_r($data['followup_by'],1)."</pre>");
+
+
 		$data['response'] = $this->db->get('data_respon')->result_array();
 
 		$this->general->load('marketing/followup_all',$data);
 	}
 
-	public function ajax_del_act()
-	{
-		$this->general->logging();
-		$data = $this->input->post();
-		$this->db->where('ID',$data['id']);
-		$this->db->update('data_activity',array('delete_at'=>date("Y-m-d H:i:s"), 'delete_by'=>$this->session->userdata('id')));
-	}
+
 	public function member_graph()
 	{
 		$this->general->load('marketing/member_graph');
@@ -747,7 +881,8 @@ class Marketing extends CI_Controller {
                 <thead>
                   <tr>
                     <th>Brand Name</th>
-                    <th>Date Join</th>';
+                    <th>Date Join</th>
+                    <th>Klasifikasi</th>';
                     foreach ($datatgl as $kay) {
                       $tbl .="<th>".date_format(date_create($kay['arr'][0]),"d M")." - ".date_format(date_create($kay['arr'][1]),"d M")."</th>";
                     }
@@ -759,7 +894,8 @@ class Marketing extends CI_Controller {
               $tbl .='
               <tr>
                 <td>'.$key['brand_name'].'</td>
-                <td>'.$key['join_date'].'</td>';
+                <td>'.$key['join_date'].'</td>
+                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     foreach ($datatgl as $kay) {
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
@@ -799,6 +935,7 @@ class Marketing extends CI_Controller {
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
 						echo "<th>Date Join</th>";
+						echo "<th>Klasifikasi</th>";
 						for($i=1;$i<=31;$i++){
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
 								echo "<th>".$i."</th>";
@@ -811,6 +948,8 @@ class Marketing extends CI_Controller {
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
 						echo "<td>".utf8_decode($key['join_date'])."</td>";
+						echo "<td>".utf8_decode($this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-"))."</td>";
+
 							for($i = 1;$i<=31;$i++){
 
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
@@ -847,6 +986,7 @@ class Marketing extends CI_Controller {
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
 						echo "<th>Date Join</th>";
+						echo "<th>Klasifikasi</th>";
 						for($i=1;$i<=31;$i++){
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
 								echo "<th>".$i."</th>";
@@ -859,6 +999,7 @@ class Marketing extends CI_Controller {
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
 						echo "<td>".utf8_decode($key['join_date'])."</td>";
+						echo "<td>".utf8_decode($this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-"))."</td>";
 							for($i = 1;$i<=31;$i++){
 
 							if(checkdate($_GET['bulan'], $i, $_GET['tahun'])){
@@ -978,7 +1119,12 @@ class Marketing extends CI_Controller {
 		$this->general->logging();
 		$this->load->library('Excel');
 
-		$this->db->select('data_mitra.join_date as "Join Date",data_mitra.expire_date as "Expire Date",data_mitra.brand_name as "Brand Name",data_mitra.prefix as "Kode Member",data_mitra.name as "Name",data_mitra.type as "Type",b.brand_name as "Parent",data_mitra.email as "E-Mail",data_mitra.mobile as "Mobile",data_mitra.phone as "Phone",data_mitra.status as "Status",data_mitra.address as "Address",data_mitra.city as "City"');
+		$this->db->select('data_mitra.join_date as "Join Date",data_mitra.expire_date as "Expire Date",data_mitra.brand_name as "Brand Name",data_mitra.prefix as "Kode Member",data_mitra.name as "Name",data_klasifikasi.klasifikasi as "Klasifikasi", data_mitra.type as "Type",b.brand_name as "Parent",data_mitra.email as "E-Mail",data_mitra.mobile as "Mobile",data_mitra.phone as "Phone",data_mitra.status as "Status",data_mitra.address as "Address",data_mitra.city as "City"');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->where('k2.id',NULL);
+
 		$this->db->join('data_mitra b','b.id_mitra=data_mitra.parent','left');
 
 		if($this->session->userdata('brand_name')!=""){
@@ -1004,6 +1150,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('prefix')!=""){
 			$this->db->like('data_mitra.prefix',$this->session->userdata('prefix'),'both');
+		}
+		if($this->session->userdata('klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
 		}
 
 		$sql = $this->db->get('data_mitra');

@@ -85,6 +85,17 @@
             <td><input value="<?php echo $this->session->userdata('followup_province');?>" type="text" name="province" class="form-control"></td>
           </tr>
           <tr>
+            <td>Klasifikasi</td>
+            <td><select name="klasifikasi" class="form-control">
+              <option <?php echo ($this->session->userdata('followup_klasifikasi')=="")?"selected":"";?> value="">all</option>
+              <?php
+              foreach($klasifikasi as $dataklasifikasi){
+              ?>
+              <option <?php echo ($this->session->userdata('followup_klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
+              <?php } ?>
+            </select></td>
+          </tr>
+          <tr>
             <td></td>
             <td><button class="btn btn-primary">Search</button>
             <a class="btn btn-warning" href="<?php echo base_url("marketing/followup_all/clear");?>">Reset</a></td>
@@ -116,9 +127,9 @@
           <tr>
             <td style="text-align:center"><?php echo $i;?></td>
             <td style="width:200px;"><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)"><?php echo $key['brand_name'];?></a></td>
-            <td id="detail_class_<?php echo $key['id_mitra'];?>" style="width:50px !important;"></td>               
+            <td id="detail_class_<?php echo $key['id_mitra'];?>" style="width:50px !important;"><?php echo ($key['klasifikasi']!="")?$key['klasifikasi']:"No Data";?></td>               
             <td style="width:90px;"><?php echo $key['join_date'];?></td>
-            <td id="detail_fol_<?php echo $key['id_mitra'];?>" style="width:200px !important;"></td>               
+            <td id="detail_fol_<?php echo $key['id_mitra'];?>" style="width:200px !important;"><?php echo ($key['type']!="")?$key['type']." : ".$key['respon']." : ".$key['reason']:"No one followup";?></td>               
             <td style="width:50px;"><?php echo $key['topup'];?></td>
             <td style="width:50px;"><?php echo $key['trx'];?></td>
             <td class="last"><a onclick="showactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-reorder" title='View Details'></span></a> | <a onclick="openaddactivity(<?php echo $key['id_mitra'];?>)"><span class="fa fa-plus" title='Add New'></span></a></td>
@@ -133,16 +144,17 @@
         ?>
         </tbody>
       </table>
-      <?php echo $paging;?>
       <?php
-        foreach ($followup_data as $key) {
-        ?>
-        <script type="text/javascript">
-          get_activity_info(<?php echo $key['id_mitra'];?>);
-        </script>
-        <?php
+      foreach ($followup_by as $key) {
+        if($key['create_by']!=NULL){
+          ?>
+          <span class="btn"><?php echo $this->general->get_user($key['create_by'])." : ".$key['jumlah'];?></span>
+          <?php 
         }
-        ?>
+      }
+      ?>
+      <hr>
+      <?php echo $paging;?>
       </div>
       </div>
       <!-- /.row (main row) -->

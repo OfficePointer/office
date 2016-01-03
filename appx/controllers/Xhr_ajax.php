@@ -597,4 +597,11 @@ public function ajax_save_klasifikasi()
         echo json_encode($data);
 
     }
+    public function ajax_del_act()
+    {
+        $this->general->logging();
+        $data = $this->input->post();
+        $this->db->where('ID',$data['id']);
+        $this->db->delete('data_activity');
+    }
 }

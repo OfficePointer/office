@@ -71,6 +71,17 @@
             <td><input value="<?php echo $this->session->userdata('province');?>" type="text" name="province" class="form-control"></td>
           </tr>
           <tr>
+            <td>Klasifikasi</td>
+            <td><select name="klasifikasi" class="form-control">
+              <option <?php echo ($this->session->userdata('klasifikasi')=="")?"selected":"";?> value="">all</option>
+              <?php
+              foreach($klasifikasi as $dataklasifikasi){
+              ?>
+              <option <?php echo ($this->session->userdata('klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
+              <?php } ?>
+            </select></td>
+          </tr>
+          <tr>
             <td></td>
             <td><button class="btn btn-primary">Search</button>
             <a class="btn btn-success" href="<?php echo base_url("marketing/export_excel");?>">Export</a>
@@ -86,6 +97,7 @@
           <tr>
             <th>Date Join</th>
             <th>Brand Name</th>
+            <th>Klasifikasi</th>
             <th>Type</th>
             <th>Province</th>
             <th>Status</th>
@@ -98,6 +110,7 @@
           <tr>
             <td><?php echo $key['join_date'];?></td>
             <td><a onclick="openformdetail(<?php echo $key['id_mitra'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+            <td><?php echo $this->general->get_klasifikasi($key['id_mitra'],"last");?></td>
             <td><?php echo $key['type'];?></td>
             <td><?php echo $key['province'];?></td>
             <td><?php echo $key['status'];?></td>

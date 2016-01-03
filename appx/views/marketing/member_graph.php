@@ -79,6 +79,7 @@
             echo "<table class='table table-bordered table-striped for_datatables'><thead>";
             echo "<th style='width:150px !important;'>Brand Name</th>";
             echo "<th style='width:80px !important;'>Date Join</th>";   
+            echo "<th style='width:80px !important;'>Klasifikasi</th>";   
             for($i=1;$i<=31;$i++){
              if(checkdate($this->input->post('bulan'), $i, $this->input->post('tahun'))){
                echo "<th>".$i."</th>";
@@ -93,6 +94,7 @@
             echo "<tr>";
             echo "<td><a onclick='openformdetail(".$key['id_mitra'].")'>".$key['brand_name']." (".$key['prefix'].")</a></td>";
             echo "<td>".$key['join_date']."</td>";   
+            echo "<td>".$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")."</td>";   
               for($i = 1;$i<=31;$i++){
 
               if(checkdate($this->input->post('bulan'), $i, $this->input->post('tahun'))){

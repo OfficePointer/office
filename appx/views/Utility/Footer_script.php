@@ -587,8 +587,8 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				dataType:'json',
 				data:{member_ID:member_ID,type:type,reason:reason,id_respon:respon},
 				success:function(isi){
-					var url = '<?php echo base_url("marketing/followup_del");?>';
-					$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+respon_data+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'">Delete</a></td></tr>');
+					var url = '<?php echo base_url("ajax_del_act/followup_del");?>';
+					$("#TBL_"+id).append('<tr style="display:none" id="detail_'+isi.ID+'"><td>#'+isi.ID+'</td><td>'+type+'</td><td>'+respon_data+'</td><td>'+reason+'</td><td>'+isi.PIC+'</td><td>'+isi.create_at+'</td><td><a href="'+url+'/'+isi.ID+'"><i class="fa fa-times"></i></a></td></tr>');
 					$("#detail_"+isi.ID).fadeIn();
 					$("#FRM_"+id).remove();
 				}

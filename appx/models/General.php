@@ -120,6 +120,26 @@ function csv_to_array($filename='', $delimiter=',')
 		$xa = $xa->result_array();
 		return $xa;
 	}
+	public function get_klasifikasi($id_mitra=0,$time="last",$tgl_update="")
+	{
+		$this->db->select('klasifikasi');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+		$this->db->where('klasifikasi_member.id_mitra',$id_mitra);
+		if($time=="last"){
+			$this->db->order_by('klasifikasi_member.id','desc');
+			$this->db->limit(1);
+		}else{
+			$this->db->order_by('klasifikasi_member.id','desc');
+			$this->db->like('klasifikasi_member.tgl_update',$tgl_update,"after");
+			$this->db->limit(1);
+		}
+		$xa = $this->db->get('klasifikasi_member');
+		$xa = $xa->row_array();
+		if($xa['klasifikasi']==""){
+			$xa['klasifikasi'] = "No Data";
+		}
+		return $xa['klasifikasi'];
+	}
 	public function get_email_div($div = array(),$array = false)
 	{
 		$this->db->select('email');
