@@ -277,7 +277,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				    $('#modal_profiling').modal('show');
 				}
 			});
-		},100);
+		},1000);
 	}
     function show_update_saldo(id) {
 
@@ -309,7 +309,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 				}
 			});
-		},100);
+		},1000);
 	}
     function update_action_open (id) {
 
@@ -328,7 +328,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				    $('#modal_profiling').modal('show');
 				}
 			});
-		},100);
+		},1000);
 	}
     function update_action_done (id) {
 
@@ -347,7 +347,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				    $('#modal_profiling').modal('show');
 				}
 			});
-		},100);
+		},1000);
 	}
 	function show_funnyname(link) {
 		clear_btn();
@@ -626,7 +626,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 				});
 
-			},100);
+			},1000);
 		}
 	    function close_popup() {
 	    	clear_btn();
@@ -739,7 +739,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					    $('#modal_profiling').modal('show');
 					}
 				});
-			},100);
+			},1000);
 		}
 		function get_email(id,url,kode_booking,brand_name,kasus) {
 			close_popup();
@@ -763,7 +763,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					}
 				});
 
-			},100);
+			},1000);
 		}
 		function save_solve_note(id) {
 			clear_btn();
@@ -789,7 +789,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 
-			},100);
+			},1000);
 		}
 		function send_email(id) {
 			clear_btn();
@@ -809,7 +809,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 
-			},100);
+			},1000);
 		}
 	    function followup_open(id) {
 			close_popup();
@@ -855,7 +855,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 
-			},100);
+			},1000);
 		}
 
 //------------------------------------------------------------------------------
@@ -898,7 +898,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 
-			},100);
+			},1000);
 		}
 //------------------------------------------------------------------------------
 
@@ -924,7 +924,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 				}
 			});
 
-			},100);
+			},1000);
 
 		}
 
