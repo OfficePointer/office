@@ -401,7 +401,7 @@ $(function() {
 		$("#to").val(temp_codear_booking_pnr[0].kota_tujuan);
 		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
 		$("#id_mitra").val(temp_code.mitra.id_mitra);
-		$("#vendor").val(temp_code.);
+		$("#vendor").val(temp_code.ar_booking.vendor);
 	}
     function show_update_saldo(id) {
 
