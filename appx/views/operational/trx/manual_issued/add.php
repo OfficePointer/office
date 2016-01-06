@@ -56,7 +56,7 @@
         <div class="col-md-4">
           <label>Vendor</label> 
           <div class="form-group">
-            <select class="form-control" name="vendor">
+            <select class="form-control" name="vendor" id="vendor">
               <?php foreach ($vendor as $key) {
                 ?>
                   <option value="<?php echo $key['id'];?>"><?php echo $key['nama'].(($key['company']!="")?" - ".$key['company']:"");?></option>
@@ -109,7 +109,7 @@
         <div class="col-md-4">
           <label>Flight Type</label> 
           <div class="form-group">
-            <select class="form-control" name="flight_type">
+            <select class="form-control" name="flight_type" id="flight_type">
                   <option value="OW">Oneway</option>
                   <option value="CT">Connecting</option>
                   <option value="RT">Return</option>

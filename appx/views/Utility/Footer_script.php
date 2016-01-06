@@ -26,7 +26,7 @@ foreach ($us as $key) {
 
 //-----------------------------------------------------------------------------
 ?>
-
+<div class="for_numberinput" style="display:none;"></div>
 <script type="text/javascript">
 //----------------------------JavaScript---------------------------------------
 var muncul_deposit = 0;
@@ -36,10 +36,10 @@ var muncul_deposit = 0;
 	Waves.init();
 
 var temp_code = '';
+    $(".for_numberinput").jqxNumberInput({ width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
 
 	$(document).ready(function(){
 
-        $(".for_numberinput").jqxNumberInput({ width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
 
 		//$(".inside-box-im").hide();
 		if(Notification.permission !== 'granted'){
@@ -397,11 +397,15 @@ $(function() {
 		$("#nta").jqxNumberInput('setDecimal',temp_code.ar_booking.nta_idr);
 		$("#memberpaid").jqxNumberInput('setDecimal',temp_code.ar_booking.self_price);
 		$("#mitra").val(temp_code.mitra.brand_name+' ('+temp_code.mitra.prefix+')');
-		$("#from").val(temp_codear_booking_pnr[0].kota_asal);
-		$("#to").val(temp_codear_booking_pnr[0].kota_tujuan);
+		$("#from").val(temp_code.ar_booking_pnr[0].kota_asal);
+		$("#to").val(temp_code.ar_booking_pnr[0].kota_tujuan);
 		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
 		$("#id_mitra").val(temp_code.mitra.id_mitra);
-		$("#vendor").val(temp_code.ar_booking.vendor);
+		$("#flight_type").val(temp_code.ar_booking.flight_type);
+		$("#adult").val(temp_code.ar_booking.jml_dewasa);
+		$("#child").val(temp_code.ar_booking.jml_child);
+		$("#infant").val(temp_code.ar_booking.jml_inf);
+		$('#vendor option[value='+temp_code.ar_booking.vendor+']').attr('selected','selected');
 	}
     function show_update_saldo(id) {
 
