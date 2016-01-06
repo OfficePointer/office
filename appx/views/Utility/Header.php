@@ -34,7 +34,7 @@ foreach ($us as $key) {
   <!-- Bootstrap 3.3.5 -->
   <link rel="stylesheet" href="<?php echo base_url('assets/jqwidgets/styles/jqx.base.css');?>" type="text/css" />
   <link rel="stylesheet" href="<?php echo base_url('assets/bootstrap/css/bootstrap.css');?>">
-  <!-- <link rel="stylesheet" href="<?php echo base_url('assets/css/additional.css');?>"> -->
+  <link rel="stylesheet" href="<?php echo base_url('assets/css/additional.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/plugins/Font-Awesome-master/css/font-awesome.min.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/AdminLTE.css');?>">
   <link rel="stylesheet" href="<?php echo base_url('assets/dist/css/skins/_all-skins.min.css');?>">

@@ -3,6 +3,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Xhr_ajax extends CI_Controller {
 
+
+    public function ajax_get_mitra()
+    {
+        $term = $this->input->post('term');
+        $this->db->select("id_mitra as id, concat(brand_name,' (',prefix,')') as value, prefix");
+        $this->db->group_start();
+        $this->db->like('brand_name',$term,'both');
+        $this->db->or_like('prefix',$term,'both');
+        $this->db->group_end();
+        $this->db->where('status','active');
+        $this->db->limit(7);
+        $a = $this->db->get('data_mitra')->result_array();
+        echo json_encode($a);
+    }
     public function update_action_done()
     {
         $id = $this->input->post('id');

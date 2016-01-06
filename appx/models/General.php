@@ -130,7 +130,7 @@ function csv_to_array($filename='', $delimiter=',')
 			$this->db->limit(1);
 		}else{
 			$this->db->order_by('klasifikasi_member.id','desc');
-			$this->db->like('klasifikasi_member.tgl_update',$time,"after");
+			$this->db->where('klasifikasi_member.tgl_update <=',$time."31 00:00:00");
 			$this->db->limit(1);
 		}
 		$xa = $this->db->get('klasifikasi_member');

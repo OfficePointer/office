@@ -39,7 +39,9 @@ var temp_code = '';
 
 	$(document).ready(function(){
 
+        $(".for_numberinput").jqxNumberInput({ width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
 
+		//$(".inside-box-im").hide();
 		if(Notification.permission !== 'granted'){
 			Notification.requestPermission();
 		}
@@ -72,6 +74,10 @@ var temp_code = '';
 	});
 var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 
+	function openfordate(id){
+		$("#"+id).focus();
+	}
+
 	function clear_btn(){
 		$("#btn_fol").remove();
 		$("#btn_fol2").remove();
@@ -85,6 +91,24 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 		$("#btn_fol2").remove();
 		$("#btn_fol3").remove();
 	}
+$(function() {
+	$(".for_mitra").autocomplete({
+	  source: function( request, response ) {
+	     $.ajax({
+			url: "<?php echo base_url('xhr_ajax/ajax_get_mitra');?>",
+			type: "POST",
+			dataType: "json",
+			data: {term: request.term},
+			success: function(data) {
+				response(data);
+			}
+	     });
+	   },
+		select:function(event, ui){
+			$("#id_mitra").val(ui.item.id);
+		}
+	 });
+});
 
 	function get_saldo_airline(){
 
@@ -306,6 +330,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 										'<th>Title</th>'+
 										'<th>Name</th>'+
 										'<th>Type</th>'+
+										'<th>Rute</th>'+
 										'<th>Class</th>'+
 									'</tr>';
 						$.each( ar_pnr, function( key, value ) {
@@ -313,41 +338,70 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 											'<td>'+value.title_pax+'</td>'+
 											'<td>'+value.nama_pax+'</td>'+
 											'<td>'+value.jenis_pax+'</td>'+
+											'<td>'+value.kota_asal+'-'+value.kota_tujuan+'</td>'+
 											'<td>'+value.kelas+'</td>'+
 										'</tr>';
 						});
+							paxinfo +='</table>';
 
 						var html = '<table class="table">'+
 									'<tr>'+
 										'<td>Booking Code</td>'+
 										'<td><b>'+ar.kode_booking+'</b></td>'+
-										'<td>Brand Name</td>'+
-										'<td>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+										'<td colspan=2>Brand Name</td>'+
+										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Airline</td>'+
+										'<td>'+ar.nama_pesawat+'</td>'+
+										'<td colspan=2>Depart</td>'+
+										'<td colspan=2>'+ar.tgl_berangkat_takeoff+' '+ar.time_berangkat_takeoff+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Flight Type</td>'+
 										'<td>'+ar.flight_type+'</td>'+
-										'<td>Route</td>'+
-										'<td>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
+										'<td colspan=2>Route</td>'+
+										'<td colspan=2>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
 									'</tr>'+
 									'<tr>'+
-										'<td colspan=4>Pax Info</td>'+
+										'<td colspan=6>Pax Info</td>'+
 									'</tr>'+
 									'<tr>'+
-										'<td colspan=4>'+paxinfo+'</td>'+
+										'<td colspan=6>'+paxinfo+'</td>'+
 									'</tr>'+
+									'<tr>'+
+										'<td>NTA</td>'+
+										'<td>'+ar.nta_idr+'</td>'+
+										'<td>Pax</td>'+
+										'<td>'+ar.pax_idr+'</td>'+
+										'<td>Member Paid</td>'+
+										'<td>'+ar.self_price+'</td>'+
 									'</table>';
 						$(".modal-footer").prepend('<button onclick="usecode()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
 
-						$("#exampleModalLabel").html(kode_booking);
-						$("#isinya").html(html);
-					    $('#modal_profiling').modal('show');
+						$("#exampleModalLabelFunnyname").html(kode_booking);
+						$("#isinyafunnyname").html(html);
+					    $('#modal_funnyname').modal('show');
 					}else{
-						
+						//$(".inside-box-im").fadeIn();
 					}
 				}
 			});
-		},1000);
+		},500);
+	}
+	function usecode(){
+		//$(".inside-box-im").fadeIn();
+		close_popup();
+		clear_btn();
+		$("#pax").jqxNumberInput('setDecimal',temp_code.ar_booking.pax_idr);
+		$("#nta").jqxNumberInput('setDecimal',temp_code.ar_booking.nta_idr);
+		$("#memberpaid").jqxNumberInput('setDecimal',temp_code.ar_booking.self_price);
+		$("#mitra").val(temp_code.mitra.brand_name+' ('+temp_code.mitra.prefix+')');
+		$("#from").val(temp_codear_booking_pnr[0].kota_asal);
+		$("#to").val(temp_codear_booking_pnr[0].kota_tujuan);
+		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
+		$("#id_mitra").val(temp_code.mitra.id_mitra);
+		$("#vendor").val(temp_code.);
 	}
     function show_update_saldo(id) {
 
@@ -706,7 +760,7 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 	    	$(document).find("#btn_modal_close").click();
 	    	$(document).find("#btn_modal_close_funnyname").click();
 	    	$('#modal_profiling').modal('hide');
-	    	$('#modal_profiling_funnyname').modal('hide');
+	    	$('#modal_funnyname').modal('hide');
 	    	$(".modal-backdrop fade in").remove();
 	    	$(".modal-backdrop fade in").remove();
 	    }
