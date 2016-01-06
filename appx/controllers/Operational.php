@@ -24,6 +24,11 @@ class Operational extends CI_Controller {
         $data['ckeditor'] = $this->_setup_ckeditor('info');
         $this->general->load('operational/create_info',$data);
     }    
+    public function issued_manual_add()
+    {
+        $data['type_info'] = $this->db->get('type_info')->result_array();
+        $this->general->load('operational/trx/manual_issued/add',$data);
+    }    
     public function airline_save()
     {
         $this->general->logging();
@@ -262,9 +267,17 @@ class Operational extends CI_Controller {
         $this->general->logging();
 
         $this->email->set_header('X-MC-PreserveRecipients',TRUE);
-        $this->email->from('koran@office.pointer.co.id', 'Koran Helpdesk');
+        $this->email->from('qa.dev.pointer@outlook.com', 'Koran Helpdesk');
         //all service operation
-        $this->email->to($this->general->get_email_div(array('Root','Opera+','Opera','IT Support','Enterprise','Feedback Service'),false)); 
+        $tujuan = $this->db->where('id',36)->get('flowsys')->row_array();
+        $to = explode(",", $tujuan['assign_user']);
+        $em = array();
+        foreach ($to as $key) {
+            $em[] = $this->general->get_email($key);
+        }
+        $em[] = $this->session->userdata('email');
+
+        $this->email->to($em); 
         //only me
         //$this->email->to('ariefsetya@live.com,arief@pointer.co.id,achmad@pointer.co.id');
         //$this->email->to($this->general->get_email_div(array('Root','Opera+','Opera','IT Support','Enterprise','Feedback Service'),false));         
@@ -276,10 +289,10 @@ class Operational extends CI_Controller {
         $this->email->subject($ss['judul']);
         $this->email->message($ss['isi']."<br><hr>Posted by ".$this->general->get_user($ss['idpengguna'])." at ".$ss['tanggal']." ".$ss['jam']);  
 
-         $to = $this->general->get_email_div(array('Root','Opera+','Opera','IT Support','Enterprise','Feedback Service'),true);
+         $to = $em;
         $this->email->send();
         foreach ($to as $key) {
-            $data['email'] = $key['email'];
+            $data['email'] = $key;
             $data['from'] = $this->session->userdata('email');
             $data['created_at'] = date("Y-m-d H:i:s");
             $data['sent'] = 1;

@@ -67,6 +67,16 @@
                 <li><a href="<?php echo base_url('operational/airline_add');?>"><i class="fa fa-pencil"></i> Add New</a></li>
               </ul>
             </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-paper-plane-o"></i>
+                <span>Change Transaction</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
+              </ul>
+            </li>
             <li>
               <a href="#">
                 <i class="fa fa-envelope-o"></i>

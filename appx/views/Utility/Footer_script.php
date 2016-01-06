@@ -35,6 +35,8 @@ var muncul_deposit = 0;
     Waves.attach('.btn', ['waves-button', 'waves-float']);
 	Waves.init();
 
+var temp_code = '';
+
 	$(document).ready(function(){
 
 
@@ -52,6 +54,7 @@ var muncul_deposit = 0;
 	    $('#modal_funnyname').modal({'show':false});
 
 		$('#modal_funnyname .modal-dialog').css('width','1200px');
+	    $(".for_date").datepicker();
 	    $(".datepicker").daterangepicker();
 
 	    setInterval(function () {
@@ -275,6 +278,73 @@ var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
 					$("#exampleModalLabel").html(info);
 					$("#isinya").html(isi.status+" - "+isi.msg);
 				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
+    function lookupcode () {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			var kode_booking = $("#kode_booking").val();				
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/lookup_code");?>',
+				dataType:'json',
+				data:{code:kode_booking},
+				success:function(isi){
+					if(isi.ar_booking!==null){
+						temp_code = isi;
+						var ar = isi.ar_booking;
+						var mi = isi.mitra;
+						var ar_pnr = isi.ar_booking_pnr;
+
+						var paxinfo = '<table class="table">';
+						paxinfo +=    '<tr>'+
+										'<th>Title</th>'+
+										'<th>Name</th>'+
+										'<th>Type</th>'+
+										'<th>Class</th>'+
+									'</tr>';
+						$.each( ar_pnr, function( key, value ) {
+						  paxinfo +=    '<tr>'+
+											'<td>'+value.title_pax+'</td>'+
+											'<td>'+value.nama_pax+'</td>'+
+											'<td>'+value.jenis_pax+'</td>'+
+											'<td>'+value.kelas+'</td>'+
+										'</tr>';
+						});
+
+						var html = '<table class="table">'+
+									'<tr>'+
+										'<td>Booking Code</td>'+
+										'<td><b>'+ar.kode_booking+'</b></td>'+
+										'<td>Brand Name</td>'+
+										'<td>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Flight Type</td>'+
+										'<td>'+ar.flight_type+'</td>'+
+										'<td>Route</td>'+
+										'<td>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=4>Pax Info</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=4>'+paxinfo+'</td>'+
+									'</tr>'+
+									'</table>';
+						$(".modal-footer").prepend('<button onclick="usecode()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
+
+						$("#exampleModalLabel").html(kode_booking);
+						$("#isinya").html(html);
+					    $('#modal_profiling').modal('show');
+					}else{
+						
+					}
 				}
 			});
 		},1000);
