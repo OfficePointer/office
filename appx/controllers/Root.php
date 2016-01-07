@@ -140,7 +140,7 @@ class Root extends CI_Controller {
     {
         $this->general->logging();
 
-        $this->email->from('office@office.pointer.co.id', 'Office Pointer');
+        $this->email->from('qa.dev.pointer@outlook.com', 'Office Pointer');
         //all service operation
         $this->db->where('ID',$idnya);
         $em = $this->db->get('data_user');
