@@ -153,7 +153,7 @@ class Root extends CI_Controller {
         $ss = "<h2>Office Pointer</h2>
         		<hr>
         		<p>Account Information</p>
-        		<p>Name : ".$em['name']."<br>E-Mail : ".$em['email']."<br>Password : test1234</p>
+        		<p>URL : ".base_url()."<br>Name : ".$em['name']."<br>E-Mail : ".$em['email']."<br>Password : test1234</p>
         		<p>&nbsp;</p>
         		<div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
 	 </b></span></span></span></span></span></span></b></span></span></span>
