@@ -112,6 +112,13 @@ function csv_to_array($filename='', $delimiter=',')
 		$xa = $xa->row_array();
 		return $xa['division'];
 	}
+	public function get_vendor($id)
+	{
+		$this->db->where('id',$id);
+		$xa = $this->db->get('vendor');
+		$xa = $xa->row_array();
+		return $xa['nama'];
+	}
 	public function get_forms($id)
 	{
 		$this->db->where('delete_at',NULL);

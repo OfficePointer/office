@@ -9,8 +9,7 @@ class Xhr_ajax extends CI_Controller {
         $term = $this->input->post('term');
         $this->db->select("id_mitra as id, concat(brand_name,' (',prefix,')') as value, prefix");
         $this->db->group_start();
-        $this->db->like('brand_name',$term,'both');
-        $this->db->or_like('prefix',$term,'both');
+        $this->db->like("concat(brand_name,' (',prefix,')')",$term,'both');
         $this->db->group_end();
         $this->db->where('status','active');
         $this->db->limit(7);
@@ -39,12 +38,15 @@ class Xhr_ajax extends CI_Controller {
         $dbs = $this->load->database('dbpointer',TRUE);
         $dbs->where('kode_booking',$value);
         $data['ar_booking'] = $dbs->get('ar_booking')->row_array();
-        $dbs->select('mitra.prefix,company.brand_name');
-        $dbs->join('company','company.id_mitra=mitra.id_mitra','left');
-        $dbs->where('mitra.id_mitra',$data['ar_booking']['id_mitra']);
-        $data['mitra'] = $dbs->get('mitra')->row_array();
-        $dbs->where('id_booking',$data['ar_booking']['id']);
-        $data['ar_booking_pnr'] = $dbs->get('ar_booking_pnr')->result_array();
+        if($data['ar_booking']!=null){
+            $dbs->select('mitra.prefix,company.brand_name');
+            $dbs->join('company','company.id_mitra=mitra.id_mitra','left');
+            $dbs->where('mitra.id_mitra',$data['ar_booking']['id_mitra']);
+            $data['mitra'] = $dbs->get('mitra')->row_array();
+            $dbs->where('id_booking',$data['ar_booking']['id']);
+            $data['ar_booking_pnr'] = $dbs->get('ar_booking_pnr')->result_array();
+            $data['json_data'] = json_encode($data);
+        }
         echo (json_encode($data));
 
     }

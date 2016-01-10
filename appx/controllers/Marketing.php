@@ -137,7 +137,7 @@ class Marketing extends CI_Controller {
 		echo "Cron ".$tanggal." Finished";
 
 	}
- public function export_member_monthly()
+	public function export_member_monthly()
     {
         $this->general->logging();
     					header('Content-type: application/vnd.ms-excel');

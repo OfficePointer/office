@@ -11,7 +11,7 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="">
+      <form method="POST" action="<?php echo base_url("operational/save_issued_manual");?>">
 
 
       <div class="col-md-4">
@@ -163,6 +163,7 @@
           <label>Reason</label> 
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="reason" id="reason">
+            <input autocomplete="off" type="hidden" class="form-control" name="paxinfo" id="paxinfo">
           </div>
         </div>
         <div class="col-md-12">

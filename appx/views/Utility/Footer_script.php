@@ -36,7 +36,11 @@ var muncul_deposit = 0;
 	Waves.init();
 
 var temp_code = '';
-    $(".for_numberinput").jqxNumberInput({ width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
+    $(".for_numberinput").jqxNumberInput({ spinMode:'simple',width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
+    $('#nta').on('valueChanged', function (event) {$('#nta_num').val(event.args.value);}); 
+    $('#basic').on('valueChanged', function (event) {$('#basic_num').val(event.args.value);}); 
+    $('#pax').on('valueChanged', function (event) {$('#pax_num').val(event.args.value);}); 
+    $('#memberpaid').on('valueChanged', function (event) {$('#memberpaid_num').val(event.args.value);}); 
 
 	$(document).ready(function(){
 
@@ -400,12 +404,14 @@ $(function() {
 		$("#from").val(temp_code.ar_booking_pnr[0].kota_asal);
 		$("#to").val(temp_code.ar_booking_pnr[0].kota_tujuan);
 		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
-		$("#id_mitra").val(temp_code.mitra.id_mitra);
+		$("#id_mitra").val(temp_code.ar_booking.id_mitra);
 		$("#flight_type").val(temp_code.ar_booking.flight_type);
 		$("#adult").val(temp_code.ar_booking.jml_dewasa);
 		$("#child").val(temp_code.ar_booking.jml_child);
 		$("#infant").val(temp_code.ar_booking.jml_inf);
+		$("#paxinfo").val(temp_code.json_data);
 		$('#vendor option[value='+temp_code.ar_booking.vendor+']').attr('selected','selected');
+		$("#tgl_info").focus();
 	}
     function show_update_saldo(id) {
 
