@@ -145,7 +145,7 @@ $(function() {
  						color = "bg-red";
  					}
 
- 					if(saldo[data].muncul>0 || clock==10 || clock==16){
+ 					if(saldo[data].muncul>0 || clock==15 || clock==16){
 
  						$("#deposit_data").append('<li class="'+color+'" id="'+saldo[data].id+'" onclick="update_saldo('+saldo[data].id+',\''+saldo[data].code+'\',\''+saldo[data].airline+'\')" style="cursor:pointer;">'+
 	 													'<a class="text-black waves-eff-li">'+
