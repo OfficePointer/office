@@ -188,7 +188,12 @@ $(function() {
  				var muncul = balik.muncul;
  				$("#pending_data").html('');
  				$("#label_pending").html(action.length);
+ 				var info = "";
+ 				var i = 1;
+
  				for(var data in action) {
+
+
 	 					if(action[data].trx_info=='topup'){
 	 						color="";
 	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
@@ -198,39 +203,46 @@ $(function() {
 	 							color = 'bg-green';
 	 						}
 
-	 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" onclick="show_update_saldo('+action[data].id+')" style="cursor:pointer;">'+
-	 													'<a class="text-black waves-eff-li">'+
-	 			  											'<i class="fa fa-money text-aqua"></i> '+action[data].info+
-	 													'</a>'+
-	 												'</li>');
-
-
-			 				if(muncul){
-							
-								notif = new Notification('Update Top Up Saldo', {
-							      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-							      body: action[data].info,
-							    });
-
-							    notif.onclick = function (x) {
-							      window.focus();
-							    };
-							}
+	 						$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" onclick="show_update_saldo('+action[data].id+')" style="cursor:pointer;">'+
+								'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+								'</a>'+
+							'</li>');
+	 						info += action[data].info;
 
 						}
 						else if(action[data].trx_info=='rebook'){
 							if(action[data].id_assign==0){
 			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
-										'<a class="text-black waves-eff-li">'+
-											'<i class="fa fa-money text-aqua"></i> ambil baru '+action[data].info+
-										'</a>'+
-									'</li>');
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> ambil baru '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
 		 					}else if(action[data].status==1 && action[data].user_view==0){
 			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
-										'<a class="text-black waves-eff-li">'+
-											'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
-										'</a>'+
-									'</li>');
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
+		 					}
+						}
+						else if(action[data].trx_info=='issued'){
+							if(action[data].id_flowsys==5){
+			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
+		 					}else if(action[data].status==1 && action[data].user_view==0){
+			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
 		 					}
 						}
 						else if(action[data].trx_info=='...'){
@@ -239,18 +251,37 @@ $(function() {
 						else{
 							// if doesn't find trx info
 		 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
-									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
-										'<div class="btn pull-right" onclick="alert(\'Transaction is not defined\')">OK</div>'+
-									'</a>'+
-								'</li>');
+								'<a class="text-black waves-eff-li">'+
+									'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+									'<div class="btn pull-right" onclick="alert(\'Transaction is not defined\')">OK</div>'+
+								'</a>'+
+							'</li>');
 						}
 
+						//console.log(action.length);
+						//console.log(i);
+ 					if(i<action.length){
+ 						info += '\r\n';
+ 					}
+ 					
+ 					i++;
+
  				}
- 				if(muncul){
-					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-					 audio_saldo.play();
+				if(muncul){
+				
+					notif = new Notification('Pending Request', {
+				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+				      body: info,
+				    });
+
+				    notif.onclick = function (x) {
+				      window.focus();
+				    };
 				}
+ 			// 	if(muncul){
+				// 	 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+				// 	 audio_saldo.play();
+				// }
 
  			}
  		});

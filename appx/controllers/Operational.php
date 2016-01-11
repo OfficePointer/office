@@ -27,12 +27,7 @@ class Operational extends CI_Controller {
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'issued';
         $data['id_flowsys'] = 5;
-        $data['tgl_info'] = date_format(
-                                date_create(
-                                    $data['tgl_info'],
-                                    "Y-m-d H:i:s"
-                                )
-                            );
+        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
         if($data['paxinfo']==""){
             $data['paxinfo'] = json_encode(
