@@ -426,8 +426,8 @@
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-paper-plane-o"></i>
-                <span>Mandatory Garuda</span>
+                <i class="fa fa-h-square"></i>
+                <span>Helpdesk Tools</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
