@@ -16,7 +16,7 @@
           <tr>
             <th>Info</th>
             <th>Nama</th>
-            <th>Action</th>
+            <th colspan="2">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +36,7 @@
               }
             }
               </script></td>
+            <td><a href="<?php echo base_url("servicedesk/infosys_edit/".$key['id']);?>">Edit</td>
           </tr>
         <?php
         }
