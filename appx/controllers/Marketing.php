@@ -844,7 +844,55 @@ class Marketing extends CI_Controller {
 
 	public function member_graph()
 	{
-		$this->general->load('marketing/member_graph');
+		
+		
+
+		$limit = 10;
+		$pg = 1;
+		$start = 0;
+		if($this->uri->segment(3)!=""){
+			$pg = $this->uri->segment(3);
+			if($pg<=0){
+				$pg=1;
+			}
+			$start = ($pg-1)*$limit;
+		}
+		
+		$this->db->select("data_mitra.*,data_klasifikasi.klasifikasi, data_klasifikasi.id as id_klasifikasi");
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->where('k2.id',NULL);
+		
+		if($this->session->userdata('klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
+		}
+		
+
+		$data['mitra'] = $this->db->get('data_mitra')->result_array();
+	
+
+		$this->db->select('count(data_mitra.id_mitra) as jumlah, status');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->where('k2.id',NULL);
+		
+		if($this->session->userdata('klasifikasi')!=""){
+			$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
+		}
+		$this->db->group_by('status');
+		$jum = 0;
+		$data['summary'] = $this->db->get('data_mitra')->result_array();
+		foreach($data['summary'] as $keya){
+			$jum+=$keya['jumlah'];
+		}
+
+		$data['paging'] = $this->general->pagination($jum,$limit,$pg,base_url("marketing/member_graph/%d"));
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+		$this->general->load('marketing/member_graph',$data);		
+
+
 	}
 	public function member_week()
 	{
