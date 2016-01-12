@@ -26,7 +26,16 @@
           <tr>
             <td><?php echo $key['info'];?></td>
             <td><?php echo $key['title'];?></td>
-            <td><a href="<?php echo base_url("servicedesk/infosys_delete/".$key['id']);?>">Delete</a></td>
+            <td><a href="<?php echo base_url("servicedesk/infosys_delete/".$key['id']);?>" onClick="return doconfirm();">Delete</a><script>
+            function doconfirm()
+            {
+              job=confirm("Are you sure to delete this data?");
+              if(job!=true)
+              {
+              return false;
+              }
+            }
+              </script></td>
           </tr>
         <?php
         }
