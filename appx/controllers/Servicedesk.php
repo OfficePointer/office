@@ -42,6 +42,21 @@ class Servicedesk extends CI_Controller {
 		$this->db->delete('infosys');
 		redirect(base_url('servicedesk/infosys'));
 	}
+	public function infosys_edit($id)
+	{
+		$data = array();
+		$data['info'] = $this->db->get('infosys')->result_array();
+		$data['info'] = $this->db->where('id',$id)->get('infosys')->row_array();
+		$this->general->load('servicedesk/infosys/edit', $data);
+	}
+	public function infosys_update()
+	{
+        $this->general->logging();
+		$data = $this->input->post();
+		$this->db->where('id', $data['id']);
+		$this->db->update('infosys',$data);
+		redirect(base_url('servicedesk/infosys'));
+	}
 	public function flowsys()
 	{
 		$data['flow'] = $this->db->get('flowsys')->result_array();

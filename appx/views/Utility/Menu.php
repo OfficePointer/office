@@ -75,9 +75,10 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
+                <li><a href="<?php echo base_url('operational/rebook');?>"><i class="fa fa-book"></i> Rebook</a></li>
               </ul>
             </li>
-            <li>
+              <li class="treeview">
               <a href="#">
                 <i class="fa fa-envelope-o"></i>
                 <span>E-mail Templates</span>
@@ -88,6 +89,7 @@
                 <li><a href="<?php echo base_url('root/email_templates_add');?>"><i class="fa fa-plus"></i> Add New</a></li>
               </ul>
             </li>
+
             <li>
               <a href="#">
                 <i class="fa fa-gears"></i>
@@ -98,7 +100,7 @@
                 <li>
                   <a href="#">
                     <i class="fa fa-info"></i>
-                    <span>Infosys</span>
+                    <span>Flowsys</span>
                     <i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">
