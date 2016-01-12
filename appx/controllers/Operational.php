@@ -49,6 +49,36 @@ class Operational extends CI_Controller {
         $this->db->insert('actionsys',$data);
         redirect(base_url("servicedesk/all_tasks"));
     }
+    public function save_rebook()
+    {
+        $data = $this->input->post();
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['user_view'] = 1;
+        $data['id_user'] = $this->session->userdata('id');
+        $data['trx_info'] = 'issued';
+        $data['id_flowsys'] = 5;
+        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        $data['assign_view'] = 0;
+        if($data['paxinfo']==""){
+            $data['paxinfo'] = json_encode(
+                                            array('class'=>$data['class'],
+                                                'adult'=>$data['adult'],
+                                                'child'=>$data['child'],
+                                                'infant'=>$data['infant'])
+            );
+        }
+        $data['status'] = 0;
+        $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        $data['id_ticket'] = uniqid();
+        $data['info'] = 'Issued Manual '.$this->general->get_airline($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+        unset($data['mitra']);
+        unset($data['class']);
+        unset($data['adult']);
+        unset($data['child']);
+        unset($data['infant']);
+        $this->db->insert('actionsys',$data);
+        redirect(base_url("servicedesk/all_tasks"));
+    }
     public function airline_add()
     {
         $data['ckeditor'] = $this->_setup_ckeditor('info');
@@ -59,6 +89,12 @@ class Operational extends CI_Controller {
         $data['type_info'] = $this->db->get('type_info')->result_array();
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/manual_issued/add',$data);
+    }    
+    public function rebook_add()
+    {
+        $data['type_info'] = $this->db->get('infosys')->result_array();
+        $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
+        $this->general->load('operational/trx/modul_rebook/add',$data);
     }    
     public function airline_save()
     {
