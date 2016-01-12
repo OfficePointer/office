@@ -25,17 +25,25 @@ class Pengaturan extends CI_Controller {
 			 $this->general->load('pengaturan/operational/apps');
 		 }
 
-		 public function mandatoryview(){
-			 $this->general->load('pengaturan/operational/master_mandatory');
+		 public function mandatoryviewall(){
+			 $this->general->load('pengaturan/operational/master_mandatory_all');
 		 }
 
-		 public function classgarudaview(){
-			 $this->general->load('pengaturan/operational/master_class_garuda');
+		 public function mandatoryviewadd(){
+			 $this->general->load('pengaturan/operational/master_mandatory_add');
+		 }
+
+		 public function classgarudaviewall(){
+			 $this->general->load('pengaturan/operational/master_class_garuda_all');
+		 }
+
+		 public function classgarudaviewadd(){
+			 $this->general->load('pengaturan/operational/master_class_garuda_add');
 		 }
 
 	 //---------------------------------------------------------------------------
 
-	 		
+
 
 	 //---------------------------------------------------------------------------
 
