@@ -18,6 +18,27 @@ class Pengaturan extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
+
+	 //---------------------------------------------------------------------------
+
+		 public function appsview(){
+			 $this->general->load('pengaturan/operational/apps');
+		 }
+
+		 public function mandatoryview(){
+			 $this->general->load('pengaturan/operational/master_mandatory');
+		 }
+
+		 public function classgarudaview(){
+			 $this->general->load('pengaturan/operational/master_class_garuda');
+		 }
+
+	 //---------------------------------------------------------------------------
+
+	 		
+
+	 //---------------------------------------------------------------------------
+
 	public function office_manual()
 	{
 		$limit = 5;
@@ -29,7 +50,7 @@ class Pengaturan extends CI_Controller {
 				$pg=1;
 			}
 			$start = ($pg-1)*$limit;
-		}	
+		}
 		$this->db->where('sys_delete_date',"");
 		$this->db->limit($limit,$start);
 		$this->db->order_by('sys_create_date','desc');
@@ -148,7 +169,7 @@ class Pengaturan extends CI_Controller {
 	{
         $this->general->logging();
 		$data = $this->input->post();
-		
+
 		if($_FILES['picture']['tmp_name']!=""){
         	$folder = $_FILES['picture']['tmp_name'];
         	mkdir("assets/images/".$this->session->userdata('id'));
@@ -184,7 +205,7 @@ class Pengaturan extends CI_Controller {
 		$a = $this->db->get('data_user');
 		$a = $a->row_array();
 		$baru = ($a['approved']==1)?0:1;
-		
+
 		$this->db->where('ID',$id);
 		$this->db->update('data_user',array('approved'=>$baru));
 		redirect(base_url('pengaturan/user_manage'));
@@ -196,7 +217,7 @@ class Pengaturan extends CI_Controller {
 		$a = $this->db->get('data_user');
 		$a = $a->row_array();
 		$baru = ($a['mail_type']==1)?0:1;
-		
+
 		$this->db->where('ID',$id);
 		$this->db->update('data_user',array('mail_type'=>$baru));
 		redirect(base_url('pengaturan/user_manage'));
