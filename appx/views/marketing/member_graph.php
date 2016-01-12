@@ -56,6 +56,19 @@
                 </select></td>
               </tr>
               <tr>
+              <td>Klasifikasi</td>
+              <td>
+                <select name="klasifikasi" class="form-control">
+                <option <?php echo ($this->session->userdata('klasifikasi')=="")?"selected":"";?> value="">-- All --</option>
+                <?php
+                foreach($klasifikasi as $dataklasifikasi){
+                ?>
+                <option <?php echo ($this->session->userdata('klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
+                <?php } ?>
+                </select>
+              </td>
+              </tr>
+              <tr>
                 <td></td>
                 <td><button class="btn btn-primary" type="submit">Submit</button>  
                 <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>">Export All</a> <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export_trx/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>">Export Selling</a></td>
