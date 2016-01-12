@@ -75,7 +75,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
-                <li><a href="<?php echo base_url('operational/rebook');?>"><i class="fa fa-book"></i> Rebook</a></li>
+                <li><a href="<?php echo base_url('operational/rebook_modul');?>"><i class="fa fa-book"></i> Rebook</a></li>
               </ul>
             </li>
               <li class="treeview">
@@ -424,6 +424,18 @@
             <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
             <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-paper-plane-o"></i>
+                <span>Mandatory Garuda</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('pengaturan/appsview');?>"><i class="fa fa-list"></i> Apps</a></li>
+                <li><a href="<?php echo base_url('/pengaturan/mandatoryview');?>"><i class="fa fa-medium"></i> Master Mandatory</a></li>
+                <li><a href="<?php echo base_url('/pengaturan/classgarudaview ');?>"><i class="fa fa-maxcdn"></i> Master Class Garuda</a></li>
+              </ul>
+            </li>
             <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
           </ul>
         </li>
