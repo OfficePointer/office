@@ -98,7 +98,7 @@
                 <li>
                   <a href="#">
                     <i class="fa fa-info"></i>
-                    <span>Infosys</span>
+                    <span>Flowsys</span>
                     <i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">
