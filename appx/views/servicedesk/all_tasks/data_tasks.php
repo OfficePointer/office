@@ -1,28 +1,22 @@
-<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
       Data All Tasks
       </h1>
     </section>
-    <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-md-12">
           <div class="box box-solid collapsed-box">
             <div class="box-header" style="cursor: move;">
               <i class="fa fa-filter"></i>
-
               <h3 class="box-title">Filter Data</h3>
-
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-sm" data-widget="collapse"><i class="fa fa-plus"></i>
                 </button>
               </div>
             </div>
             <div class="box-body border-radius-none collapse" style="display: none;">
-
               <form method="POST" action="<?php echo base_url('servicedesk/all_tasks');?>">
               <table class="table">
                 <tr>
@@ -37,9 +31,7 @@
                 </tr>
               </table>
               </form>
-
             </div>
-            <!-- /.box-footer -->
           </div>
       <table class="table table-bordered table-striped for_datatables">
         <thead>
@@ -67,9 +59,5 @@
       </table>
       </div>
       </div>
-      <!-- /.row (main row) -->
-
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
