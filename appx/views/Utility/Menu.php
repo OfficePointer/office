@@ -425,35 +425,40 @@
             <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
             <li><a href="<?php echo base_url('/servicedesk/my_tasks');?>"><i class="fa fa-tasks"></i> My Tasks</a></li>
-            <li>
+            <li class="treeview">
               <a href="#">
                 <i class="fa fa-h-square"></i>
                 <span>Helpdesk Tools</span>
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
-              <ul class="treeview-menu">   
-                <li>
-                  <a href="#">
-                    <i class="fa fa-medium"></i>
-                    <span>Master Mandatory</span>
-                    <i class="fa fa-angle-left pull-right"></i>
-                  </a>
-                  <ul class="treeview-menu">
-                    <li><a href="<?php echo base_url('/pengaturan/mandatoryviewall');?>"><i class="fa fa-files-o"></i> All Data</a></li>
-                    <li><a href="<?php echo base_url('/pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
-                  </ul>
-                </li>
-                   <li>
-                    <a href="#">
-                      <i class="fa fa-maxcdn"></i>
-                      <span>Master Class Garuda</span>
-                      <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-                    <ul class="treeview-menu">
-                      <li><a href="<?php echo base_url('/pengaturan/classgarudaviewall');?>"><i class="fa fa-files-o"></i> All Data</a></li>
-                      <li><a href="<?php echo base_url('/pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
-                    </ul>
-                  </li>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('pengaturan/appsview');?>"><i class="fa fa-list"></i> Apps</a></li>
+              <li class="treeview">
+              <a href="#">
+                <i class="fa fa-medium"></i>
+                <span>Master Mandatory</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-files-o"></i>  All Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
+                                
+              </ul>
+            </li> 
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-maxcdn"></i>
+                <span>Master Class Garuda</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-files-o"></i> All Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
+                                
+              </ul>
+            </li>   
+              </ul>
+            </li>
             <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
           </ul>
         </li>
