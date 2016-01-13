@@ -841,6 +841,23 @@ class Marketing extends CI_Controller {
 		$this->general->load('marketing/followup_all',$data);
 	}
 
+	public function followup_add()
+	{
+
+		$data['data_respon'] = $this->db->get('data_respon')->result_array();
+   		$this->general->load('marketing/followup_add',$data);
+		
+		
+	}
+
+	public function followup_add_save()
+	{
+
+		$data = $this->input->post();
+		$this->db->insert('data_activity',$data);
+		redirect(base_url('marketing/followup_add'));
+
+	}
 
 	public function member_graph()
 	{
