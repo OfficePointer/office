@@ -45,7 +45,6 @@
         <thead>
           <tr>
             <th>IDTicket</th>
-            <th>TrxInfo</th>
             <th>Info</th>
             <th>Pengirim</th>
             <th>Penerima</th>
@@ -57,7 +56,6 @@
         <?php foreach ($all_tasks as $key){ ?>
           <tr>
             <td><?php echo $key['id_ticket'];?></td>
-            <td><?php echo $key['trx_info'];?></td>
             <td><?php echo $key['info'];?></td>
             <td><?php echo $key['pengirim'];?></td>
             <td><?php echo $key['penerima'];?></td>

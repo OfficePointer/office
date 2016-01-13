@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Member Graph
+      Weekly Member Graph
       </h1>
     </section>
     <!-- Main content -->

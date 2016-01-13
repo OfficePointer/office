@@ -18,7 +18,7 @@
         <label>Kode Booking *)</label> 
         <div class="input-group">
           <input autocomplete="off" type="text" required class="form-control" id="kode_booking" name="kode_booking">
-          <span onclick="lookupcode()" style="cursor:pointer" class="input-group-addon"><i class="fa fa-search"></i></span>
+          <span onclick="lookupcode('issued')" style="cursor:pointer" class="input-group-addon"><i class="fa fa-search"></i></span>
         </div>
       </div>
       <div class="clearfix"></div>

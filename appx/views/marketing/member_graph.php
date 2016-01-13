@@ -59,11 +59,11 @@
               <td>Klasifikasi</td>
               <td>
                 <select name="klasifikasi" class="form-control">
-                <option <?php echo ($this->session->userdata('klasifikasi')=="")?"selected":"";?> value="">-- All --</option>
+                <option <?php echo ($this->input->post('klasifikasi')=="")?"selected":"";?> value="">-- All --</option>
                 <?php
                 foreach($klasifikasi as $dataklasifikasi){
                 ?>
-                <option <?php echo ($this->session->userdata('klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
+                <option <?php echo ($this->input->post('klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
                 <?php } ?>
                 </select>
               </td>
@@ -71,7 +71,7 @@
               <tr>
                 <td></td>
                 <td><button class="btn btn-primary" type="submit">Submit</button>  
-                <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>">Export All</a> <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export_trx/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>">Export Selling</a></td>
+                <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>&klasifikasi=<?php echo $this->input->post('klasifikasi');?>">Export All</a> <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_export_trx/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>&klasifikasi=<?php echo $this->input->post('klasifikasi');?>">Export Selling</a></td>
               </tr>
             </table>
           </form>
@@ -82,6 +82,16 @@
             //echo $this->input->post('tahun')."-".$this->input->post('bulan')."-";
             $this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
             $this->db->join('data_mitra','data_mitra.id_mitra=airline_member.id_mitra','left');
+
+            $this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+            $this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+            $this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+            $this->db->where('k2.id',NULL);
+            
+            if($this->input->post('klasifikasi')!=""){
+              $this->db->where('data_klasifikasi.id',$this->input->post('klasifikasi'));
+            }
+
             $this->db->like('kode',$this->input->post('vendor'),'both');
             $this->db->like('tanggal',$this->input->post('tahun')."-".$this->input->post('bulan')."-",'both');
             $this->db->group_by('airline_member.id_mitra');
