@@ -40,7 +40,7 @@ class Operational extends CI_Controller {
         $data['status'] = 0;
         $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_ticket'] = uniqid();
-        $data['info'] = 'Issued Manual '.$this->general->get_airline($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+        $data['info'] = 'Issued Manual '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
         unset($data['mitra']);
         unset($data['class']);
         unset($data['adult']);
@@ -55,27 +55,30 @@ class Operational extends CI_Controller {
         $data['created_at'] = date("Y-m-d H:i:s");
         $data['user_view'] = 1;
         $data['id_user'] = $this->session->userdata('id');
-        $data['trx_info'] = 'issued';
-        $data['id_flowsys'] = 5;
+        $data['trx_info'] = 'rebook';
+        $data['id_flowsys'] = $this->db->where('id_info',$data['id_infosys'])->order_by('id','asc')->get('flowsys')->row_array()['id'];
         $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
         if($data['paxinfo']==""){
             $data['paxinfo'] = json_encode(
                                             array('class'=>$data['class'],
-                                                'adult'=>$data['adult'],
-                                                'child'=>$data['child'],
-                                                'infant'=>$data['infant'])
+                                                'pax_name'=>$data['pax_name'])
             );
         }
         $data['status'] = 0;
+        $data['rebook_status'] = 1;
+        $data['rebook_date_flight'] = date_format(date_create($data['rebook_date_flight']),"Y-m-d");
+        $data['rebook_time_flight'] = date_format(date_create($data['rebook_time_flight']),"H:i:s");
+        $data['rebook_timelimit'] = date_format(date_create($data['rebook_timelimit']),"Y-m-d H:i:s");
+        $data['rebook_process'] = date_format(date_create($data['rebook_process']),"Y-m-d H:i:s");
+        $data['rebook_total_cost'] = $data['rebook_airline_cost']+$data['rebook_admin_cost'];
         $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_ticket'] = uniqid();
-        $data['info'] = 'Issued Manual '.$this->general->get_airline($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+        $data['info'] = 'Rebook '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
         unset($data['mitra']);
+        unset($data['id_infosys']);
+        unset($data['pax_name']);
         unset($data['class']);
-        unset($data['adult']);
-        unset($data['child']);
-        unset($data['infant']);
         $this->db->insert('actionsys',$data);
         redirect(base_url("servicedesk/all_tasks"));
     }
@@ -92,7 +95,7 @@ class Operational extends CI_Controller {
     }    
     public function rebook_add()
     {
-        $data['type_info'] = $this->db->get('infosys')->result_array();
+        $data['type_info'] = $this->db->where_in('id',array(6,7,8,9))->get('infosys')->result_array();
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_rebook/add',$data);
     }    

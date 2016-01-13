@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Data All Tasks
+      My All Tasks
       </h1>
     </section>
     <!-- Main content -->
@@ -23,7 +23,7 @@
             </div>
             <div class="box-body border-radius-none collapse" style="display: none;">
 
-              <form method="POST" action="<?php echo base_url('servicedesk/all_tasks');?>">
+              <form method="POST" action="<?php echo base_url('servicedesk/my_tasks');?>">
               <table class="table">
                 <tr>
                   <td>Date Tasks</td>
@@ -32,8 +32,8 @@
                 <tr>
                   <td></td>
                   <td><button class="btn btn-primary">Search</button>
-                  <a class="btn btn-warning" href="<?php echo base_url("servicedesk/all_tasks/clear");?>">Reset</a>
-                  <a class="btn btn-success" href="<?php echo base_url("servicedesk/expr_all_tasks");?>">Export</a></td>
+                  <a class="btn btn-warning" href="<?php echo base_url("servicedesk/my_tasks/clear");?>">Reset</a>
+                  <a class="btn btn-success" href="<?php echo base_url("servicedesk/expr_my_tasks");?>">Export</a></td>
                 </tr>
               </table>
               </form>
@@ -45,6 +45,7 @@
         <thead>
           <tr>
             <th>IDTicket</th>
+            <th>TrxInfo</th>
             <th>Info</th>
             <th>Pengirim</th>
             <th>Penerima</th>
@@ -53,9 +54,10 @@
           </tr>
         </thead>
         <tbody>
-        <?php foreach ($all_tasks as $key){ ?>
+        <?php foreach ($my_tasks as $key){ ?>
           <tr>
             <td><?php echo $key['id_ticket'];?></td>
+            <td><?php echo $key['trx_info'];?></td>
             <td><?php echo $key['info'];?></td>
             <td><?php echo $key['pengirim'];?></td>
             <td><?php echo $key['penerima'];?></td>

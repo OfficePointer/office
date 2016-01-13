@@ -28,7 +28,15 @@ class Pengaturan extends CI_Controller {
 	 //---------------------------------------------------------------------------
 
 		 public function mandatoryviewall(){
-			 $this->general->load('pengaturan/operational/master_mandatory_all');
+			// $this->general->load('pengaturan/operational/master_mandatory_all',$data);
+
+			 $tabledata = $this->db->get('t_mgaruda');
+	 		 $data['data'] = $tabledata->result_array();
+	 	   $this->general->load('pengaturan/operational/master_mandatory_all',$data);
+
+			//  $tableClassification = $this->db->get('data_klasifikasi');
+			// 	$dataClassification['dataClassification'] = $tableClassification->result_array();
+			// 	$this->general->load('marketing/member_classification_all',$dataClassification);
 		 }
 
 		 public function mandatoryviewadd(){
@@ -63,7 +71,7 @@ class Pengaturan extends CI_Controller {
 	 //---------------------------------------------------------------------------
 
 		 public function classgarudaviewall(){
-			 $this->general->load('pengaturan/operational/master_class_garuda_all');
+			 $this->general->load('pengaturan/operational/master_class_garuda_all',$data);
 		 }
 
 		 public function classgarudaviewadd(){

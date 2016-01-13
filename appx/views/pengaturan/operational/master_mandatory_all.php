@@ -13,6 +13,42 @@
     <div class="row">
       <div class="col-md-12">
 
+        <table class="table table-bordered table-striped for_datatables">
+          <thead>
+
+              <th> Group </th>
+              <th> Sequence </th>
+              <th> Mandatory </th>
+              <th> Function </th>
+              <th> Example </th>
+              <th> Type </th>
+
+          </thead>
+
+          <tbody>
+            <?php
+              $i=1;
+              foreach ($data as $key) {
+            ?>
+
+            <tr>
+              <td> <?= $key['k_mand'];?> </td>
+              <td> <?= $key['u_mand'];?> </td>
+              <td> <?= $key['mand'];?> </td>
+              <td> <?= $key['f_mand'];?> </td>
+              <td> <?= $key['c_mand'];?> </td>
+              <td> <?= $key['t_mand'];?> </td>
+
+              <td><a href="  <?= base_url('pengaturan/operational/mandatoryviewedit/'.$key['id_mand']);?> ">Edit</a></td>
+              <td><a href=" <?= base_url('pengaturan/operational/mandatoryviewdelete/'.$key['id_mand']);?> ">Delete</a></td>
+            </tr>
+
+            <?php
+              $i++;
+                }
+            ?>
+          </tbody>
+        </table>
 
       </div>
     </div>
