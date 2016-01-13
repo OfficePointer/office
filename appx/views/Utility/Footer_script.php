@@ -41,6 +41,8 @@ var temp_code = '';
     $('#basic').on('valueChanged', function (event) {$('#basic_num').val(event.args.value);}); 
     $('#pax').on('valueChanged', function (event) {$('#pax_num').val(event.args.value);}); 
     $('#memberpaid').on('valueChanged', function (event) {$('#memberpaid_num').val(event.args.value);}); 
+    $('#rebook_admin_cost_div').on('valueChanged', function (event) {$('#rebook_admin_cost').val(event.args.value);}); 
+    $('#rebook_airline_cost_div').on('valueChanged', function (event) {$('#rebook_airline_cost').val(event.args.value);}); 
 
 	$(document).ready(function(){
 
@@ -236,13 +238,6 @@ $(function() {
 									'</a>'+
 								'</li>');
 	 							info += action[data].info;
-		 					}else if(action[data].status==1 && action[data].user_view==0){
-			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
-									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
-									'</a>'+
-								'</li>');
-	 							info += action[data].info;
 		 					}
 						}
 						else if(action[data].trx_info=='...'){
@@ -341,7 +336,7 @@ $(function() {
 			});
 		},1000);
 	}
-    function lookupcode () {
+    function lookupcode (lanjut) {
 
 		close_popup();
 		clear_btn();
@@ -412,7 +407,7 @@ $(function() {
 										'<td>Member Paid</td>'+
 										'<td>'+ar.self_price+'</td>'+
 									'</table>';
-						$(".modal-footer").prepend('<button onclick="usecode()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
+						$(".modal-footer").prepend('<button onclick="us'+'ecode_'+lanjut+'()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
 
 						$("#exampleModalLabelFunnyname").html(kode_booking);
 						$("#isinyafunnyname").html(html);
@@ -424,7 +419,7 @@ $(function() {
 			});
 		},500);
 	}
-	function usecode(){
+	function usecode_issued(){
 		//$(".inside-box-im").fadeIn();
 		close_popup();
 		clear_btn();
@@ -443,6 +438,20 @@ $(function() {
 		$("#paxinfo").val(temp_code.json_data);
 		$('#vendor option[value='+temp_code.ar_booking.vendor+']').attr('selected','selected');
 		$("#tgl_info").focus();
+	}
+	function usecode_rebook(){
+		//$(".inside-box-im").fadeIn();
+		close_popup();
+		clear_btn();
+		$("#mitra").val(temp_code.mitra.brand_name+' ('+temp_code.mitra.prefix+')');
+		$("#from").val(temp_code.ar_booking_pnr[0].kota_asal);
+		$("#to").val(temp_code.ar_booking_pnr[0].kota_tujuan);
+		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
+		$("#pax_name").val(temp_code.ar_booking_pnr[0].nama_pax);
+		$("#id_mitra").val(temp_code.ar_booking.id_mitra);
+		$("#paxinfo").val(temp_code.json_data);
+		$('#vendor option[value='+temp_code.ar_booking.vendor+']').attr('selected','selected');
+		$("#rebook_from").focus();
 	}
     function show_update_saldo(id) {
 

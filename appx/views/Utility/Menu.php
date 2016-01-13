@@ -75,11 +75,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
-<<<<<<< HEAD
                 <li><a href="<?php echo base_url('operational/rebook_add');?>"><i class="fa fa-book"></i> Rebook</a></li>
-=======
-                <li><a href="<?php echo base_url('operational/rebook_modul');?>"><i class="fa fa-book"></i> Rebook</a></li>
->>>>>>> e49e61204a158db46287f35beb4d68a4a2002f03
               </ul>
             </li>
               <li class="treeview">
@@ -104,7 +100,7 @@
                 <li>
                   <a href="#">
                     <i class="fa fa-info"></i>
-                    <span>Flowsys</span>
+                    <span>Infosys</span>
                     <i class="fa fa-angle-left pull-right"></i>
                   </a>
                   <ul class="treeview-menu">

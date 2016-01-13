@@ -2,7 +2,7 @@
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-    <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("servicedesk/flowsys_add");?>">Add Infosys</a></span>
+    <span class="pull-right"><a class="btn btn-success" href="<?php echo base_url("servicedesk/flowsys_add");?>">Add Flowsys</a></span>
       <h1>
       Manage Flowsys
       </h1>
