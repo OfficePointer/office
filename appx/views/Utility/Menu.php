@@ -75,9 +75,8 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
-<<<<<<< HEAD
+
                 <li><a href="<?php echo base_url('operational/rebook_add');?>"><i class="fa fa-book"></i> Rebook</a></li>
-=======
     
               </ul>
             </li>
