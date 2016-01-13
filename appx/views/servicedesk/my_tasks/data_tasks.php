@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      My All Tasks
+      My Tasks
       </h1>
     </section>
     <!-- Main content -->
@@ -27,7 +27,7 @@
               <table class="table">
                 <tr>
                   <td>Date Tasks</td>
-                  <td><input value="<?php echo date_format(date_create($this->session->userdata('all_tasks_date_start')),"m/d/Y");?> - <?php echo date_format(date_create($this->session->userdata('all_tasks_date_end')),"m/d/Y");?>" type="text" name="date_tasks" class="datepicker form-control"></td>
+                  <td><input value="<?php echo date_format(date_create($this->session->userdata('my_tasks_date_start')),"m/d/Y");?> - <?php echo date_format(date_create($this->session->userdata('my_tasks_date_end')),"m/d/Y");?>" type="text" name="date_tasks" class="datepicker form-control"></td>
                 </tr>
                 <tr>
                   <td></td>
@@ -45,7 +45,6 @@
         <thead>
           <tr>
             <th>IDTicket</th>
-            <th>TrxInfo</th>
             <th>Info</th>
             <th>Pengirim</th>
             <th>Penerima</th>
@@ -57,7 +56,6 @@
         <?php foreach ($my_tasks as $key){ ?>
           <tr>
             <td><?php echo $key['id_ticket'];?></td>
-            <td><?php echo $key['trx_info'];?></td>
             <td><?php echo $key['info'];?></td>
             <td><?php echo $key['pengirim'];?></td>
             <td><?php echo $key['penerima'];?></td>

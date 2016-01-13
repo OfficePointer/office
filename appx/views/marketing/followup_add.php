@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      Follow Up Add
+      Add New Follow Up
       </h1>
     </section>
     <!-- Main content -->
@@ -17,43 +17,38 @@
                   
                   <td>Member</td> 
                   <td>
-                  <div class="form-group">
-                      <input autocomplete="off" type="text" required class="form-control for_mitra" id="mitra">
-                      <input autocomplete="off" type="hidden" required class="form-control" name="id_mitra" id="id_mitra">
-                  </div>
+                      <input required autocomplete="off" type="text" required class="form-control for_mitra" id="mitra">
+                      <input required autocomplete="off" type="hidden" required class="form-control" name="id_mitra" id="id_mitra">
                   </td>
                  
               </tr>
               <tr>
                 <td>Type</td>
-                <td><select class="form-control" name="type">
-                  <option <?php echo ($this->input->post("type")=="all");?> value="">-- Type --</option>
-                  <option <?php echo ($this->input->post("type")=="01");?> value="01">Call</option>
-                  <option <?php echo ($this->input->post("type")=="02");?> value="02">SMS</option>
-                  <option <?php echo ($this->input->post("type")=="03");?> value="03">E-Mail</option>
-                  <option <?php echo ($this->input->post("type")=="04");?> value="04">Visit</option>
-                  <option <?php echo ($this->input->post("type")=="05");?> value="05">Chat</option>
-                  <option <?php echo ($this->input->post("type")=="06");?> value="06">Info</option>
+                <td><select required class="form-control" name="type">
+                  <option value="call">Call</option>
+                  <option value="sms">SMS</option>
+                  <option value="email">E-Mail</option>
+                  <option value="visit">Visit</option>
+                  <option value="chat">Chat</option>
+                  <option value="info">Info</option>
                   </select>
                 </td>
               </tr>
               <tr>
               <td>Respon</td>
               <td>
-                <select name="id_respon" class="form-control">
-                <option <?php echo ($this->session->userdata('data_respon')=="");?> value="">Selection...</option>
+                <select required name="id_respon" class="form-control">
                 <?php
                 foreach($data_respon as $data){
                 ?>
-                <option <?php echo ($this->session->userdata('$data')==$data['id']);?> 
-                value="<?php echo $data['id'];?>"><?php echo $data['$data'];?></option>
+                <option value="<?php echo $data['id'];?>"><?php echo $data['respon'];?></option>
                 <?php } ?>
                 </select>
               </td>
               </tr>
               <tr>
                   <td>Response</td>
-                  <td><input type="text" name="respon_followup" class="form-control" ></td>
+                  <td><input required type="text" name="reason" class="form-control" ></td>
               </tr>
               <tr>
                 <td></td>

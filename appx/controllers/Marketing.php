@@ -854,6 +854,11 @@ class Marketing extends CI_Controller {
 	{
 
 		$data = $this->input->post();
+		$data['member_ID'] = $data['id_mitra'];
+		$data['create_at'] = date("Y-m-d H:i:s");
+		$data['create_by'] = $this->session->userdata('id');
+		unset($data['id_mitra']);
+		unset($data['mitra']);
 		$this->db->insert('data_activity',$data);
 		redirect(base_url('marketing/followup_add'));
 

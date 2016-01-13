@@ -149,7 +149,7 @@ class Servicedesk extends CI_Controller {
 	    public function expr_all_tasks()
     {
         header('Content-type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=export_all_error_'.date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
+        header('Content-Disposition: attachment; filename=export_all_tasks_'.date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
 				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
@@ -203,11 +203,11 @@ class Servicedesk extends CI_Controller {
 
 		if($this->input->post('date_tasks')!=""){
             $daten = explode(" - ",$this->input->post('date_tasks'));
-            $this->session->set_userdata('all_tasks_date_start',$daten[0]);
-            $this->session->set_userdata('all_tasks_date_end',$daten[1]);
+            $this->session->set_userdata('my_tasks_date_start',$daten[0]);
+            $this->session->set_userdata('my_tasks_date_end',$daten[1]);
         }else{
-            $this->session->set_userdata('all_tasks_date_start','');
-            $this->session->set_userdata('all_tasks_date_end','');
+            $this->session->set_userdata('my_tasks_date_start','');
+            $this->session->set_userdata('my_tasks_date_end','');
         }
 
 		// $data['all_tasks'] = $this->db->query('select 
@@ -223,39 +223,46 @@ class Servicedesk extends CI_Controller {
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
 				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
 				actionsys.`status`');
-		if($this->session->userdata('all_tasks_date_start')!=""){
-            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
+		if($this->session->userdata('my_tasks_date_start')!=""){
+            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
         }
-        if($this->session->userdata('all_tasks_date_end')!=""){
-            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('all_tasks_date_end')),"Y-m-d"));
+        if($this->session->userdata('my_tasks_date_end')!=""){
+            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('my_tasks_date_end')),"Y-m-d"));
         }
 		$this->db->join('vendor','vendor.id=actionsys.vendor','left');
 		$this->db->join('data_user a','a.id=actionsys.id_user','left');
 		$this->db->join('data_user b','b.id=actionsys.id_assign','left');
+		$this->db->group_start();
+		$this->db->where('id_user',$this->session->userdata('id'));
+		$this->db->or_where('id_assign',$this->session->userdata('id'));
+		$this->db->group_end();
 		$data = array();
 		$data['my_tasks'] = $this->db->get('actionsys')->result_array();
-		$data['my_tasks'] = $this->db->where('id_user')->get('actionsys')->row_array();
 		//echo "<pre>".print_r($data,1)."<pre>";
 		$this->general->load('servicedesk/my_tasks/data_tasks',$data);
     }
     public function expr_my_tasks()
     {
     	header('Content-type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename=export_all_error_'.date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
+        header('Content-Disposition: attachment; filename=export_my_tasks_'.date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('my_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
 				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
 				actionsys.`status`');
-		if($this->session->userdata('all_tasks_date_start')!=""){
-            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
+		if($this->session->userdata('my_tasks_date_start')!=""){
+            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
         }
-        if($this->session->userdata('all_tasks_date_end')!=""){
-            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('all_tasks_date_end')),"Y-m-d"));
+        if($this->session->userdata('my_tasks_date_end')!=""){
+            $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") <=',date_format(date_create($this->session->userdata('my_tasks_date_end')),"Y-m-d"));
         }
 		$this->db->join('vendor','vendor.id=actionsys.vendor','left');
 		$this->db->join('data_user a','a.id=actionsys.id_user','left');
 		$this->db->join('data_user b','b.id=actionsys.id_assign','left');
-		$my_tasks = $this->db->get('actionsys',$data)->where('id', $data['id'])->result_array();
+		$this->db->group_start();
+		$this->db->where('id_user',$this->session->userdata('id'));
+		$this->db->or_where('id_assign',$this->session->userdata('id'));
+		$this->db->group_end();
+		$my_tasks = $this->db->get('actionsys')->result_array();
 		?>
       <table>
         <thead>
