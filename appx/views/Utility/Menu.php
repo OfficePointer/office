@@ -78,8 +78,7 @@
 <<<<<<< HEAD
                 <li><a href="<?php echo base_url('operational/rebook_add');?>"><i class="fa fa-book"></i> Rebook</a></li>
 =======
-                <li><a href="<?php echo base_url('operational/rebook_modul');?>"><i class="fa fa-book"></i> Rebook</a></li>
->>>>>>> e49e61204a158db46287f35beb4d68a4a2002f03
+    
               </ul>
             </li>
               <li class="treeview">
