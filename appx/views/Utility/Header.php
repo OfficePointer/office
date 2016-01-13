@@ -164,7 +164,7 @@ foreach ($us as $key) {
                  </ul>
                </li>
                <li class="footer">
-                 <a>View all</a>
+                 <a href="<?php echo base_url('/servicedesk/my_tasks');?>">View all</a>
               </li>
              </ul>
            </li>
