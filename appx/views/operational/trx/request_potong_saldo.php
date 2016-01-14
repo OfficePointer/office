@@ -11,7 +11,6 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="<?php echo base_url("operational/save_request_potong_saldo");?>">
 
       <table class="table table-bordered table-striped">
         <thead>
@@ -34,7 +33,8 @@
             <td><?php echo $key['kode_booking'];?></td>
             <td><?php echo $key['est_budget'];?></td>
             <td><?php echo $key['brand_name'];?></td>
-            <td><?php echo $key['action'];?></td>
+            <td><a href=""> link </a> </td>
+            
           </tr>
         <?php
         }
