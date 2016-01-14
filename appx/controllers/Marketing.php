@@ -939,7 +939,8 @@ class Marketing extends CI_Controller {
           $tbl .='</tbody>
               </table>';
 
-              $data['table'] = $tbl;
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+		$data['table'] = $tbl;
 		$this->general->load('marketing/member_week',$data);
 	}
 	public function member_graph_export(){

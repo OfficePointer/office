@@ -174,7 +174,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function division_delete($id)
 	{
-        $this->general->logging();
+    $this->general->logging();
 		$this->db->where('id',$id);
 		$this->db->delete('division');
 		redirect(base_url('pengaturan/division_data'));
@@ -187,7 +187,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function level_save()
 	{
-        $this->general->logging();
+    $this->general->logging();
 		$data = $this->input->post();
 		$this->db->insert('level',$data);
 		redirect(base_url('pengaturan/level_data'));

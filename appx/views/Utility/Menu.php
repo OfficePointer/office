@@ -408,8 +408,7 @@
             foreach ($form as $key) {
             ?>
             <li><a href="<?php echo base_url('operational/form/'.$key['id']);?>"><i class="fa fa-pencil"></i> <?php echo $key['judul'];?></a></li>
-            <?php } ?>
-            <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>
+            <?php } ?> 
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -422,7 +421,6 @@
               </ul>
             </li>
             <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
-            <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
             <li><a href="<?php echo base_url('/servicedesk/my_tasks');?>"><i class="fa fa-tasks"></i> My Tasks</a></li>
             <li class="treeview">
@@ -433,6 +431,16 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('pengaturan/appsview');?>"><i class="fa fa-list"></i> Apps</a></li>
+                <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
+                <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
+                <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>
+              <li class="treeview">
+              <a href="#">
+                <i class="fa fa-cog"></i>
+                <span>Preferences</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a> 
+              <ul class="treeview-menu"> 
               <li class="treeview">
               <a href="#">
                 <i class="fa fa-medium"></i>
@@ -441,10 +449,9 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-files-o"></i>  All Data</a></li>
-                <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
-                                
+                <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
               </ul>
-            </li> 
+            </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-maxcdn"></i>
@@ -452,15 +459,15 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-files-o"></i> All Data</a></li>
-                <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>
-                                
+                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-files-o"></i>  All Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
               </ul>
-            </li>   
+            </li> 
               </ul>
-            </li>
-            <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
+            </li>  
           </ul>
+        </li>
+        </ul>
         </li>
         <?php
         }
@@ -491,6 +498,7 @@
             <li><a href="<?php echo base_url('pengaturan/office_manual');?>"><i class="fa fa-life-ring"></i> Office Help</a></li>
           </ul>
         </li>
+        </ul>
         <?php
         }
         ?>
