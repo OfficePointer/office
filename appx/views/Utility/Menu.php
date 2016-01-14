@@ -409,6 +409,20 @@
             ?>
             <li><a href="<?php echo base_url('operational/form/'.$key['id']);?>"><i class="fa fa-pencil"></i> <?php echo $key['judul'];?></a></li>
             <?php } ?> 
+            
+            <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
+            <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
+            <li><a href="<?php echo base_url('servicedesk/my_tasks');?>"><i class="fa fa-tasks"></i> My Tasks</a></li>
+            
+
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-suitcase"></i>
+                <span>FinOps Tools</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a> 
+              <ul class="treeview-menu"> 
+              <li><a href="<?php echo base_url('operational/request_potong_saldo');?>"><i class="fa fa-usd"></i> Request Potong Saldo</a></li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -420,9 +434,8 @@
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
               </ul>
             </li>
-            <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
-            <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
-            <li><a href="<?php echo base_url('/servicedesk/my_tasks');?>"><i class="fa fa-tasks"></i> My Tasks</a></li>
+            </ul>
+            </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-h-square"></i>
@@ -469,6 +482,7 @@
         </li>
         </ul>
         </li>
+
         <?php
         }
         if(in_array($this->session->userdata('divisi'), $all_div)){
