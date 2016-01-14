@@ -20,7 +20,7 @@ class general extends CI_Model {
 	 */
 	public function __construct()
 	{
-		if($this->uri->segment(1)!="login" 
+		if($this->uri->segment(1)!="login"
 			and $this->uri->segment(2)!="generate_tanggal"
 			and $this->uri->segment(2)!="cron_cek_deposit"){
 			if($this->session->userdata('id')==0 or $this->session->userdata('id')==""){
@@ -63,7 +63,7 @@ class general extends CI_Model {
 	{
 		$this->db->insert($tbl,$data);
 		return $this->db->insert_id();
-	} 
+	}
 	public function cek_root()
 	{
 		if($this->get_div()!="Root"){
@@ -86,7 +86,7 @@ function csv_to_array($filename='', $delimiter=',')
                 $header = $row;
             else
                 $data[] = array_combine(
-                    $header, 
+                    $header,
                     $row
                     );
         }
@@ -94,17 +94,17 @@ function csv_to_array($filename='', $delimiter=',')
     }
     return $data;
 }
-	
+
 	public function log()
 	{
 		return $this->session->userdata('login');
-	} 
+	}
 	public function ceklog()
 	{
 		if($this->log()==false){
 			redirect(base_url("login"));
 		}
-	} 
+	}
 	public function get_div()
 	{
 		$this->db->where('id',$this->session->userdata('id'));
@@ -205,7 +205,7 @@ function csv_to_array($filename='', $delimiter=',')
 		$a = $this->db->get('data_mitra');
 		$a = $a->row_array();
 		return $a['brand_name'];
-	}	
+	}
 	public function get_respon($id=0)
 	{
 		if($id==0){
@@ -364,7 +364,7 @@ function csv_to_array($filename='', $delimiter=',')
 				array_push($aryRange,date('Y-m-d',$iDateFrom));
 			}
         }
-        
+
 			$dataRange[0] = $aryRange[0];
 			$dataRange[1] = $aryRange[6];
 	    }
@@ -378,15 +378,15 @@ function csv_to_array($filename='', $delimiter=',')
 
         $this->email->set_header('X-MC-PreserveRecipients',TRUE);
         $this->email->from('qa.dev.pointer@outlook.com', $this->session->userdata('nama'));
-        $this->email->to($email); 
-        //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false)); 
-        //$this->email->bcc('them@their-example.com'); 
+        $this->email->to($email);
+        //$this->email->bcc($this->general->get_email_div(array('Feedback Service'),false));
+        //$this->email->bcc('them@their-example.com');
 
         $body .= "<div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
      </b></span></span></span></span></span></span></b></span></span></span>
 </span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>";
         $this->email->subject($subject);
-        $this->email->message($body);  
+        $this->email->message($body);
 
         $this->email->send();
     }
@@ -395,6 +395,20 @@ function csv_to_array($filename='', $delimiter=',')
     {
     	return $this->db->where('id',$id)->get('infosys')->row_array()['title'];
     }
+
+		public function get_infosys_by_idflowsys($id)
+    {
+			$dbx = $this->load->database('default',TRUE);
+			$r = $dbs->query('select * from flowsys left join on flowsys.id_info=infosys.id where flowsys.id= "'.$id.'" ');
+
+    	return $r['title'];
+    }
+
+		public function get_flowsys($id)
+    {
+			return $this->db->where('id',$id)->get('flowsys')->row_array()['type'];
+    }
+
     public function parse_user($user)
     {
     	$assign_user = array();
