@@ -13,16 +13,17 @@
     <div class="row">
       <div class="col-md-12">
 
-        <table class="table table-bordered table-striped for_datatables">
+        <table class="table table-bordered table-striped for_datatables_asc">
           <thead>
-
+            <tr>
               <th> Group </th>
               <th> Sequence </th>
               <th> Mandatory </th>
               <th> Function </th>
               <th> Example </th>
               <th> Type </th>
-
+              <th> Action </th>
+            </tr>
           </thead>
 
           <tbody>
@@ -39,8 +40,8 @@
               <td> <?= $key['c_mand'];?> </td>
               <td> <?= $key['t_mand'];?> </td>
 
-              <td><a href="  <?= base_url('pengaturan/operational/mandatoryviewedit/'.$key['id_mand']);?> ">Edit</a></td>
-              <td><a href=" <?= base_url('pengaturan/operational/mandatoryviewdelete/'.$key['id_mand']);?> ">Delete</a></td>
+              <td><a href="  <?= base_url('pengaturan/operational/mandatoryviewedit/'.$key['id_mand']);?> "><span class="fa fa-pencil"></span></a> |
+                  <a href=" <?= base_url('pengaturan/operational/mandatoryviewdelete/'.$key['id_mand']);?> "><span class="fa fa-trash"></span></a></td>
             </tr>
 
             <?php
