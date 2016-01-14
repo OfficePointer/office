@@ -398,10 +398,11 @@ function csv_to_array($filename='', $delimiter=',')
 
 		public function get_infosys_by_idflowsys($id)
     {
-			$dbx = $this->load->database('default',TRUE);
-			$r = $dbs->query('select * from flowsys left join on flowsys.id_info=infosys.id where flowsys.id= "'.$id.'" ');
+			$this->db->select('*');
+			$this->db->from('flowsys');
+			$this->db->join('infosys', 'flowsys.id_info=infosys.id');
 
-    	return $r['title'];
+			$query = $this->db->get();
     }
 
 		public function get_flowsys($id)
