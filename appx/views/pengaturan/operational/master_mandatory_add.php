@@ -18,10 +18,7 @@
 
             <tr>
               <td>Group</td>
-              <td><select name="k_mand" class="form-control">
-                <option value="ABACUS">ABACUS</option>
-                <option value="ALTEA">ALTEA</option>
-              </select></td>
+              <td><input style='text-transform:uppercase' type="text" name="k_mand" class="form-control" required></td>
             </tr>
             <tr>
               <td>Sequence</td>
@@ -41,7 +38,10 @@
             </tr>
             <tr>
               <td>Type</td>
-              <td><input style='text-transform:uppercase' type="text" name="t_mand" class="form-control" required></td>
+              <td><select name="t_mand" class="form-control">
+                <option value="ABACUS">ABACUS</option>
+                <option value="ALTEA">ALTEA</option>
+              </select></td>
             </tr>
 
             <tr>

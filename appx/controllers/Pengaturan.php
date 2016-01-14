@@ -45,20 +45,20 @@ class Pengaturan extends CI_Controller {
 		 }
 
 		 public function mandatoryviewedit($id){
-			 $this->db->where('id',$id);
-	 		 $data['t_mgaruda'] = $this->db->get('t_mgaruda')->row_array();
-	 		 $this->general->load('pengaturan/mandatoryviewedit',$data);
+			 $this->db->where('id_mand',$id);
+	 		 $data['data'] = $this->db->get('t_mgaruda')->row_array();
+	 		 $this->general->load('pengaturan/operational/master_mandatory_edit',$data);
 		 }
 
 		 public function mandatoryviewupdate(){
 			 $data = $this->input->post();
-	 	   $this->db->where('id',$data['id']);
+	 	   $this->db->where('id_mand',$data['id_mand']);
 	 		 $this->db->update('t_mgaruda',$data);
 	 		 redirect(base_url('pengaturan/mandatoryviewall'));
 		 }
 
 		 public function mandatoryviewdelete($id){
-			 $this->db->where('id',$id);
+			 $this->db->where('id_mand',$id);
 	 		 $this->db->delete('t_mgaruda');
 	 		 redirect(base_url('pengaturan/mandatoryviewall'));
 		 }
@@ -66,7 +66,9 @@ class Pengaturan extends CI_Controller {
 	 //---------------------------------------------------------------------------
 
 		 public function classgarudaviewall(){
-			 $this->general->load('pengaturan/operational/master_class_garuda_all',$data);
+			 $tabledata = $this->db->get('t_kgaruda');
+	 		 $data['data'] = $tabledata->result_array();
+	 	   $this->general->load('pengaturan/operational/master_class_garuda_all',$data);
 		 }
 
 		 public function classgarudaviewadd(){
@@ -81,8 +83,8 @@ class Pengaturan extends CI_Controller {
 
 		 public function classgarudaviewedit(){
 			 $this->db->where('id',$id);
-	 		 $data['t_kgaruda'] = $this->db->get('t_kgaruda')->row_array();
-	 		 $this->general->load('pengaturan/classgarudaviewedit',$data);
+	 		 $data['data'] = $this->db->get('t_kgaruda')->row_array();
+	 		 $this->general->load('pengaturan/operational/master_class_garuda_edit',$data);
 		 }
 
 		 public function classgarudaviewupdate(){
