@@ -51,6 +51,7 @@
           </tbody>
         </table>
 
+        <span class="pull-left"><a class="btn btn-success" href="<?php echo base_url("pengaturan/mandatoryviewadd");?>">Add Mandatory</a></span>
       </div>
     </div>
 <!-- /.row (main row) -->
