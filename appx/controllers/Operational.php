@@ -99,6 +99,13 @@ class Operational extends CI_Controller {
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_rebook/add',$data);
     }    
+    public function request_potong_saldo()
+    {
+ 
+        $data['actionsys'] = $this->db->where_in('id',array(5,30,33,21,27))->get('actionsys')->result_array();
+        $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
+        $this->general->load('operational/trx/request_potong_saldo',$data);
+    }  
     public function airline_save()
     {
         $this->general->logging();
