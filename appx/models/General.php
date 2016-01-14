@@ -225,13 +225,19 @@ function csv_to_array($filename='', $delimiter=',')
 	}
 
 	public function get_sys_div($id)
-	{
+	{		
+		if($id==0){
+			return "";
+		}
 		$this->db->where('id',$id);
 		$a = $this->db->get('division')->row_array();
 		return $a['name'];
 	}
 	public function get_sys_div_lev($id)
 	{
+		if($id==0){
+			return "";
+		}
 		$this->db->where('id',$id);
 		$a = $this->db->get('level')->row_array();
 		$this->db->where('id',$a['id_division']);
@@ -393,21 +399,33 @@ function csv_to_array($filename='', $delimiter=',')
 
     public function get_infosys($id)
     {
-    	return $this->db->where('id',$id)->get('infosys')->row_array()['title'];
+    	if($id==0){
+			return "";
+		}
+    	return $this->db->where('id',$id)
+    				->get('infosys')
+    				->row_array()['title'];
     }
 
-		public function get_infosys_by_idflowsys($id)
+	public function get_infosys_by_idflowsys($id)
     {
-			$this->db->select('*');
-			$this->db->from('flowsys');
-			$this->db->join('infosys', 'flowsys.id_info=infosys.id');
-
-			$query = $this->db->get();
+    	if($id==0){
+			return "";
+		}
+		return $this->db->join('infosys','infosys.id=flowsys.id_info','left')
+					->where('flowsys.id',$id)
+					->get('flowsys')
+					->row_array()['title'];	
     }
 
-		public function get_flowsys($id)
+	public function get_flowsys($id)
     {
-			return $this->db->where('id',$id)->get('flowsys')->row_array()['type'];
+    	if($id==0){
+			return "";
+		}
+		return $this->db->where('id',$id)
+						->get('flowsys')
+						->row_array()['description'];
     }
 
     public function parse_user($user)

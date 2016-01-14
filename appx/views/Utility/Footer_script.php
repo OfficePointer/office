@@ -75,7 +75,7 @@ var temp_code = '';
 	    	if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log'])){?>
  	    	get_saldo_airline();
  	    	<?php } ?>
-	    },1000*5);
+	    },1000*1);
 
 	});
 var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
@@ -335,6 +335,88 @@ $(function() {
 				}
 			});
 		},1000);
+	}
+	function opencode (lanjut,kode_booking) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){				
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/lookup_code");?>',
+				dataType:'json',
+				data:{code:kode_booking},
+				success:function(isi){
+					if(isi.ar_booking!==null){
+						temp_code = isi;
+						var ar = isi.ar_booking;
+						var mi = isi.mitra;
+						var ar_pnr = isi.ar_booking_pnr;
+
+						var paxinfo = '<table class="table">';
+						paxinfo +=    '<tr>'+
+										'<th>Title</th>'+
+										'<th>Name</th>'+
+										'<th>Type</th>'+
+										'<th>Rute</th>'+
+										'<th>Class</th>'+
+									'</tr>';
+						$.each( ar_pnr, function( key, value ) {
+						  paxinfo +=    '<tr>'+
+											'<td>'+value.title_pax+'</td>'+
+											'<td>'+value.nama_pax+'</td>'+
+											'<td>'+value.jenis_pax+'</td>'+
+											'<td>'+value.kota_asal+'-'+value.kota_tujuan+'</td>'+
+											'<td>'+value.kelas+'</td>'+
+										'</tr>';
+						});
+							paxinfo +='</table>';
+
+						var html = '<table class="table">'+
+									'<tr>'+
+										'<td>Booking Code</td>'+
+										'<td><b>'+ar.kode_booking+'</b></td>'+
+										'<td colspan=2>Brand Name</td>'+
+										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Airline</td>'+
+										'<td>'+ar.nama_pesawat+'</td>'+
+										'<td colspan=2>Depart</td>'+
+										'<td colspan=2>'+ar.tgl_berangkat_takeoff+' '+ar.time_berangkat_takeoff+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Flight Type</td>'+
+										'<td>'+ar.flight_type+'</td>'+
+										'<td colspan=2>Route</td>'+
+										'<td colspan=2>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>Pax Info</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>'+paxinfo+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>NTA</td>'+
+										'<td>'+ar.nta_idr+'</td>'+
+										'<td>Pax</td>'+
+										'<td>'+ar.pax_idr+'</td>'+
+										'<td>Member Paid</td>'+
+										'<td>'+ar.self_price+'</td>'+
+									'</table>';
+						$(".modal-footer").prepend('<button onclick="us'+'ecode_'+lanjut+'()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
+
+						$("#exampleModalLabelFunnyname").html(kode_booking);
+						$("#isinyafunnyname").html(html);
+					    $('#modal_funnyname').modal('show');
+					}else{
+						//$(".inside-box-im").fadeIn();
+					}
+				}
+			});
+		},500);
 	}
     function lookupcode (lanjut) {
 

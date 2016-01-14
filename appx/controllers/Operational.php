@@ -102,8 +102,7 @@ class Operational extends CI_Controller {
     public function request_potong_saldo()
     {
  
-        $data['actionsys'] = $this->db->where_in('id',array(5,30,33,21,27))->get('actionsys')->result_array();
-        $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
+        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')->where_in('id_flowsys',array(5,30,33,21,27))->get('actionsys')->result_array();
         $this->general->load('operational/trx/request_potong_saldo',$data);
     }  
     public function airline_save()
