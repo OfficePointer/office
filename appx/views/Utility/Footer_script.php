@@ -35,6 +35,8 @@ var muncul_deposit = 0;
     Waves.attach('.btn', ['waves-button', 'waves-float']);
 	Waves.init();
 
+var bunyi = 0;
+
 var temp_code = '';
     $(".for_numberinput").jqxNumberInput({ spinMode:'simple',width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
     $('#nta').on('valueChanged', function (event) {$('#nta_num').val(event.args.value);}); 
@@ -161,7 +163,8 @@ $(function() {
 					//console.log(clock+' '+minutes+' '+second);
  				}
  				$("#label_deposit_data").html(jml_dt);
- 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<37))){
+ 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<32))){
+					
 					notif = new Notification('Alert Top Up Saldo Airlines', {
 				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 				      body: 'Alert Top Up Saldo Airlines, Please Check',
