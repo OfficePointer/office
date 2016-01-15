@@ -920,7 +920,7 @@ class Marketing extends CI_Controller {
               <tr>
                 <td>'.$key['brand_name'].'</td>
                 <td>'.$key['join_date'].'</td>
-                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
+                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-").'</td>';
                     foreach ($datatgl as $kay) {
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
@@ -945,15 +945,16 @@ class Marketing extends CI_Controller {
 	}
 	public function member_graph_export(){
 
-        $this->general->logging();
-				        header('Content-type: application/vnd.ms-excel');
-				        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
+        	$this->general->logging();
+	        header('Content-type: application/vnd.ms-excel');
+	        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
 						// $this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
 						// $this->db->join('data_mitra','data_mitra.id_mitra=airline_member.id_mitra','left');
 						// $this->db->like('kode',$_GET['vendor'],'both');
 						// $this->db->like('tanggal',$_GET['tahun']."-".$_GET['bulan']."-",'both');
 						// $this->db->group_by('airline_member.id_mitra');
 						// $xa = $this->db->get('airline_member');
+			$this->db->select('data_mitra.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
 			$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
             $this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
             $this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
@@ -965,6 +966,8 @@ class Marketing extends CI_Controller {
 						$this->db->where('status','active');
 						$xa = $this->db->get('data_mitra');
 						$xa = $xa->result_array();
+						//echo "<pre>".print_r($xa,1)."</pre>";
+						//die();
 						//echo $this->db->last_query();
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
@@ -1007,7 +1010,7 @@ class Marketing extends CI_Controller {
         $this->general->logging();
 	        header('Content-type: application/vnd.ms-excel');
 	        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_TRX_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
-			//$this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
+			$this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix');
 			$this->db->join('data_mitra','data_mitra.id_mitra=airline_member.id_mitra','left');
 			$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
             $this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
