@@ -443,7 +443,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/appsview');?>"><i class="fa fa-list"></i> Apps</a></li>
+                <li><a href="<?php echo base_url('pengaturan/appsview');?>"><i class="fa fa-desktop"></i> Apps</a></li>
                 <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
                 <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
                 <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>
@@ -461,7 +461,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-files-o"></i>  All Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
                 <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
               </ul>
             </li>
@@ -472,7 +472,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-files-o"></i>  All Data</a></li>
+                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
                 <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
               </ul>
             </li> 
