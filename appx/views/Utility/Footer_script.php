@@ -676,6 +676,7 @@ $(function() {
 					if(parseInt(process[data].diff)>0){
 						merah = "bg-red";
 						abu = 1;
+						muncul = 1;
 					}
 
 						$("#processing_log_data").append('<li class="'+merah+'"><a class="waves-eff-li" style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
