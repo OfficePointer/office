@@ -676,7 +676,6 @@ $(function() {
 					if(parseInt(process[data].diff)>0){
 						merah = "bg-red";
 						abu = 1;
-						muncul = 1;
 					}
 
 						$("#processing_log_data").append('<li class="'+merah+'"><a class="waves-eff-li" style="color:black;" target="_blank" href="https://admin.pointer.co.id/airline/admin/viewbook/'+process[data].id_mitra+'-'+process[data].kode_booking+'">'+
@@ -688,6 +687,9 @@ $(function() {
 	                      '</h4>'+
 	                      '<p>'+process[data].brand_name+'</p>'+
 	                    '</a></li>');
+				}
+				if(abu==0){
+					bunyi=0;
 				}
 
 				$("#revert_log_data").html('');
@@ -750,7 +752,7 @@ $(function() {
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
 					}
-					if(abu>0){
+					if(abu>0 && bunyi==0){
 						notif = new Notification('Kode Abu-abu', {
 					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 					      body: 'Informasi Kode Booking Abu-abu',
@@ -762,6 +764,7 @@ $(function() {
 
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
+						bunyi = 1;
 					}
 				}
 			}
