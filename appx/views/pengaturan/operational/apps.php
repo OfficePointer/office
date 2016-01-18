@@ -23,7 +23,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Helpdesk Tools</span>
                 <span class="info-box-text">Version 2</span>
-                  <a href="#" class="small-box-footer">Download
+                  <a href="base_url('assets/application/PointerHelpdeskTools.exe')" class="small-box-footer">Download
                     <i class="fa fa-arrow-circle-right"></i>
                   </a>
               </div>
