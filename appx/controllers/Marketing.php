@@ -920,7 +920,7 @@ class Marketing extends CI_Controller {
               <tr>
                 <td>'.$key['brand_name'].'</td>
                 <td>'.$key['join_date'].'</td>
-                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-").'</td>';
+                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     foreach ($datatgl as $kay) {
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
