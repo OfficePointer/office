@@ -502,7 +502,17 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/user_manage');?>"><i class="fa fa-th-list"></i> User Data</a></li>
+                <li class="treeview">
+              <a href="#">
+                <i class="fa fa-th-list"></i>
+                <span>User Data</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('pengaturan/add_new_user');?>"><i class="fa fa-user-plus"></i> Add New User</a></li>
+                <li><a href="<?php echo base_url('pengaturan/user_manage');?>"><i class="fa fa-users"></i> All User</a></li>
+                </ul>
+                </li>
                 <li><a href="<?php echo base_url('pengaturan/division_data');?>"><i class="fa fa-th-list"></i> Division Data</a></li>
                 <li><a href="<?php echo base_url('pengaturan/level_data');?>"><i class="fa fa-th-list"></i> Level Data</a></li>
               </ul>
