@@ -3,7 +3,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-      <br><center>Request Potong Saldo</center><br>
+      <br>Request Potong Saldo<br>
       </h1>
     </section>
     <!-- Main content -->
@@ -16,8 +16,9 @@
         <thead>
           <tr>
             <th>ID Ticket</th>
-            <th>ID Infosys</th>
+            <th>Info</th>
             <th>Kode Booking</th>
+            <th>Airline</th>
             <th>Est Budget</th>
             <th>Brand Name</th>
             <th>Action</th>
@@ -29,12 +30,14 @@
         ?>
           <tr>
             <td><?php echo $key['id_ticket'];?></td>
-            <td><?php echo $key['id_infosys'];?></td>
+            <td><?php echo $this->general->get_infosys_by_idflowsys($key['id_flowsys']);?></td>
             <td><?php echo $key['kode_booking'];?></td>
+            <td><?php echo $this->general->get_vendor($key['vendor']);?></td>
             <td><?php echo $key['est_budget'];?></td>
-            <td><?php echo $key['brand_name'];?></td>
-            <td><a href=""> link </a> </td>
-            
+
+            <td><?php echo $this->general->get_member($key['id_mitra']);?></td>
+            <td><a onclick="openrequest('<?php echo $key['id'];?>')">Open</a></td>
+
           </tr>
         <?php
         }

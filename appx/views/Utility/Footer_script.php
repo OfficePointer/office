@@ -35,6 +35,8 @@ var muncul_deposit = 0;
     Waves.attach('.btn', ['waves-button', 'waves-float']);
 	Waves.init();
 
+var bunyi = 0;
+
 var temp_code = '';
     $(".for_numberinput").jqxNumberInput({ spinMode:'simple',width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
     $('#nta').on('valueChanged', function (event) {$('#nta_num').val(event.args.value);}); 
@@ -75,7 +77,7 @@ var temp_code = '';
 	    	if(in_array($this->session->userdata('id'), $group_alert['notif_saldo_log'])){?>
  	    	get_saldo_airline();
  	    	<?php } ?>
-	    },1000*5);
+	    },1000*1);
 
 	});
 var REVERT_DATA = <?php echo $this->session->userdata('revert_data');?>;
@@ -161,7 +163,8 @@ $(function() {
 					//console.log(clock+' '+minutes+' '+second);
  				}
  				$("#label_deposit_data").html(jml_dt);
- 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<37))){
+ 				if(muncul || (clock==15 && minutes==30 && (second>30 && second<32))){
+					
 					notif = new Notification('Alert Top Up Saldo Airlines', {
 				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 				      body: 'Alert Top Up Saldo Airlines, Please Check',
@@ -335,6 +338,88 @@ $(function() {
 				}
 			});
 		},1000);
+	}
+	function opencode (lanjut,kode_booking) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){				
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/lookup_code");?>',
+				dataType:'json',
+				data:{code:kode_booking},
+				success:function(isi){
+					if(isi.ar_booking!==null){
+						temp_code = isi;
+						var ar = isi.ar_booking;
+						var mi = isi.mitra;
+						var ar_pnr = isi.ar_booking_pnr;
+
+						var paxinfo = '<table class="table">';
+						paxinfo +=    '<tr>'+
+										'<th>Title</th>'+
+										'<th>Name</th>'+
+										'<th>Type</th>'+
+										'<th>Rute</th>'+
+										'<th>Class</th>'+
+									'</tr>';
+						$.each( ar_pnr, function( key, value ) {
+						  paxinfo +=    '<tr>'+
+											'<td>'+value.title_pax+'</td>'+
+											'<td>'+value.nama_pax+'</td>'+
+											'<td>'+value.jenis_pax+'</td>'+
+											'<td>'+value.kota_asal+'-'+value.kota_tujuan+'</td>'+
+											'<td>'+value.kelas+'</td>'+
+										'</tr>';
+						});
+							paxinfo +='</table>';
+
+						var html = '<table class="table">'+
+									'<tr>'+
+										'<td>Booking Code</td>'+
+										'<td><b>'+ar.kode_booking+'</b></td>'+
+										'<td colspan=2>Brand Name</td>'+
+										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Airline</td>'+
+										'<td>'+ar.nama_pesawat+'</td>'+
+										'<td colspan=2>Depart</td>'+
+										'<td colspan=2>'+ar.tgl_berangkat_takeoff+' '+ar.time_berangkat_takeoff+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Flight Type</td>'+
+										'<td>'+ar.flight_type+'</td>'+
+										'<td colspan=2>Route</td>'+
+										'<td colspan=2>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>Pax Info</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>'+paxinfo+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>NTA</td>'+
+										'<td>'+ar.nta_idr+'</td>'+
+										'<td>Pax</td>'+
+										'<td>'+ar.pax_idr+'</td>'+
+										'<td>Member Paid</td>'+
+										'<td>'+ar.self_price+'</td>'+
+									'</table>';
+						$(".modal-footer").prepend('<button onclick="us'+'ecode_'+lanjut+'()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
+
+						$("#exampleModalLabelFunnyname").html(kode_booking);
+						$("#isinyafunnyname").html(html);
+					    $('#modal_funnyname').modal('show');
+					}else{
+						//$(".inside-box-im").fadeIn();
+					}
+				}
+			});
+		},500);
 	}
     function lookupcode (lanjut) {
 
@@ -603,6 +688,9 @@ $(function() {
 	                      '<p>'+process[data].brand_name+'</p>'+
 	                    '</a></li>');
 				}
+				if(abu==0){
+					bunyi=0;
+				}
 
 				$("#revert_log_data").html('');
 					REVERT_DATA = revert.length;
@@ -664,7 +752,7 @@ $(function() {
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
 					}
-					if(abu>0){
+					if(abu>0 && bunyi==0){
 						notif = new Notification('Kode Abu-abu', {
 					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
 					      body: 'Informasi Kode Booking Abu-abu',
@@ -676,6 +764,7 @@ $(function() {
 
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
+						bunyi = 1;
 					}
 				}
 			}

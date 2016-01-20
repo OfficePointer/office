@@ -28,15 +28,10 @@ class Pengaturan extends CI_Controller {
 	 //---------------------------------------------------------------------------
 
 		 public function mandatoryviewall(){
-			// $this->general->load('pengaturan/operational/master_mandatory_all',$data);
 
 			 $tabledata = $this->db->get('t_mgaruda');
 	 		 $data['data'] = $tabledata->result_array();
 	 	   $this->general->load('pengaturan/operational/master_mandatory_all',$data);
-
-			//  $tableClassification = $this->db->get('data_klasifikasi');
-			// 	$dataClassification['dataClassification'] = $tableClassification->result_array();
-			// 	$this->general->load('marketing/member_classification_all',$dataClassification);
 		 }
 
 		 public function mandatoryviewadd(){
@@ -46,32 +41,34 @@ class Pengaturan extends CI_Controller {
 		 public function mandatoryviewsave(){
 			 $data = $this->input->post();
 			 $this->db->insert('t_mgaruda',$data);
-			 redirect(base_url('pengaturan/operational/mandatoryviewall'));
+			 redirect(base_url('pengaturan/mandatoryviewall'));
 		 }
 
 		 public function mandatoryviewedit($id){
-			 $this->db->where('id',$id);
-	 		 $data['t_mgaruda'] = $this->db->get('t_mgaruda')->row_array();
-	 		 $this->general->load('pengaturan/operational/mandatoryviewedit',$data);
+			 $this->db->where('id_mand',$id);
+	 		 $data['data'] = $this->db->get('t_mgaruda')->row_array();
+	 		 $this->general->load('pengaturan/operational/master_mandatory_edit',$data);
 		 }
 
 		 public function mandatoryviewupdate(){
 			 $data = $this->input->post();
-	 	   $this->db->where('id',$data['id']);
+	 	   $this->db->where('id_mand',$data['id_mand']);
 	 		 $this->db->update('t_mgaruda',$data);
-	 		 redirect(base_url('pengaturan/operational/mandatoryviewall'));
+	 		 redirect(base_url('pengaturan/mandatoryviewall'));
 		 }
 
 		 public function mandatoryviewdelete($id){
-			 $this->db->where('id',$id);
+			 $this->db->where('id_mand',$id);
 	 		 $this->db->delete('t_mgaruda');
-	 		 redirect(base_url('pengaturan/operational/mandatoryviewall'));
+	 		 redirect(base_url('pengaturan/mandatoryviewall'));
 		 }
 
 	 //---------------------------------------------------------------------------
 
 		 public function classgarudaviewall(){
-			 $this->general->load('pengaturan/operational/master_class_garuda_all',$data);
+			 $tabledata = $this->db->get('t_kgaruda');
+	 		 $data['data'] = $tabledata->result_array();
+	 	   $this->general->load('pengaturan/operational/master_class_garuda_all',$data);
 		 }
 
 		 public function classgarudaviewadd(){
@@ -81,26 +78,26 @@ class Pengaturan extends CI_Controller {
 		 public function classgarudaviewsave(){
 			 $data = $this->input->post();
 			 $this->db->insert('t_kgaruda',$data);
-			 redirect(base_url('pengaturan/operational/classgarudaviewall'));
+			 redirect(base_url('pengaturan/classgarudaviewall'));
 		 }
 
 		 public function classgarudaviewedit(){
 			 $this->db->where('id',$id);
-	 		 $data['t_kgaruda'] = $this->db->get('t_kgaruda')->row_array();
-	 		 $this->general->load('pengaturan/operational/classgarudaviewedit',$data);
+	 		 $data['data'] = $this->db->get('t_kgaruda')->row_array();
+	 		 $this->general->load('pengaturan/operational/master_class_garuda_edit',$data);
 		 }
 
 		 public function classgarudaviewupdate(){
 			 $data = $this->input->post();
 	 	   $this->db->where('id',$data['id']);
 	 		 $this->db->update('t_kgaruda',$data);
-	 		 redirect(base_url('pengaturan/operational/classgarudaviewall'));
+	 		 redirect(base_url('pengaturan/classgarudaviewall'));
 		 }
 
 		 public function classgarudaviewdelete(){
 			 $this->db->where('id',$id);
 			 $this->db->delete('t_kgaruda');
-			 redirect(base_url('pengaturan/operational/classgarudaviewall'));
+			 redirect(base_url('pengaturan/classgarudaviewall'));
 		 }
 
 	 //---------------------------------------------------------------------------

@@ -40,8 +40,8 @@
               <td> <?= $key['c_mand'];?> </td>
               <td> <?= $key['t_mand'];?> </td>
 
-              <td><a href="  <?= base_url('pengaturan/operational/mandatoryviewedit/'.$key['id_mand']);?> "><span class="fa fa-pencil"></span></a> |
-                  <a href=" <?= base_url('pengaturan/operational/mandatoryviewdelete/'.$key['id_mand']);?> "><span class="fa fa-trash"></span></a></td>
+              <td><a href="  <?= base_url('pengaturan/mandatoryviewedit/'.$key['id_mand']);?> "><span class="fa fa-pencil"></span></a> |
+                  <a href=" <?= base_url('pengaturan/mandatoryviewdelete/'.$key['id_mand']);?> "><span class="fa fa-trash"></span></a></td>
             </tr>
 
             <?php
@@ -51,6 +51,7 @@
           </tbody>
         </table>
 
+        <span class="pull-left"><a class="btn btn-success" href="<?php echo base_url("pengaturan/mandatoryviewadd");?>">Add Mandatory</a></span>
       </div>
     </div>
 <!-- /.row (main row) -->
