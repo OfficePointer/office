@@ -276,10 +276,10 @@ $(function() {
 				      window.focus();
 				    };
 				}
- 			// 	if(muncul){
-				// 	 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
-				// 	 audio_saldo.play();
-				// }
+ 				if(muncul){
+					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+					 audio_saldo.play();
+				}
 
  			}
  		});
