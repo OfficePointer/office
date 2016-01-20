@@ -510,7 +510,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('pengaturan/add_new_user');?>"><i class="fa fa-user-plus"></i> Add New User</a></li>
-                <li><a href="<?php echo base_url('pengaturan/user_manage');?>"><i class="fa fa-users"></i> All User</a></li>
+                <li><a href="<?php echo base_url('pengaturan/user_manage');?>"><i class="fa fa-bars"></i> All User</a></li>
                 </ul>
                 </li>
                 <li><a href="<?php echo base_url('pengaturan/division_data');?>"><i class="fa fa-th-list"></i> Division Data</a></li>
