@@ -130,7 +130,7 @@ class Servicedesk extends CI_Controller {
 		// 		')->result_array();
 
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('all_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
@@ -152,7 +152,7 @@ class Servicedesk extends CI_Controller {
         header('Content-Disposition: attachment; filename=export_all_tasks_'.date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('all_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
@@ -223,7 +223,7 @@ class Servicedesk extends CI_Controller {
 		// 		')->result_array();
 
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('my_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
@@ -249,7 +249,7 @@ class Servicedesk extends CI_Controller {
         header('Content-Disposition: attachment; filename=export_my_tasks_'.date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('my_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('my_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
