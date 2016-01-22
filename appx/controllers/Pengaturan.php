@@ -184,7 +184,7 @@ class Pengaturan extends CI_Controller {
 	}
 	public function level_save()
 	{
-    $this->general->logging();
+    	$this->general->logging();
 		$data = $this->input->post();
 		$this->db->insert('level',$data);
 		redirect(base_url('pengaturan/level_data'));
@@ -233,7 +233,8 @@ class Pengaturan extends CI_Controller {
         $this->general->logging();
 		$data = $this->input->post();
 
-		if($_FILES['picture']['tmp_name']!=""){
+		if($_FILES['picture']['tmp_name']!="")
+		{
         	$folder = $_FILES['picture']['tmp_name'];
         	mkdir("assets/images/".$this->session->userdata('id'));
         	$lokasi = "assets/images/".$this->session->userdata('id')."/".$_FILES['picture']['name'];
@@ -252,7 +253,7 @@ class Pengaturan extends CI_Controller {
 		$this->db->where('id',$this->session->userdata('id'));
 		$this->db->update('data_user',$data);
 		redirect(base_url());
-	}
+	} 
 
 	public function reset_password($id)
 	{
@@ -284,5 +285,27 @@ class Pengaturan extends CI_Controller {
 		$this->db->where('ID',$id);
 		$this->db->update('data_user',array('mail_type'=>$baru));
 		redirect(base_url('pengaturan/user_manage'));
+	}
+	public function add_account()
+	{
+		$data['division'] = $this->db->get('division')->result_array();
+		$data['level'] = $this->db->get('level')->result_array();
+		$this->general->load('pengaturan/add_account', $data);
+	}
+	public function save_account()
+	{
+		$this->general->logging();
+		$data = $this->input->post();
+		if($data['password']=="")
+		{
+			unset($data['password']);
+		}
+		else
+		{
+			$data['password'] = md5($data['password']);
+		}
+		$data['create_at'] = date("Y-m-d H:i:s");
+		$this->db->insert('data_user'array('picture' => 'http://office.pointer.co.id/office/assets/images/foto.png', $data);
+		redirect(base_url('pengaturan/add_account'));
 	}
 }
