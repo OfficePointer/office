@@ -42,6 +42,7 @@
             <th>Penerima</th>
             <th>Date Start</th>
             <th>Status</th>
+            <th>Done at</th>
           </tr>
         </thead>
         <tbody>
@@ -53,6 +54,7 @@
             <td><?php echo $key['penerima'];?></td>
             <td><?php echo $key['created_at'];?></td>
             <td><?php echo ($key['status']==0)?"Open":(($key['status']==1)?"Hold":(($key['status']==2)?"Done":""));?></td>
+            <td><?php echo $key['done_at'];?></td>
           </tr>
         <?php } ?>
         </tbody>
