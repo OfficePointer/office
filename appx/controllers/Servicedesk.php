@@ -130,7 +130,7 @@ class Servicedesk extends CI_Controller {
 		// 		')->result_array();
 
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('all_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
@@ -152,7 +152,7 @@ class Servicedesk extends CI_Controller {
         header('Content-Disposition: attachment; filename=export_all_tasks_'.date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('all_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('all_tasks_date_start')),"Y-m-d"));
@@ -175,6 +175,7 @@ class Servicedesk extends CI_Controller {
             <th>Penerima</th>
             <th>Date Start</th>
             <th>Status</th>
+            <th>Done at</th>
           </tr>
         </thead>
         <tbody>
@@ -187,6 +188,7 @@ class Servicedesk extends CI_Controller {
             <td><?php echo $key['penerima'];?></td>
             <td><?php echo $key['created_at'];?></td>
             <td><?php echo ($key['status']==0)?"Open":(($key['status']==1)?"Hold":(($key['status']==2)?"Done":""));?></td>
+            <td><?php echo $key['done_at'];?></td>
           </tr>
         <?php } ?>
         </tbody>
@@ -221,7 +223,7 @@ class Servicedesk extends CI_Controller {
 		// 		')->result_array();
 
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('my_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
@@ -247,7 +249,7 @@ class Servicedesk extends CI_Controller {
         header('Content-Disposition: attachment; filename=export_my_tasks_'.date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('my_tasks_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
                     
 		$this->db->select('id_ticket, trx_info, vendor.nama,a.`name` as pengirim, 
-				b.`name` as penerima, info, act_budget as jumlah, created_at,`comment`,
+				b.`name` as penerima, info, act_budget as jumlah, created_at,done_at,`comment`,
 				actionsys.`status`');
 		if($this->session->userdata('my_tasks_date_start')!=""){
             $this->db->where('DATE_FORMAT(actionsys.created_at,"%Y-%m-%d") >=',date_format(date_create($this->session->userdata('my_tasks_date_start')),"Y-m-d"));
@@ -274,6 +276,7 @@ class Servicedesk extends CI_Controller {
             <th>Penerima</th>
             <th>Date Start</th>
             <th>Status</th>
+            <th>Done at</th>
           </tr>
         </thead>
         <tbody>
@@ -286,6 +289,7 @@ class Servicedesk extends CI_Controller {
             <td><?php echo $key['penerima'];?></td>
             <td><?php echo $key['created_at'];?></td>
             <td><?php echo ($key['status']==0)?"Open":(($key['status']==1)?"Hold":(($key['status']==2)?"Done":""));?></td>
+            <td><?php echo $key['done_at'];?></td>
           </tr>
         <?php } ?>
         </tbody>

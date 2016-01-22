@@ -24,7 +24,7 @@ class Xhr_ajax extends CI_Controller {
         $dat = $this->db->get('actionsys')->row_array();
 
         $data['comment'] = $dat['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
-
+        $data['done_at'] = date("Y-m-d H:i:s");
         $data['status'] = 2;
         $this->db->where('id',$id);
         $this->db->update('actionsys',$data);

@@ -412,6 +412,7 @@
             
             <!--li><a href="<?php echo base_url('operational/forms');?>"><i class="fa fa-copy"></i> Forms</a></li-->
             <li><a href="<?php echo base_url('operational/all_error');?>"><i class="fa fa-book"></i> Data All Error</a></li>
+            <li><a href="<?php echo base_url('servicedesk/all_tasks');?>"><i class="fa fa-tasks"></i> Data All Tasks</a></li>
             <li><a href="<?php echo base_url('servicedesk/my_tasks');?>"><i class="fa fa-tasks"></i> My Tasks</a></li>
             
 
