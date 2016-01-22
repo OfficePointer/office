@@ -76,6 +76,7 @@
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
                 <li><a href="<?php echo base_url('operational/rebook_add');?>"><i class="fa fa-book"></i> Rebook</a></li>
+                <li><a href="<?php echo base_url('operational/add_new_refund');?>"><i class="fa fa-plus"></i> Add New Refund</a></li>
               </ul>
             </li>
               <li class="treeview">
@@ -435,8 +436,18 @@
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
               </ul>
             </li>
-            </ul>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-pencil"></i>
+                <span>Issued Manual Data</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/issued_manual_pending');?>"><i class="fa fa-hourglass-half"></i> Issued Manual Pending</a></li>
+                <li><a href="<?php echo base_url('operational/issued_manual_done');?>"><i class="fa fa-check"></i> Issued Manual Done</a></li>
+              </ul>
             </li>
+            </ul>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-h-square"></i>
