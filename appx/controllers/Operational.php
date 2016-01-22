@@ -82,6 +82,34 @@ class Operational extends CI_Controller {
         $this->db->insert('actionsys',$data);
         redirect(base_url("servicedesk/all_tasks"));
     }
+      public function save_refund()
+    {
+        $data = $this->input->post();
+        $data['created_at'] = date("Y-m-d H:i:s");
+        $data['user_view'] = 1;
+        $data['id_user'] = $this->session->userdata('id');
+        $data['trx_info'] = 'refund';
+        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        $data['assign_view'] = 0;
+        if($data['paxinfo']==""){
+            $data['paxinfo'] = json_encode(
+                                            array('class'=>$data['class'],
+                                                'pax_name'=>$data['pax_name'])
+            );
+        }
+        $data['status'] = 0;
+        $data['refund_status'] = 1;
+        $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
+        $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
+        $data['nomor_tiket'] = uniqid();
+        $data['info'] = 'Refund '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+        unset($data['mitra']);
+        unset($data['id_infosys']);
+        unset($data['pax_name']);
+        unset($data['class']);
+        $this->db->insert('actionsys',$data);
+        
+    }
     public function airline_add()
     {
         $data['ckeditor'] = $this->_setup_ckeditor('info');
@@ -98,6 +126,12 @@ class Operational extends CI_Controller {
         $data['type_info'] = $this->db->where_in('id',array(6,7,8,9))->get('infosys')->result_array();
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_rebook/add',$data);
+    }    
+    public function add_new_refund()
+    {
+      
+        $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
+        $this->general->load('operational/trx/modul_refund/add',$data);
     }    
     public function request_potong_saldo()
     {
