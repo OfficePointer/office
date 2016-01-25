@@ -530,7 +530,6 @@
               </ul>
             </li>
           <?php } ?>
-            <li><a href="<?php echo base_url('pengaturan/add_account');?>"><i class="fa fa-user-plus"></i> Add Account</a></li>
             <li><a href="<?php echo base_url('pengaturan/edit_profile');?>"><i class="fa fa-key"></i> Edit Profile</a></li>
             <li><a href="<?php echo base_url('pengaturan/office_manual');?>"><i class="fa fa-life-ring"></i> Office Help</a></li>
           </ul>
