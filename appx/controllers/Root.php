@@ -136,6 +136,38 @@ class Root extends CI_Controller {
 		$data['paging'] = $this->general->pagination($count,$limit,$pg,base_url("root/logdata/%d"));
 		$this->general->load('root/logdata',$data);
 	}
+	public function send_dtr_mail()
+	{
+		$this->general->load('root/send_dtr_email');
+	}
+	public function send_dtr_recipient()
+	{
+		$email = "";
+		$em = explode(",", $this->input->post('assign_user'));
+		foreach ($em as $key) {
+			if(strlen($key)<4){
+				$email .= $this->general->get_email($key).","; 
+			}
+		}
+
+		$em = explode(",", $this->input->post('email'));
+		foreach ($em as $key) {
+			$email .= trim($key).",";
+		}
+
+		//echo $email;
+
+		$url = 'http://office-cron.copasin.com/send_email_recipients.php?email='.$email;
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_URL,$url);
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_exec($ch);
+		curl_close($ch);
+
+		redirect(base_url('root/send_dtr_mail'));
+	}
+
 	public function sendmail($idnya)
     {
         $this->general->logging();

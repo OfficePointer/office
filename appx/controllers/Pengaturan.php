@@ -286,13 +286,13 @@ class Pengaturan extends CI_Controller {
 		$this->db->update('data_user',array('mail_type'=>$baru));
 		redirect(base_url('pengaturan/user_manage'));
 	}
-	public function add_account()
+	public function add_new_user()
 	{
 		$data['division'] = $this->db->get('division')->result_array();
 		$data['level'] = $this->db->get('level')->result_array();
-		$this->general->load('pengaturan/add_account', $data);
+		$this->general->load('pengaturan/add_new_user', $data);
 	}
-	public function save_account()
+	public function save_user()
 	{
 		$this->general->logging();
 		$data = $this->input->post();
@@ -304,8 +304,9 @@ class Pengaturan extends CI_Controller {
 		{
 			$data['password'] = md5($data['password']);
 		}
+		$data['status'] = "Online";
 		$data['create_at'] = date("Y-m-d H:i:s");
-		$this->db->insert('data_user'array('picture' => 'http://office.pointer.co.id/office/assets/images/foto.png', $data);
-		redirect(base_url('pengaturan/add_account'));
+		$data['picture'] = base_url('/assets/images/foto.png');
+		redirect(base_url('pengaturan/add_new_user'));
 	}
 }

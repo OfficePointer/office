@@ -171,6 +171,7 @@ class Servicedesk extends CI_Controller {
             <th>IDTicket</th>
             <th>TrxInfo</th>
             <th>Info</th>
+            <th>Jumlah</th>
             <th>Pengirim</th>
             <th>Penerima</th>
             <th>Date Start</th>
@@ -184,6 +185,7 @@ class Servicedesk extends CI_Controller {
             <td><?php echo $key['id_ticket'];?></td>
             <td><?php echo $key['trx_info'];?></td>
             <td><?php echo $key['info'];?></td>
+            <td><?php echo $key['jumlah'];?></td>
             <td><?php echo $key['pengirim'];?></td>
             <td><?php echo $key['penerima'];?></td>
             <td><?php echo $key['created_at'];?></td>

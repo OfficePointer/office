@@ -123,6 +123,7 @@
               </ul>
             </li>
             <li><a href="<?php echo base_url('root/logdata');?>"><i class="fa fa-map-signs"></i> Logdata</a></li>
+            <li><a href="<?php echo base_url('root/send_dtr_mail');?>"><i class="fa fa-at"></i> Send DTR E-Mail</a></li>
             <li><a href="<?php echo base_url('root/help/all');?>"><i class="fa fa-support"></i> Office Help</a></li>
             <li><a href="<?php echo base_url('root/get_cron');?>"><i class="fa fa-bolt"></i> Trx Cron</a></li>
             <li><a href="<?php echo base_url('root/get_cron_member');?>"><i class="fa fa-bolt"></i> Member Cron</a></li>
@@ -530,7 +531,6 @@
               </ul>
             </li>
           <?php } ?>
-            <li><a href="<?php echo base_url('pengaturan/add_account');?>"><i class="fa fa-user-plus"></i> Add Account</a></li>
             <li><a href="<?php echo base_url('pengaturan/edit_profile');?>"><i class="fa fa-key"></i> Edit Profile</a></li>
             <li><a href="<?php echo base_url('pengaturan/office_manual');?>"><i class="fa fa-life-ring"></i> Office Help</a></li>
           </ul>
