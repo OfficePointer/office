@@ -383,6 +383,11 @@ class Marketing extends CI_Controller {
 
     	$this->general->load('marketing/member_monthly',$hasil);
     }
+
+    public function member_monthly_v2()
+    {
+    	$this->general->load('marketing/member_monthly_v2');
+    }
 	public function member_summary()
 	{
 		$this->db->select('data_mitra.brand_name,temp_trx.date_join,temp_trx.updated_at,temp_trx.jumlah,temp_trx.umur');
