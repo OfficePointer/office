@@ -108,31 +108,31 @@ class Operational extends CI_Controller {
         unset($data['pax_name']);
         unset($data['class']);
         $this->db->insert('actionsys',$data);
-        
+
     }
     public function airline_add()
     {
         $data['ckeditor'] = $this->_setup_ckeditor('info');
         $this->general->load('operational/create_info',$data);
-    }    
+    }
     public function issued_manual_add()
     {
         $data['type_info'] = $this->db->get('type_info')->result_array();
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/manual_issued/add',$data);
-    }    
+    }
     public function rebook_add()
     {
         $data['type_info'] = $this->db->where_in('id',array(6,7,8,9))->get('infosys')->result_array();
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_rebook/add',$data);
-    }    
+    }
     public function add_new_refund()
     {
-      
+
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_refund/add',$data);
-    }    
+    }
     public function request_potong_saldo()
     {
 // <<<<<<< HEAD
@@ -141,11 +141,11 @@ class Operational extends CI_Controller {
 //         $data['actionsys'] = $this->db->where_in('id_flowsys',array(5,30,33,21,27))->get('actionsys')->result_array();
 //         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
 // =======
- 
+
         $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')->where_in('id_flowsys',array(5,30,33,21,27))->get('actionsys')->result_array();
 // >>>>>>> b25914c3b880804815e5b02e7a8959a4defd22be
         $this->general->load('operational/trx/request_potong_saldo',$data);
-    }  
+    }
     public function airline_save()
     {
         $this->general->logging();
@@ -156,7 +156,7 @@ class Operational extends CI_Controller {
         redirect(base_url('operational/airline_status/'.$this->db->insert_id()));
     }
     public function airline_status($id)
-    {        
+    {
         $limit = 5;
         $pg = 1;
         $start = 0;
@@ -166,7 +166,7 @@ class Operational extends CI_Controller {
                 $pg=1;
             }
             $start = ($pg-1)*$limit;
-        }  
+        }
         $data['info'] = $this->db->where('id',$id)->get('info_airline')->result_array();
         $this->db->where('id',$id);
         $count = $this->db->get('info_airline');
@@ -175,7 +175,7 @@ class Operational extends CI_Controller {
         $this->general->load('operational/detail_airline',$data);
     }
     public function airline_status_all()
-    {       
+    {
         $limit = 5;
         $pg = 1;
         $start = 0;
@@ -185,7 +185,7 @@ class Operational extends CI_Controller {
                 $pg=1;
             }
             $start = ($pg-1)*$limit;
-        }   
+        }
         $this->db->order_by('id','desc');
         $data['info'] = $this->db->get('info_airline')->result_array();
         $count = $this->db->get('info_airline');
@@ -229,7 +229,7 @@ class Operational extends CI_Controller {
     {
         header('Content-type: application/vnd.ms-excel');
         header('Content-Disposition: attachment; filename=export_all_error_'.date_format(date_create($this->session->userdata('all_error_date_start')),"Y-m-d").'_'.date_format(date_create($this->session->userdata('all_error_date_end')),"Y-m-d").'_by_'.$this->session->userdata('email').'.xls');
-                    
+
         $this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
         $this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
         $this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
@@ -273,7 +273,7 @@ class Operational extends CI_Controller {
                     <td><?php echo $key['updated_at'];?></td>
                     <td><?php echo $this->general->get_user($key['updated_by']);?></td>
                 </tr>
-            <?php 
+            <?php
             }
             ?>
             </tbody>
@@ -290,7 +290,7 @@ class Operational extends CI_Controller {
         $data = array();
         $data['funnyname'] = array();
         foreach ($hasil->result_array() as $key) {
-            $data['funnyname'][] = array('id_mitra'=>$key['id_mitra'],'jumlah'=>$key['jumlah'],'brand_name'=>$key['brand_name'],'prefix'=>$key['prefix'],'link'=>"https://admin.pointer.co.id/airline/admin/funnyname/".$key['id_mitra']."/all/all/all");            
+            $data['funnyname'][] = array('id_mitra'=>$key['id_mitra'],'jumlah'=>$key['jumlah'],'brand_name'=>$key['brand_name'],'prefix'=>$key['prefix'],'link'=>"https://admin.pointer.co.id/airline/admin/funnyname/".$key['id_mitra']."/all/all/all");
         }
         $this->general->load('operational/funnynamelist',$data);
     }
@@ -311,7 +311,7 @@ class Operational extends CI_Controller {
 				$pg=1;
 			}
 			$start = ($pg-1)*$limit;
-		}	
+		}
         if(isset($_GET['q'])){
             $this->db->group_start();
             $this->db->like('isi',$_GET['q'],'both');
@@ -322,7 +322,7 @@ class Operational extends CI_Controller {
 		$this->db->limit($limit,$start);
 		$this->db->order_by('sys_create_date','desc');
 		$koran = $this->db->get('posts');
-        if(isset($_GET['q'])){            
+        if(isset($_GET['q'])){
             $this->db->group_start();
             $this->db->like('isi',$_GET['q'],'both');
             $this->db->or_like('judul',$_GET['q'],'both');
@@ -346,7 +346,7 @@ class Operational extends CI_Controller {
     {
         $this->load->helper('url');
         $this->load->helper('ckeditor');
- 
+
         $ckeditor = array(
             'id' => $id,
             'path' => 'assets/js/ckeditor',
@@ -354,7 +354,7 @@ class Operational extends CI_Controller {
                 'toolbar' => 'standard',
                 'width' => '99%',
                 'height'=>'450px'));
- 
+
         return $ckeditor;
     }
     public function addkoran()
@@ -394,17 +394,17 @@ class Operational extends CI_Controller {
         }
         $em[] = $this->session->userdata('email');
 
-        $this->email->to($em); 
+        $this->email->to($em);
         //only me
         //$this->email->to('ariefsetya@live.com,arief@pointer.co.id,achmad@pointer.co.id');
-        //$this->email->to($this->general->get_email_div(array('Root','Opera+','Opera','IT Support','Enterprise','Feedback Service'),false));         
-        //$this->email->cc('another@another-example.com'); 
-        //$this->email->bcc('them@their-example.com'); 
+        //$this->email->to($this->general->get_email_div(array('Root','Opera+','Opera','IT Support','Enterprise','Feedback Service'),false));
+        //$this->email->cc('another@another-example.com');
+        //$this->email->bcc('them@their-example.com');
         $this->db->where('id',$idnya);
         $ss = $this->db->get('posts');
         $ss = $ss->row_array();
         $this->email->subject($ss['judul']);
-        $this->email->message($ss['isi']."<br><hr>Posted by ".$this->general->get_user($ss['idpengguna'])." at ".$ss['tanggal']." ".$ss['jam']);  
+        $this->email->message($ss['isi']."<br><hr>Posted by ".$this->general->get_user($ss['idpengguna'])." at ".$ss['tanggal']." ".$ss['jam']);
 
          $to = $em;
         $this->email->send();
@@ -426,14 +426,14 @@ class Operational extends CI_Controller {
 		redirect(base_url("operational/adminkoran"));
 	}
 	public function base64_to_jpeg($base64_string, $output_file) {
-	    $ifp = fopen($output_file, "wb"); 
+	    $ifp = fopen($output_file, "wb");
 
 	    //$data = explode(',', $base64_string);
 
-	    fwrite($ifp, base64_decode($base64_string)); 
-	    fclose($ifp); 
+	    fwrite($ifp, base64_decode($base64_string));
+	    fclose($ifp);
 
-	    return $output_file; 
+	    return $output_file;
 	}
 	public function koran_update()
 	{
@@ -488,7 +488,7 @@ class Operational extends CI_Controller {
 			}
 		}
 		//$data['isi'] = str_replace("data:image/".$tipe[1].";base64,".$ima[1], 'http://office.pointer.co.id/perf/imgposts/'.$tgl.'.jpeg' , $data['isi']);
-		
+
 		$data['isi'] = str_replace($datasearch, $datarep, $data['isi']);
         $data['judul'] = htmlspecialchars($this->input->post('judul'));
         $data['tanggal'] = date("Y-m-d");
@@ -548,8 +548,8 @@ class Operational extends CI_Controller {
 			}
 		}
 		//$data['isi'] = str_replace("data:image/".$tipe[1].";base64,".$ima[1], 'http://office.pointer.co.id/perf/imgposts/'.$tgl.'.jpeg' , $data['isi']);
-		
-		$data['isi'] = str_replace($datasearch, $datarep, $data['isi']);		
+
+		$data['isi'] = str_replace($datasearch, $datarep, $data['isi']);
 		//echo "<pre>".$data['isi']."</pre>";
 		//die();
         $data['judul'] = htmlspecialchars($this->input->post('judul'));
@@ -571,7 +571,7 @@ class Operational extends CI_Controller {
 		$this->db->order_by('sys_create_date','desc');
 		$data['koran'] = $this->db->get('posts')->result_array();
 		$this->general->load('operational/adminkoran',$data);
-	}	
+	}
 	public function deletekoran($id=0)
 	{
 		$this->general->logging();
@@ -592,7 +592,7 @@ class Operational extends CI_Controller {
 		}
 
         $tanggal = date("Y-m-d");
-        
+
         move_uploaded_file(
             $_FILES['csvlion']['tmp_name'],
             "assets/csv/csvlion/lion/".$tanggal.$_FILES['csvlion']['name']
@@ -610,11 +610,11 @@ class Operational extends CI_Controller {
         fclose($read);
 
         $b = $this->general->csv_to_array("assets/csv/csvlion/lion/".$tanggal.$_FILES['csvlion']['name'],$delim);
-        
+
         $this->db->where('id >',0);
         $this->db->delete('rekon_lion');
 
-        foreach($b as $key){    
+        foreach($b as $key){
             if($key['TransactionType']=="NTA"){
                 $data = array();
                 $data['num_tiket'] = $key['PaxSegCount'];
@@ -824,7 +824,7 @@ class Operational extends CI_Controller {
             $this->db->insert('rekon_pointer',$data);
         }
 
-        
+
         $folder = $_FILES['csvsj']['tmp_name'];
         $lokasi = "assets/csv/csvsj/sj/".$_FILES['csvsj']['name'];
         $filetype = explode(".", $lokasi);
@@ -884,7 +884,7 @@ class Operational extends CI_Controller {
             //         $jumlah = 0;
             //     if($tiket!=$key['C']){
             //         $tiketasli = str_replace("Incentive for ", "", $key['C']);
-                    
+
             //         $mulai = 0;
             //         foreach ($arr_data as $data_2) {
             //             if($data_2['C']==$key['C']){
@@ -898,7 +898,7 @@ class Operational extends CI_Controller {
             //             }
             //         }
             //     }
-                
+
             //     $tiket = $key['C'];
             // if(sizeof($arr_data)-2==$aaa){
             //         $jumlah--;
@@ -1015,4 +1015,21 @@ class Operational extends CI_Controller {
         //$data['tiketnonnta'] = $datatiketnonnta;
         $this->general->load('operational/rekon/hasilrekonsj',$data);
     }
+
+    public function issued_manual_pending()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status',array(0,1))->get('actionsys')->result_array();
+      $this->general->load('operational/trx/issued_manual_pending',$data);
+    }
+
+    public function issued_manual_done()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status', 2)->get('actionsys')->result_array();
+      $this->general->load('operational/trx/issued_manual_done',$data);
+    }
+
 }
