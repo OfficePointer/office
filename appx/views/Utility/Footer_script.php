@@ -733,9 +733,19 @@ $(function() {
 						}
 						if(revert[data].status==2 || revert[data].status==21){
 							revert[data].status = 'Confirmed';
-						}else{
+
+						}else if(revert[data].status==1){
+							revert[data].status = 'Expired';
+							
+						}else if(revert[data].status==4){
+								revert[data].status = 'Canceled';
+						}
+						else{
 							revert[data].status = 'Waiting';
 						}
+
+						
+						
 						var url = 'https://admin.pointer.co.id/airline/admin/viewbook/'+revert[data].id_mitra+'-'+revert[data].kode_booking;
 
 					}
