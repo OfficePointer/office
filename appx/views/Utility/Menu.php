@@ -448,6 +448,39 @@
                 <li><a href="<?php echo base_url('operational/issued_manual_done');?>"><i class="fa fa-check"></i> Issued Manual Done</a></li>
               </ul>
             </li>
+             <li class="treeview">
+              <a href="#">
+                <i class="fa fa-money"></i>
+                <span>Refund Data</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/refund_pending');?>"><i class="fa fa-hourglass-half"></i> Refund Pending</a></li>
+                <li><a href="<?php echo base_url('operational/refund_done');?>"><i class="fa fa-check"></i> Refund Done</a></li>
+              </ul>
+            </li>
+             <li class="treeview">
+              <a href="#">
+                <i class="fa fa-book"></i>
+                <span>Rebook Data</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/rebook_pending');?>"><i class="fa fa-hourglass-half"></i> Rebook Pending</a></li>
+                <li><a href="<?php echo base_url('operational/rebook_done');?>"><i class="fa fa-check"></i> Rebook Done</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-remove"></i>
+                <span>Void Data</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('operational/void_pending');?>"><i class="fa fa-hourglass-half"></i> Void Pending</a></li>
+                <li><a href="<?php echo base_url('operational/void_done');?>"><i class="fa fa-check"></i> Void Done</a></li>
+              </ul>
+            </li>
             </ul>
             <li class="treeview">
               <a href="#">
