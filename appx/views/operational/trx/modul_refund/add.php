@@ -17,7 +17,7 @@
 
       <div class="clearfix"></div>
       <div class="col-md-4">
-        <label>Kode Booking *)</label> 
+        <label>Kode Booking *)</label>
         <div class="input-group">
           <input autocomplete="off" type="text" required class="form-control" id="kode_booking" name="kode_booking">
           <span onclick="lookupcode('rebook')" style="cursor:pointer" class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -28,7 +28,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Brand Name</label> 
+          <label>Brand Name</label>
           <div class="form-group">
             <input autocomplete="off" type="text" required class="form-control for_mitra" name="mitra" id="mitra">
             <input autocomplete="off" type="hidden" required class="form-control" name="id_mitra" id="id_mitra">
@@ -38,7 +38,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Vendor</label> 
+          <label>Vendor</label>
           <div class="form-group">
             <select class="form-control" name="vendor" id="vendor">
               <?php foreach ($vendor as $key) {
@@ -61,7 +61,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Nomor Tiket</label> 
+          <label>Nomor Tiket</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="nomor_tiket" id="nomor_tiket">
           </div>
@@ -70,7 +70,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>From</label> 
+          <label>From</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="from" id="from">
           </div>
@@ -79,7 +79,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>To</label> 
+          <label>To</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="to" id="to">
           </div>
@@ -88,13 +88,13 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>To 2</label> 
+          <label>To 2</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="to2" id="to2">
           </div>
       </div>
 
-      
+
 
       <div class="clearfix"></div>
         <div class="col-md-4">
@@ -107,14 +107,14 @@
 
 <fieldset>
 <legend>New Data</legend>
-       
+
       <div class="clearfix"></div>
       <div class="inside-box-im">
         <div class="col-md-3">
-            <label>Tanggal Proses Refund</label> 
+            <label>Tanggal Proses Refund</label>
           <div class="input-group">
-            <input autocomplete="off" type="text" required class="form-control for_date" name="refund_cost_received " id="refund_cost_received ">
-            <span onclick="openfordate('refund_cost_received ')" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            <input autocomplete="off" type="text" required class="form-control for_date" name="refund_cost_received" id="refund_cost_received">
+            <span onclick="openfordate('refund_cost_received')" class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
 
@@ -122,17 +122,17 @@
         <div class="col-md-4">
           <label>Status</label>
           <div class="form-group">
-            <td><select required class="form-control" name="refund_status">
+            <td><select required class="form-control" name="status">
                   <option value="0">0</option>
                   <option value="1">1</option>
-                 
+
                   </select>
           </div>
       </div>
 
-        <div class="clearfix"></div>      
+        <div class="clearfix"></div>
         <div class="col-md-3">
-            <label>Tanggal Keluar Refund</label> 
+            <label>Tanggal Keluar Refund</label>
           <div class="input-group">
             <input autocomplete="off" type="text" required class="form-control for_date" name="refund_cost_out" id="refund_cost_out" value="<?php echo date("m/d/Y");?>">
             <span onclick="openfordate('refund_cost_out')" class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -146,8 +146,8 @@
             <input type="text" class="form-control" name="nota_airline" id="nota_airline">
         </div>
       </div>
-      <div class="clearfix"></div> 
-        
+      <div class="clearfix"></div>
+
        <div class="clearfix"></div>
         <div class="col-md-4">
             <label>Perkiraan Amount</label>
@@ -155,9 +155,9 @@
             <input type="text" class="form-control" name="refund_est_amount" id="refund_est_amount">
         </div>
       </div>
-      <div class="clearfix"></div>  
-        
-        
+      <div class="clearfix"></div>
+
+
 </fieldset>
             <input autocomplete="off" type="hidden" class="form-control" name="paxinfo" id="paxinfo">
 

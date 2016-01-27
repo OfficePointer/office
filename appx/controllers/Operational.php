@@ -82,6 +82,8 @@ class Operational extends CI_Controller {
         $this->db->insert('actionsys',$data);
         redirect(base_url("servicedesk/all_tasks"));
     }
+
+
       public function save_refund()
     {
         $data = $this->input->post();
@@ -89,16 +91,17 @@ class Operational extends CI_Controller {
         $data['user_view'] = 1;
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'refund';
-        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        // $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
+        $data['id_flowsys'] = 37;
         if($data['paxinfo']==""){
             $data['paxinfo'] = json_encode(
                                             array('class'=>$data['class'],
                                                 'pax_name'=>$data['pax_name'])
             );
         }
-        $data['status'] = 0;
-        $data['refund_status'] = 1;
+        $data['status'] = "";
+        // $data['refund_status'] = 1;
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
         $data['nomor_tiket'] = uniqid();
