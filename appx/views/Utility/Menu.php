@@ -76,7 +76,7 @@
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('operational/issued_manual_add');?>"><i class="fa fa-pencil"></i> Issued Manual</a></li>
                 <li><a href="<?php echo base_url('operational/rebook_add');?>"><i class="fa fa-book"></i> Rebook</a></li>
-                <li><a href="<?php echo base_url('operational/add_new_refund');?>"><i class="fa fa-plus"></i> Add New Refund</a></li>
+                <li><a href="<?php echo base_url('operational/add_new_refund');?>"><i class="fa fa-money"></i> Refund</a></li>
               </ul>
             </li>
               <li class="treeview">
