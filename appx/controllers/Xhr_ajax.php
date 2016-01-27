@@ -32,6 +32,24 @@ class Xhr_ajax extends CI_Controller {
 
         echo "OK";
     }
+    public function update_issued_manual_done()
+    {
+        $id = $this->input->post('id');
+
+        $this->db->where('id',$id);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        $data['comment'] = $dat['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        $data['done_at'] = date("Y-m-d H:i:s");
+        $data['nota_airline'] = $this->input->post('nota_airlines');
+        $data['nota_member'] = $this->input->post('nota_member');
+        $data['status'] = 2;
+        $this->db->where('id',$id);
+        $this->db->update('actionsys',$data);
+
+
+        echo "OK";
+    }
     public function lookup_code()
     {
         $value = $this->input->post('code');

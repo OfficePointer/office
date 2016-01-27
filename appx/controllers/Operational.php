@@ -49,7 +49,7 @@ class Operational extends CI_Controller {
         unset($data['child']);
         unset($data['infant']);
         $this->db->insert('actionsys',$data);
-        redirect(base_url("servicedesk/all_tasks"));
+        redirect(base_url("operational/issued_manual_pending"));
     }
     public function save_rebook()
     {
@@ -186,7 +186,13 @@ class Operational extends CI_Controller {
 //         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
 // =======
 
-        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status',array(1,0))->get('actionsys')->result_array();
+        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')
+                                       ->join('flowsys','flowsys.id=actionsys.id_flowsys','left')
+                                       ->join('infosys','infosys.id=flowsys.id_info','left')
+                                       ->where_in('trx_info',array('rebook','issued'))
+                                       ->where_in('status',array(1,0))
+                                       ->get('actionsys')
+                                       ->result_array();
 // >>>>>>> b25914c3b880804815e5b02e7a8959a4defd22be
         $this->general->load('operational/trx/request_potong_saldo',$data);
     }
@@ -1080,7 +1086,7 @@ class Operational extends CI_Controller {
     {
       $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
       ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
-      ->where_in('id_flowsys', array(30, 33, 21, 27))->where_in('status', array(0,1))->get('actionsys')->result_array();
+      ->where_in('trx_info', array('rebook'))->where_in('status', array(0,1))->get('actionsys')->result_array();
       $this->general->load('operational/trx/rebook_pending',$data);
     }
 
@@ -1088,7 +1094,7 @@ class Operational extends CI_Controller {
     {
       $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
       ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
-      ->where_in('id_flowsys', array(30, 33, 21, 27))->where_in('status', 2)->get('actionsys')->result_array();
+      ->where_in('trx_info',array('rebook'))->where_in('status', 2)->get('actionsys')->result_array();
       $this->general->load('operational/trx/rebook_done',$data);
     }
 

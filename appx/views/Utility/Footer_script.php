@@ -132,10 +132,45 @@ $(function() {
 					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
 
 						if(trx_info=="issued"){
+							var html = "<table>"+
+											"<tr>"+
+												"<td>Kode Booking</td>"+
+												"<td><b>"+isi.data.kode_booking+"</b></td>"+
+												"<td>Airline</td>"+
+												"<td>"+isi.data.airline+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Brand Name</td>"+
+											"<tr>"+
+											"</tr>"+
+												"<td colspan=4>"+isi.data.brand_name+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Details</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>From - To</td>"+
+												"<td>"+isi.data.from+" - "+isi.data.to+"</td>"+
+												"<td>To 2</td>"+
+												"<td>"+isi.data.to2+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Nota Airlines</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4><input type='text' class='form-control' id='nota_airlines'></td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Nota Member</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4><input type='text' class='form-control' id='nota_member'></td>"+
+											"</tr>"+
+										"</table>";
 							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
-							$(".modal-footer").prepend('<button onclick="update_action_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$(".modal-footer").prepend('<button onclick="update_issued_manual_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
-							$("#isinya").html(isi.data.info);
+							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
 						}else if(trx_info=="rebook"){
 							var html = "<table>"+
@@ -152,16 +187,7 @@ $(function() {
 												"<td colspan=4>"+isi.data.brand_name+"</td>"+
 											"</tr>"+
 											"<tr>"+
-												"<td colspan=4>Old Details</td>"+
-											"</tr>"+
-											"<tr>"+
-												"<td>From - To</td>"+
-												"<td>"+isi.data.from+" - "+isi.data.to+"</td>"+
-												"<td>To 2</td>"+
-												"<td>"+isi.data.to2+"</td>"+
-											"</tr>"+
-											"<tr>"+
-												"<td colspan=4>New Details</td>"+
+												"<td colspan=4>Rebook Details</td>"+
 											"</tr>"+
 											"<tr>"+
 												"<td>Flight Date & Time</td>"+
@@ -181,6 +207,18 @@ $(function() {
 												"<td>Rebook Admin Cost</td>"+
 												"<td>"+isi.data.rebook_admin_cost+"</td>"+
 											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Estimated Cost</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>"+isi.data.rebook_total_cost+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Actual Cost</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4><div class='form-control' id='act_budget'></div></td>"+
+											"</tr>"+
 										"</table>";
 
 							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
@@ -188,6 +226,7 @@ $(function() {
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
+        					$("#act_budget").jqxNumberInput({ width: '90%', height: '25px', digits: 20, max:9999999999999999999,symbol:'Rp. '});
 						}
 
 					}else if(isi.status=="FINISH"){
@@ -700,6 +739,25 @@ $(function() {
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/update_action_done");?>',
 				data:{id:id},
+				success:function(isi){
+					$("#exampleModalLabel").html('Status');
+					$("#isinya").html('OK Clear!');
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
+    function update_issued_manual_done (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_issued_manual_done");?>',
+				data:{id:id,nota_airlines:$("#nota_airlines").val(),nota_member:$("#nota_member").val()},
 				success:function(isi){
 					$("#exampleModalLabel").html('Status');
 					$("#isinya").html('OK Clear!');
