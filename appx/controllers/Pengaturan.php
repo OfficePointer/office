@@ -253,7 +253,7 @@ class Pengaturan extends CI_Controller {
 		$this->db->where('id',$this->session->userdata('id'));
 		$this->db->update('data_user',$data);
 		redirect(base_url());
-	} 
+	}
 
 	public function reset_password($id)
 	{

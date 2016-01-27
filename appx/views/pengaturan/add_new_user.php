@@ -1,9 +1,3 @@
-<?php
-  $all_div = array('Root','Opera','Opera+','HRD','Finan','Perf','Marketing','Feedback Service');
-  $this->db->where('id',$this->session->userdata('id'));
-  $ax = $this->db->get('data_user');
-  $ax = $ax->row_array();
-?>
 <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -45,18 +39,17 @@
         <div class="form-group">
           <label>Division</label>
           <select type="text" class="form-control" name="division">
-          <?php 
-          foreach ($all_div as $key) {
-            ?><option><?php echo $key ;?></option><?php
-          }
-          ?>
+          <?php
+          foreach ($division as $data) {
+            ?><option value="<?php echo $data['id'];?>"><?php echo $data ['name'];?></option>
+            <?php  }  ?>
           </select>
         </div>
         <div class="form-group">
-          <label>Parent Level</label>
+          <label>Group</label>
           <select type="text" class="form-control" name="level">
           <option value="0">This is parent</option>
-          <?php 
+          <?php
           foreach ($level as $key) {
             ?><option value="<?php echo $key['id'];?>"><?php echo $key['name']." - ".$this->general->get_sys_div_lev($key['id']);?></option><?php
           }
