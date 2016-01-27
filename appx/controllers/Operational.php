@@ -91,7 +91,7 @@ class Operational extends CI_Controller {
         $data['user_view'] = 1;
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'refund';
-        // $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
         $data['id_flowsys'] = 37;
         if($data['paxinfo']==""){
@@ -100,7 +100,7 @@ class Operational extends CI_Controller {
                                                 'pax_name'=>$data['pax_name'])
             );
         }
-        $data['status'] = "";
+        $data['status'];
         // $data['refund_status'] = 1;
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
