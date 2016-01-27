@@ -1020,7 +1020,7 @@ class Operational extends CI_Controller {
     {
       $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
       ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
-      ->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status',array(0,1))->get('actionsys')->result_array();
+      ->where_in('id_flowsys', 5)->where_in('status',array(0,1))->get('actionsys')->result_array();
       $this->general->load('operational/trx/issued_manual_pending',$data);
     }
 
@@ -1028,8 +1028,24 @@ class Operational extends CI_Controller {
     {
       $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
       ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
-      ->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status', 2)->get('actionsys')->result_array();
+      ->where_in('id_flowsys', 5)->where_in('status', 2)->get('actionsys')->result_array();
       $this->general->load('operational/trx/issued_manual_done',$data);
+    }
+
+    public function rebook_pending()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', array(30, 33, 21, 27))->where_in('status', array(0,1))->get('actionsys')->result_array();
+      $this->general->load('operational/trx/rebook_pending',$data);
+    }
+
+    public function rebook_done()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', array(30, 33, 21, 27))->where_in('status', 2)->get('actionsys')->result_array();
+      $this->general->load('operational/trx/rebook_done',$data);
     }
 
 }
