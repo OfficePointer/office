@@ -111,7 +111,7 @@ class Operational extends CI_Controller {
         unset($data['pax_name']);
         unset($data['class']);
         $this->db->insert('actionsys',$data);
-
+        redirect(base_url("operational/trx/modul_refund/add"));
     }
     public function airline_add()
     {
