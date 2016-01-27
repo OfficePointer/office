@@ -118,6 +118,92 @@ $(function() {
 	 });
 });
 
+	function openrequest(id,trx_info) {
+		clear_btn();
+		close_popup();
+
+		setTimeout(function() {
+		 $.ajax({
+ 			url:'<?php echo base_url("xhr_ajax/ajax_get_actionsys_data_open");?>',
+ 			type:'POST',
+ 			data:{id:id},
+ 			dataType:'json',
+ 			success:function(isi){
+					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
+
+						if(trx_info=="issued"){
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_action_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$("#exampleModalLabel").html(isi.data.info);
+							$("#isinya").html(isi.data.info);
+						    $('#modal_profiling').modal('show');
+						}else if(trx_info=="rebook"){
+							var html = "<table>"+
+											"<tr>"+
+												"<td>Kode Booking</td>"+
+												"<td><b>"+isi.data.kode_booking+"</b></td>"+
+												"<td>Airline</td>"+
+												"<td>"+isi.data.airline+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Brand Name</td>"+
+											"<tr>"+
+											"</tr>"+
+												"<td colspan=4>"+isi.data.brand_name+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Old Details</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>From - To</td>"+
+												"<td>"+isi.data.from+" - "+isi.data.to+"</td>"+
+												"<td>To 2</td>"+
+												"<td>"+isi.data.to2+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>New Details</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Flight Date & Time</td>"+
+												"<td>"+isi.data.rebook_flight_date+" "+isi.data.rebook_flight_time+"</td>"+
+												"<td>Class</td>"+
+												"<td>"+isi.data.rebook_class+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>From - To</td>"+
+												"<td>"+isi.data.rebook_from+" - "+isi.data.rebook_to+"</td>"+
+												"<td>To 2</td>"+
+												"<td>"+isi.data.rebook_to2+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Rebook Airline Cost</td>"+
+												"<td>"+isi.data.rebook_airline_cost+"</td>"+
+												"<td>Rebook Admin Cost</td>"+
+												"<td>"+isi.data.rebook_admin_cost+"</td>"+
+											"</tr>"+
+										"</table>";
+
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_rebook_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$("#exampleModalLabel").html(isi.data.info);
+							$("#isinya").html(html);
+						    $('#modal_profiling').modal('show');
+						}
+
+					}else if(isi.status=="FINISH"){
+						$("#exampleModalLabel").html(isi.data.info);
+						$("#isinya").html('This task has done by '+isi.by);
+					    $('#modal_profiling').modal('show');
+					}else{
+						$("#exampleModalLabel").html(isi.data.info);
+						$("#isinya").html('This task is viewed by '+isi.by);
+					    $('#modal_profiling').modal('show');
+					}
+			}
+ 			});
+		},500);
+	}
+
 	function get_saldo_airline(){
 
 		var clock = new Date().getHours();
@@ -217,25 +303,39 @@ $(function() {
 
 						}
 						else if(action[data].trx_info=='rebook'){
-							if(action[data].id_assign==0){
-			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+							color = "";
+	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
+	 							color = 'bg-blue';
+	 						}
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
+	 							color = 'bg-green';
+	 						}
+							if(action[data].id_assign==0 || action[data].assign_view==1){
+			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
 									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-money text-aqua"></i> ambil baru '+action[data].info+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
 									'</a>'+
 								'</li>');
 	 							info += action[data].info;
 		 					}else if(action[data].status==1 && action[data].user_view==0){
-			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="finish(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
 									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-ticket text-aqua"></i> request selesai '+action[data].info+
+										'<i class="fa fa-ticket text-aqua"></i> '+action[data].info+' Selesai'+
 									'</a>'+
 								'</li>');
 	 							info += action[data].info;
 		 					}
 						}
 						else if(action[data].trx_info=='issued'){
+							color = "";
+	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
+	 							color = 'bg-blue';
+	 						}
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
+	 							color = 'bg-green';
+	 						}
 							if(action[data].id_flowsys==5){
-			 					$("#pending_data").append('<li class="" id="'+action[data].id+'" style="cursor:pointer;">'+
+			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
 									'<a class="text-black waves-eff-li">'+
 										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
 									'</a>'+

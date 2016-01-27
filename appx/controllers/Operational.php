@@ -38,6 +38,8 @@ class Operational extends CI_Controller {
             );
         }
         $data['status'] = 0;
+        $data['est_budget'] = $data['memberpaid'];
+        $data['act_budget'] = $data['memberpaid'];
         $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_ticket'] = uniqid();
         $data['info'] = 'Issued Manual '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
@@ -72,6 +74,7 @@ class Operational extends CI_Controller {
         $data['rebook_timelimit'] = date_format(date_create($data['rebook_timelimit']),"Y-m-d H:i:s");
         $data['rebook_process'] = date_format(date_create($data['rebook_process']),"Y-m-d H:i:s");
         $data['rebook_total_cost'] = $data['rebook_airline_cost']+$data['rebook_admin_cost'];
+        $data['est_budget'] = $data['rebook_total_cost'];
         $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_ticket'] = uniqid();
         $data['info'] = 'Rebook '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
@@ -183,7 +186,7 @@ class Operational extends CI_Controller {
 //         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
 // =======
 
-        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')->where_in('id_flowsys',array(5,30,33,21,27))->get('actionsys')->result_array();
+        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')->where_in('id_flowsys',array(5,30,33,21,27))->where_in('status',array(1,0))->get('actionsys')->result_array();
 // >>>>>>> b25914c3b880804815e5b02e7a8959a4defd22be
         $this->general->load('operational/trx/request_potong_saldo',$data);
     }

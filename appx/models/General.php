@@ -196,7 +196,7 @@ function csv_to_array($filename='', $delimiter=',')
 		$a = $a->row_array();
 		return $a['email'];
 	}
-	public function get_member($id=0)
+	public function get_member($id=0,$kode=0)
 	{
 		if($id==0){
 			return "";
@@ -204,7 +204,12 @@ function csv_to_array($filename='', $delimiter=',')
 		$this->db->where('id_mitra',$id);
 		$a = $this->db->get('data_mitra');
 		$a = $a->row_array();
-		return $a['brand_name'];
+		if($kode){
+			$kode = " (".$a['prefix'].")";
+		}else{
+			$kode = "";
+		}
+		return $a['brand_name'].$kode;
 	}
 	public function get_respon($id=0)
 	{

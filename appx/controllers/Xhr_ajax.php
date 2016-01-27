@@ -79,6 +79,8 @@ class Xhr_ajax extends CI_Controller {
         $id = $this->input->post('id');
         $this->db->where('id',$id);
         $data = $this->db->get('actionsys')->row_array();
+        $data['brand_name'] = $this->general->get_member($data['id_mitra'],1);
+        $data['airline'] = $this->general->get_vendor($data['vendor']);
         if($data['status']==0){
             $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "OPEN";
