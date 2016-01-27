@@ -101,7 +101,6 @@ class Operational extends CI_Controller {
             );
         }
         $data['status'];
-        // $data['refund_status'] = 1;
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
         $data['nomor_tiket'] = uniqid();
@@ -113,6 +112,38 @@ class Operational extends CI_Controller {
         $this->db->insert('actionsys',$data);
         redirect(base_url("operational/add_new_refund"));
     }
+
+
+    public function save_void_garuda()
+  {
+      $data = $this->input->post();
+      $data['created_at'] = date("Y-m-d H:i:s");
+      $data['user_view'] = 1;
+      $data['id_user'] = $this->session->userdata('id');
+      $data['trx_info'] = 'void';
+      $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+      $data['assign_view'] = 0;
+      $data['id_flowsys'] = 43;
+      $data['void_mandatory'];
+      $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+      if($data['paxinfo']==""){
+          $data['paxinfo'] = json_encode(
+                                          array('class'=>$data['class'],
+                                              'pax_name'=>$data['pax_name'])
+          );
+      }
+      $data['status'] = 0;
+      $data['nomor_tiket'];
+      $data['id_ticket'] = uniqid();
+      $data['info'] = 'Issued Manual '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+      unset($data['mitra']);
+      unset($data['id_infosys']);
+      unset($data['pax_name']);
+      $this->db->insert('actionsys',$data);
+      redirect(base_url("operational/add_new_void_garuda"));
+    }
+
+
     public function airline_add()
     {
         $data['ckeditor'] = $this->_setup_ckeditor('info');
@@ -135,6 +166,11 @@ class Operational extends CI_Controller {
 
         $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
         $this->general->load('operational/trx/modul_refund/add',$data);
+    }
+    public function add_new_void_garuda()
+    {
+      $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
+      $this->general->load('operational/trx/add_new_void_garuda',$data);
     }
     public function request_potong_saldo()
     {

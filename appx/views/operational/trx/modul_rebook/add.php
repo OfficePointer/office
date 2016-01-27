@@ -11,7 +11,7 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="<?php echo base_url("operational/save_rebook");?>">
+      <form method="POST" action="<?php echo base_url("operational/save_rebook_garuda");?>">
 
 
       <div class="clearfix"></div>
@@ -31,7 +31,7 @@
 
       <div class="clearfix"></div>
       <div class="col-md-4">
-        <label>Kode Booking *)</label> 
+        <label>Kode Booking *)</label>
         <div class="input-group">
           <input autocomplete="off" type="text" required class="form-control" id="kode_booking" name="kode_booking">
           <span onclick="lookupcode('rebook')" style="cursor:pointer" class="input-group-addon"><i class="fa fa-search"></i></span>
@@ -42,7 +42,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Brand Name</label> 
+          <label>Brand Name</label>
           <div class="form-group">
             <input autocomplete="off" type="text" required class="form-control for_mitra" name="mitra" id="mitra">
             <input autocomplete="off" type="hidden" required class="form-control" name="id_mitra" id="id_mitra">
@@ -52,7 +52,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Vendor</label> 
+          <label>Vendor</label>
           <div class="form-group">
             <select class="form-control" name="vendor" id="vendor">
               <?php foreach ($vendor as $key) {
@@ -68,7 +68,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>From</label> 
+          <label>From</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="from" id="from">
           </div>
@@ -77,7 +77,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>To</label> 
+          <label>To</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="to" id="to">
           </div>
@@ -86,7 +86,7 @@
 
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>To 2</label> 
+          <label>To 2</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="to2" id="to2">
           </div>
@@ -112,16 +112,16 @@
 <fieldset>
 <legend>New Data</legend>
         <div class="col-md-3">
-          <label>Rebook From</label> 
+          <label>Rebook From</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="rebook_from" id="rebook_from">
           </div>
       </div>
 
 
- 
+
         <div class="col-md-3">
-          <label>Rebook To</label> 
+          <label>Rebook To</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="rebook_to" id="rebook_to">
           </div>
@@ -129,14 +129,14 @@
 
 
         <div class="col-md-3">
-          <label>Rebook To 2</label> 
+          <label>Rebook To 2</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="rebook_to2" id="rebook_to2">
           </div>
       </div>
 
        <div class="col-md-3">
-          <label>Class</label> 
+          <label>Class</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="rebook_class" id="rebook_class">
           </div>
@@ -145,7 +145,7 @@
       <div class="clearfix"></div>
       <div class="inside-box-im">
         <div class="col-md-3">
-            <label>Date Flight</label> 
+            <label>Date Flight</label>
           <div class="input-group">
             <input autocomplete="off" type="text" required class="form-control for_date" name="rebook_date_flight" id="rebook_date_flight">
             <span onclick="openfordate('rebook_date_flight')" class="input-group-addon"><i class="fa fa-calendar"></i></span>
@@ -154,7 +154,7 @@
 
 
         <div class="col-md-3">
-          <label>Time Flight</label> 
+          <label>Time Flight</label>
           <div class="form-group">
             <input autocomplete="off" type="timepicker" class="form-control" name="rebook_time_flight" id="rebook_time_flight">
           </div>
@@ -162,23 +162,23 @@
 
 
         <div class="col-md-3">
-          <label>Time Limit</label> 
+          <label>Time Limit</label>
           <div class="form-group">
             <input autocomplete="off" type="datetime" class="form-control" name="rebook_timelimit" id="rebook_timelimit">
           </div>
       </div>
-      
+
         <div class="col-md-3">
-            <label>Rebook Date</label> 
+            <label>Rebook Date</label>
           <div class="input-group">
             <input autocomplete="off" type="text" required class="form-control for_date" name="rebook_process" id="rebook_process" value="<?php echo date("m/d/Y");?>">
             <span onclick="openfordate('rebook_process')" class="input-group-addon"><i class="fa fa-calendar"></i></span>
           </div>
         </div>
-        
+
       <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Airline Cost</label> 
+          <label>Airline Cost</label>
           <div class="form-group">
             <div id="rebook_airline_cost_div" class="for_numberinput form-control"></div>
             <input autocomplete="off" type="hidden" class="form-control" name="rebook_airline_cost" id="rebook_airline_cost">
@@ -189,16 +189,16 @@
 
 
         <div class="col-md-4">
-          <label>Admin Cost</label> 
+          <label>Admin Cost</label>
           <div class="form-group">
             <div id="rebook_admin_cost_div" class="for_numberinput form-control"></div>
             <input autocomplete="off" type="hidden" class="form-control" name="rebook_admin_cost" id="rebook_admin_cost">
           </div>
         </div>
-        
+
         <div class="clearfix"></div>
         <div class="col-md-4">
-          <label>Nomor Tiket</label> 
+          <label>Nomor Tiket</label>
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="nomor_tiket" id="nomor_tiket">
           </div>
