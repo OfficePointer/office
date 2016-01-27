@@ -91,8 +91,10 @@ class Operational extends CI_Controller {
         $data['user_view'] = 1;
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'refund';
+        $data['nomor_tiket'];
         $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
+        $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_flowsys'] = 37;
         if($data['paxinfo']==""){
             $data['paxinfo'] = json_encode(
@@ -103,7 +105,7 @@ class Operational extends CI_Controller {
         $data['status'];
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
-        $data['nomor_tiket'] = uniqid();
+        $data['id_ticket'] = uniqid();
         $data['info'] = 'Refund '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
         unset($data['mitra']);
         unset($data['id_infosys']);
@@ -1087,4 +1089,35 @@ class Operational extends CI_Controller {
       $this->general->load('operational/trx/rebook_done',$data);
     }
 
+    public function refund_pending()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', 37)->where_in('status', array(0,1))->get('actionsys')->result_array();
+      $this->general->load('operational/trx/refund_pending',$data);
+    }
+
+    public function refund_done()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', 37)->where_in('status', 2)->get('actionsys')->result_array();
+      $this->general->load('operational/trx/refund_done',$data);
+    }
+
+    public function void_pending()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', 43)->where_in('status', array(0,1))->get('actionsys')->result_array();
+      $this->general->load('operational/trx/void_pending',$data);
+    }
+
+    public function void_done()
+    {
+      $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')->join
+      ('flowsys','flowsys.id=actionsys.id_flowsys','left')->join('infosys','infosys.id=flowsys.id_info','left')
+      ->where_in('id_flowsys', 43)->where_in('status', 2)->get('actionsys')->result_array();
+      $this->general->load('operational/trx/void_done',$data);
+    }
 }
