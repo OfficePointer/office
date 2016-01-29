@@ -173,6 +173,7 @@ $(function() {
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
 						}else if(trx_info=="rebook"){
+
 							var html = "<table>"+
 											"<tr>"+
 												"<td>Kode Booking</td>"+
@@ -218,6 +219,18 @@ $(function() {
 											"</tr>"+
 											"<tr>"+
 												"<td colspan=4><div class='form-control' id='act_budget'></div></td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Status Rebook</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>"+
+													"<select class='form-control' id='rebook_status'>"+
+														"<option "+((isi.data.rebook_status==0)?"selected":"")+" value='0'>Belum di Proses Rebook - Pending</option>"+
+														"<option "+((isi.data.rebook_status==1)?"selected":"")+" value='1'>Sedang di Proses Rebook - Pending</option>"+
+														"<option "+((isi.data.rebook_status==2)?"selected":"")+"value='2'>Sudah di Proses Rebook - Selesai</option>"+
+													"</select>"+
+												"</td>"+
 											"</tr>"+
 										"</table>";
 
@@ -473,6 +486,30 @@ $(function() {
 
 					$("#exampleModalLabel").html(info);
 					$("#isinya").html(isi.status+" - "+isi.msg);
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}    
+	function update_rebook_done (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			var vendor = id;				
+			var act_budget = $("#act_budget").jqxNumberInput('getDecimal');
+			var rebook_status = $("#rebook_status").val();
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_rebook_done");?>',
+				dataType:'json',
+				data:{id:id,act_budget:act_budget,rebook_status:rebook_status},
+				success:function(isi){
+
+					$("#exampleModalLabel").html(info);
+					$("#isinya").html("OK Clear!");
 				    $('#modal_profiling').modal('show');
 				}
 			});

@@ -50,6 +50,40 @@ class Xhr_ajax extends CI_Controller {
 
         echo "OK";
     }
+    public function update_rebook_done()
+    {
+        $data = $this->input->post();
+
+        $this->db->where('id',$data['id']);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        if($data['rebook_status']==2){
+            $data['comment'] = $dat['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+            $data['done_at'] = date("Y-m-d H:i:s");
+            $data['status'] = 2;
+            $data['rebook_status'] = 2;
+            $data['assign_view'] = 1;
+            $data['rebook_process'] = date("Y-m-d H:i:s");
+        }
+        if($data['rebook_status']==1 or $data['rebook_status']==0){
+            $data['comment'] = $dat['comment']."\r\nUpdate by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+            $data['done_at'] = NULL;
+            $data['status'] = $data['rebook_status'];
+            $data['assign_view'] = $data['rebook_status'];
+            if($data['rebook_status']==0){
+                $data['id_assign'] = 0;
+                $data['rebook_process'] = NULL;
+            }else{
+                $data['rebook_process'] = date("Y-m-d H:i:s");
+            }
+        }
+        $data['act_budget'] = $this->input->post('act_budget');
+        $this->db->where('id',$data['id']);
+        $this->db->update('actionsys',$data);
+
+
+        echo "OK";
+    }
     public function lookup_code()
     {
         $value = $this->input->post('code');
