@@ -309,7 +309,7 @@ $(function() {
 										"</table>";
 
 							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
-							$(".modal-footer").prepend('<button onclick="update_rebook_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$(".modal-footer").prepend('<button onclick="update_refund_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
@@ -595,6 +595,30 @@ $(function() {
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/update_rebook_done");?>',
+				dataType:'json',
+				data:{id:id,act_budget:act_budget,rebook_status:rebook_status},
+				success:function(isi){
+
+					$("#exampleModalLabel").html(info);
+					$("#isinya").html("OK Clear!");
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
+	function update_refund_done (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){
+			var vendor = id;				
+			var act_budget = $("#act_budget").jqxNumberInput('getDecimal');
+			var rebook_status = $("#rebook_status").val();
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_refund_done");?>',
 				dataType:'json',
 				data:{id:id,act_budget:act_budget,rebook_status:rebook_status},
 				success:function(isi){
@@ -1017,16 +1041,14 @@ $(function() {
 						}else if(revert[data].airline==12 || revert[data].airline==2){
 							revert[data].airline = 'JT';
 						}
+						
 						if(revert[data].status==2 || revert[data].status==21){
 							revert[data].status = 'Confirmed';
-
 						}else if(revert[data].status==1){
 							revert[data].status = 'Expired';
-							
 						}else if(revert[data].status==4){
-								revert[data].status = 'Canceled';
-						}
-						else{
+							revert[data].status = 'Canceled';
+						}else{
 							revert[data].status = 'Waiting';
 						}
 

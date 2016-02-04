@@ -31,6 +31,7 @@
 		<thead>
 			<tr>
 				<th>Date Join</th>
+				<th>Klasifikasi</th>
 				<th>Brand Name</th>
 				<th>Jan</th>
 				<th>%</th>
@@ -81,6 +82,7 @@
 		?>
 			<tr>
 				<td><?php echo $key[0];?></td>
+				<td><?php echo $key[41];?></td>
 				<td><?php echo $key[1];?></td>
 				<td><?php echo $key[2];?></td>
 				<td><?php echo $key[3];?></td>

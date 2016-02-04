@@ -219,6 +219,7 @@ class Marketing extends CI_Controller {
 						//echo $this->db->last_query();
 						echo "<table><thead>";
 						echo "<th>Join Date</th>";
+						echo "<th>Klasifikasi</th>";
 						echo "<th>Brand Name</th>";
 						echo "<th>Jan</th>";
 						echo "<th>%</th>";
@@ -264,6 +265,7 @@ class Marketing extends CI_Controller {
 							$total = 0;
 						echo "<tr>";
 						echo "<td>".utf8_decode($datanya[0])."</td>";
+						echo "<td>".$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".date("m")."-")."</td>";
 						echo "<td>".utf8_decode($datanya[1])."</td>";
 						echo "<td>".utf8_decode($datanya[2])."</td>";
 						echo "<td>".utf8_decode($datanya[3])."</td>";
@@ -375,6 +377,7 @@ class Marketing extends CI_Controller {
 								$jum,
 								($key['tahunlalu']==0 and $jum==0)?0:(ceil(((($key['tahunlalu']==0 and $jum>0)?2:$jum/$key['tahunlalu'])*100)-100)),
 								number_format(($jum/(($this->input->post('tahun')%4==0)?366:365)),2),
+								$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".date("m")."-"),
 								);
 		}
 			$hasil = array('data'=>$newdata);
