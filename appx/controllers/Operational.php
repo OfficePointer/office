@@ -83,7 +83,7 @@ class Operational extends CI_Controller {
         unset($data['pax_name']);
         unset($data['class']);
         $this->db->insert('actionsys',$data);
-        redirect(base_url("servicedesk/all_tasks"));
+        redirect(base_url("servicedesk/rebook_pending"));
     }
 
 
@@ -115,11 +115,11 @@ class Operational extends CI_Controller {
         unset($data['pax_name']);
         unset($data['class']);
         $this->db->insert('actionsys',$data);
-        redirect(base_url("operational/add_new_refund"));
+        redirect(base_url("operational/refund_pending"));
     }
 
 
-    public function save_void_garuda()
+  public function save_void_garuda()
   {
       $data = $this->input->post();
       $data['created_at'] = date("Y-m-d H:i:s");
@@ -128,24 +128,25 @@ class Operational extends CI_Controller {
       $data['trx_info'] = 'void';
       $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
       $data['assign_view'] = 0;
+      $data['vendor'] = 13;
       $data['id_flowsys'] = 43;
       $data['void_mandatory'];
       $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
       if($data['paxinfo']==""){
           $data['paxinfo'] = json_encode(
-                                          array('class'=>$data['class'],
-                                              'pax_name'=>$data['pax_name'])
+                array('pax_name'=>$data['pax_name'])
           );
       }
       $data['status'] = 0;
-      $data['nomor_tiket'];
+      $data['act_budget'] = 0;
+      $data['est_budget'] = 0;
       $data['id_ticket'] = uniqid();
-      $data['info'] = 'Issued Manual '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
+      $data['info'] = 'Void '.$this->general->get_vendor(13)." ".$data['kode_booking']." ".$data['mitra'];
       unset($data['mitra']);
       unset($data['id_infosys']);
       unset($data['pax_name']);
       $this->db->insert('actionsys',$data);
-      redirect(base_url("operational/add_new_void_garuda"));
+      redirect(base_url("operational/void_pending"));
     }
 
 

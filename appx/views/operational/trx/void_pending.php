@@ -10,14 +10,12 @@
     <section class="content">
       <div class="row">
       <div class="col-md-12">
-      <table class="table table-bordered table-striped">
+      <table class="table table-bordered table-striped for_datatables">
         <thead>
           <tr>
-            <th>ID Ticket</th>
+            <th>DateTime</th>
             <th>Info</th>
-            <th>Kode Booking</th>
-            <th>Est Budge</th>
-            <th>Brand Name</th>
+            <th>Void Amount</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -26,13 +24,10 @@
         foreach ($actionsys as $key) {
         ?>
           <tr>
-            <td><?php echo $key['id_ticket'];?></td>
-            <td><?php echo $this->general->get_infosys_by_idflowsys($key['id_flowsys']);?></td>
-            <td><?php echo $key['kode_booking'];?></td>
+            <td><?php echo $key['created_at'];?></td>
+            <td><?php echo $key['info'];?></td>
             <td><?php echo $key['est_budget'];?></td>
-
-            <td><?php echo $this->general->get_member($key['id_mitra']);?></td>
-            <td><a onclick="openrequest('<?php echo $key['id'];?>')">Open</a></td>
+            <td><a onclick="openrequest('<?php echo $key['id'];?>','void')">Open</a></td>
 
           </tr>
         <?php

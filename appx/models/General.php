@@ -44,6 +44,44 @@ class general extends CI_Model {
 		$this->general->logdata($page,$data);
 	}
 
+	public function get_solved($an)
+	{
+		switch ($an) {
+			case 0:
+				$an = "pending";
+				break;
+			case 1:
+				$an = "done";
+				break;
+			
+			default:
+				$an = "pending";
+				break;
+		}
+
+		return $an;
+	}
+	public function get_status($an)
+	{
+		switch ($an) {
+			case 0:
+				$an = "pending";
+				break;
+			case 1:
+				$an = "hold";
+				break;
+			case 1:
+				$an = "done";
+				break;
+			
+			default:
+				$an = "pending";
+				break;
+		}
+
+		return $an;
+	}
+
 	public function logdata($page,$data)
 	{
 		$datas['idpengguna'] = $this->session->userdata('id');

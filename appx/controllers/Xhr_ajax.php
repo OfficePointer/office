@@ -66,7 +66,7 @@ class Xhr_ajax extends CI_Controller {
             $data['rebook_process'] = date("Y-m-d H:i:s");
         }
         if($data['rebook_status']==1 or $data['rebook_status']==0){
-            $data['comment'] = $dat['comment']."\r\nUpdate by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+            $data['comment'] = $dat['comment']."\r\nUpdate Rebook Status to ".$data['rebook_status']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
             $data['done_at'] = NULL;
             $data['status'] = $data['rebook_status'];
             $data['assign_view'] = $data['rebook_status'];
@@ -78,6 +78,94 @@ class Xhr_ajax extends CI_Controller {
             }
         }
         $data['act_budget'] = $this->input->post('act_budget');
+        $this->db->where('id',$data['id']);
+        $this->db->update('actionsys',$data);
+
+
+        echo "OK";
+    }
+    public function update_refund_done()
+    {
+        $data = $this->input->post();
+
+        $this->db->where('id',$data['id']);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        $data['refund_total_cost'] = $this->input->post('refund_total_cost');
+        $data['refund_airline_status'] = $this->input->post('refund_airline_status');
+        $data['refund_member_status'] = $this->input->post('refund_member_status');
+        $data['refund_airline_date'] = date_format(date_create($this->input->post('refund_airline_date')),"Y-m-d");
+        $data['refund_member_date'] = date_format(date_create($this->input->post('refund_member_date')),"Y-m-d");
+        if($data['refund_member_status']==0){
+            $data['status'] = 0;
+            $data['id_assign'] = 0;
+            $data['assign_view'] = 0;
+            $data['user_view'] = 1;
+        }else{            
+            $data['status'] = 2;
+            $data['id_assign'] = $this->session->userdata('id');
+            $data['assign_view'] = 1;
+            $data['user_view'] = 0;
+        }
+        $data['comment'] = $dat['comment'];
+        if($dat['refund_total_cost']!=$this->input->post('refund_total_cost')){
+            $data['comment'] = $data['comment']."\r\nUpdate Refund Total Cost from ".$dat['refund_total_cost']." to ".$data['refund_total_cost']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+        if($dat['refund_airline_status']!=$this->input->post('refund_airline_status')){
+            $data['comment'] = $data['comment']."\r\nUpdate Refund Airline Status from ".$this->general->get_solved($dat['refund_airline_status'])." to ".$this->general->get_solved($data['refund_airline_status'])." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+        if($dat['refund_member_status']!=$this->input->post('refund_member_status')){
+            $data['comment'] = $data['comment']."\r\nUpdate Refund Member Status from ".$this->general->get_solved($dat['refund_member_status'])." to ".$this->general->get_solved($data['refund_member_status'])." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+        if($dat['refund_member_date']!=$this->input->post('refund_member_date')){
+            $data['comment'] = $data['comment']."\r\nUpdate Refund Member Date Status from ".$dat['refund_member_date']." to ".$data['refund_member_date']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+        if($dat['refund_airline_date']!=$this->input->post('refund_airline_date')){
+            $data['comment'] = $data['comment']."\r\nUpdate Refund Airline Date Status from ".$dat['refund_airline_date']." to ".$data['refund_airline_date']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+
+        if($dat['comment']==$data['comment']){
+            unset($data['comment']);
+        }
+
+
+        $this->db->where('id',$data['id']);
+        $this->db->update('actionsys',$data);
+
+
+        echo "OK";
+    }
+    public function update_void_done()
+    {
+        $data = $this->input->post();
+
+        $this->db->where('id',$data['id']);
+        $dat = $this->db->get('actionsys')->row_array();
+
+        $data['est_budget'] = $this->input->post('est_budget');
+        if($data['status']==0){
+            $data['id_assign'] = 0;
+            $data['assign_view'] = 0;
+            $data['user_view'] = 1;
+        }else{            
+            $data['id_assign'] = $this->session->userdata('id');
+            $data['assign_view'] = 1;
+            $data['user_view'] = 1;
+        }
+        $data['act_budget'] = $data['est_budget'];
+        $data['comment'] = $dat['comment'];
+        if($dat['est_budget']!=$this->input->post('est_budget')){
+            $data['comment'] = $data['comment']."\r\nUpdate Void Amount from ".$dat['est_budget']." to ".$data['est_budget']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+        if($dat['status']!=$this->input->post('status')){
+            $data['comment'] = $data['comment']."\r\nUpdate Void Status from ".$this->general->get_status($dat['status'])." to ".$this->general->get_status($data['status'])." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+
+        if($dat['comment']==$data['comment']){
+            unset($data['comment']);
+        }
+
+
         $this->db->where('id',$data['id']);
         $this->db->update('actionsys',$data);
 
@@ -134,7 +222,7 @@ class Xhr_ajax extends CI_Controller {
         $data['brand_name'] = $this->general->get_member($data['id_mitra'],1);
         $data['airline'] = $this->general->get_vendor($data['vendor']);
         if($data['status']==0){
-            $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
+            $data['act_budget_rp'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "OPEN";
             $dat['data'] = $data;
 
@@ -146,12 +234,12 @@ class Xhr_ajax extends CI_Controller {
                 $upt['id_user'] = $this->session->userdata('id');
             }
             $upt['assign_view'] = 1;
-            $upt['status'] = 1;
+            //$upt['status'] = 1;
             $this->db->where('id',$id);
             $this->db->update('actionsys',$upt);
             echo json_encode($dat);
         }elseif($data['status']==1){
-            $data['act_budget'] = "Rp. ".number_format($data['act_budget']);
+            $data['act_budget_rp'] = "Rp. ".number_format($data['act_budget']);
             $dat['status'] = "VIEW";
             $dat['data'] = $data;
             $dat['by'] = $this->general->get_user($data['id_assign']);

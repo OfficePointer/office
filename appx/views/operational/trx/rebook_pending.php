@@ -18,7 +18,6 @@
             <th>Kode Booking</th>
             <th>Airline</th>
             <th>Est Budget</th>
-            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -32,7 +31,6 @@
             <td><?php echo $key['kode_booking'];?></td>
             <td><?php echo $this->general->get_vendor($key['vendor']);?></td>
             <td><?php echo number_format($key['est_budget'],2,",",".");?></td>
-            <td><?php echo $key['rebook_status'];?></td>
             <td><a onclick="openrequest('<?php echo $key['id'];?>','rebook')">Open</a></td>
           </tr>
         <?php

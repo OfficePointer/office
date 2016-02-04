@@ -129,10 +129,20 @@ $(function() {
  			data:{id:id},
  			dataType:'json',
  			success:function(isi){
+ 				var tambahan = "<tr><td colspan=4><b>";
 					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
+
+					}else if(isi.status=="FINISH"){
+						tambahan += 'This task has done by '+isi.by;
+					}else{
+						tambahan += 'This task was hold by '+isi.by;
+					}
+
+					tambahan +='</b></td></tr>';
 
 						if(trx_info=="issued"){
 							var html = "<table>"+
+											tambahan+
 											"<tr>"+
 												"<td>Kode Booking</td>"+
 												"<td><b>"+isi.data.kode_booking+"</b></td>"+
@@ -175,6 +185,7 @@ $(function() {
 						}else if(trx_info=="rebook"){
 
 							var html = "<table>"+
+											tambahan+
 											"<tr>"+
 												"<td>Kode Booking</td>"+
 												"<td><b>"+isi.data.kode_booking+"</b></td>"+
@@ -228,7 +239,7 @@ $(function() {
 													"<select class='form-control' id='rebook_status'>"+
 														"<option "+((isi.data.rebook_status==0)?"selected":"")+" value='0'>Belum di Proses Rebook - Pending</option>"+
 														"<option "+((isi.data.rebook_status==1)?"selected":"")+" value='1'>Sedang di Proses Rebook - Pending</option>"+
-														"<option "+((isi.data.rebook_status==2)?"selected":"")+"value='2'>Sudah di Proses Rebook - Selesai</option>"+
+														"<option "+((isi.data.rebook_status==2)?"selected":"")+" value='2'>Sudah di Proses Rebook - Selesai</option>"+
 													"</select>"+
 												"</td>"+
 											"</tr>"+
@@ -239,10 +250,12 @@ $(function() {
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
-        					$("#act_budget").jqxNumberInput({ width: '90%', height: '25px', digits: 20, max:9999999999999999999,symbol:'Rp. '});
+        					$("#act_budget").jqxNumberInput({ height: '25px', digits: 15, max:99999999999999999,symbol:'Rp. '});
+        					$("#act_budget").jqxNumberInput('setDecimal',isi.data.act_budget);
 						}else if(trx_info=="refund"){
 
 							var html = "<table>"+
+											tambahan+
 											"<tr>"+
 												"<td>Kode Booking</td>"+
 												"<td><b>"+isi.data.kode_booking+"</b></td>"+
@@ -278,12 +291,12 @@ $(function() {
 												"<td colspan=2>"+
 													"<select class='form-control' id='refund_airline_status'>"+
 														"<option "+((isi.data.refund_airline_status==0)?"selected":"")+" value='0'>Dana Refund belum diterima - pending</option>"+
-														"<option "+((isi.data.refund_airline_status==1)?"selected":"")+"value='1'>Dana Refund sudah diterima - selesai</option>"+
+														"<option "+((isi.data.refund_airline_status==1)?"selected":"")+" value='1'>Dana Refund sudah diterima - selesai</option>"+
 													"</select>"+
 												"</td>"+
 												"<td colspan=2>"+
 													'<div class="input-group">'+
-											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_airline_date" id="refund_airline_date" value="<?php echo date("m/d/Y");?>">'+
+											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_airline_date" id="refund_airline_date" value="'+isi.data.refund_airline_date+'">'+
 											            '<span onclick="openfordate(\'refund_airline_date\')" class="input-group-addon"><i class="fa fa-calendar"></i></span>'+
 											        '</div>'+
 												"</td>"+
@@ -301,7 +314,7 @@ $(function() {
 												"</td>"+
 												"<td colspan=2>"+
 													'<div class="input-group">'+
-											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_member_date" id="refund_member_date" value="<?php echo date("m/d/Y");?>">'+
+											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_member_date" id="refund_member_date" value="'+isi.data.refund_member_date+'">'+
 											            '<span onclick="openfordate(\'refund_member_date\')" class="input-group-addon"><i class="fa fa-calendar"></i></span>'+
 											        '</div>'+
 												"</td>"+
@@ -313,18 +326,53 @@ $(function() {
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
-        					$("#refund_total_cost").jqxNumberInput({ width: '90%', height: '25px', digits: 15, max:9999999999999999999,symbol:'Rp. '});
+        					$("#refund_total_cost").jqxNumberInput({ height: '25px', digits: 15, max:9999999999999999999,symbol:'Rp. '});
+							$("#refund_total_cost").jqxNumberInput('setDecimal',isi.data.refund_total_cost);
+						}else if(trx_info=="void"){
+
+							var html = "<table>"+
+											tambahan+
+											"<tr>"+
+												"<td>Kode Booking</td>"+
+												"<td><b>"+isi.data.kode_booking+"</b></td>"+
+												"<td>Airline</td>"+
+												"<td>"+isi.data.airline+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Brand Name</td>"+
+											"<tr>"+
+											"</tr>"+
+												"<td colspan=4>"+isi.data.brand_name+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Total Void</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4><div class='form-control' id='est_budget'></div></td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Refund Airline Status</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>"+
+													"<select class='form-control' id='status'>"+
+														"<option "+((isi.data.status==0)?"selected":"")+" value='0'>Belum diproses - pending</option>"+
+														"<option "+((isi.data.status==1)?"selected":"")+" value='1'>Sudah diinput BSP Link - pending</option>"+
+														"<option "+((isi.data.status==2)?"selected":"")+" value='2'>Sudah diterima & dikembalikan ke member - selesai</option>"+
+													"</select>"+
+												"</td>"+
+											"</tr>"+
+										"</table>";
+
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_void_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$("#exampleModalLabel").html(isi.data.info);
+							$("#isinya").html(html);
+						    $('#modal_profiling').modal('show');
+        					$("#est_budget").jqxNumberInput({ height: '25px', digits: 15, max:9999999999999999999,symbol:'Rp. '});
+							$("#est_budget").jqxNumberInput('setDecimal',isi.data.est_budget);
 						}
 
-					}else if(isi.status=="FINISH"){
-						$("#exampleModalLabel").html(isi.data.info);
-						$("#isinya").html('This task has done by '+isi.by);
-					    $('#modal_profiling').modal('show');
-					}else{
-						$("#exampleModalLabel").html(isi.data.info);
-						$("#isinya").html('This task is viewed by '+isi.by);
-					    $('#modal_profiling').modal('show');
-					}
 			}
  			});
 		},500);
@@ -486,6 +534,23 @@ $(function() {
 	 							info += action[data].info;
 		 					//}
 						}
+						else if(action[data].trx_info=='void'){
+							color = "";
+	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
+	 							color = 'bg-blue';
+	 						}
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
+	 							color = 'bg-green';
+	 						}
+							//if(action[data].id_flowsys==5){
+			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
+		 					//}
+						}
 						else if(action[data].trx_info=='...'){
 							//other transaction info.................
 						}
@@ -586,10 +651,10 @@ $(function() {
 
 		close_popup();
 		clear_btn();
-		setTimeout(function(){
-			var vendor = id;				
+		setTimeout(function(){		
 			var act_budget = $("#act_budget").jqxNumberInput('getDecimal');
 			var rebook_status = $("#rebook_status").val();
+			var info = $("#exampleModalLabel").html();
 			//alert(saldo);
 
 			$.ajax({
@@ -606,21 +671,55 @@ $(function() {
 			});
 		},1000);
 	}
+	function update_void_done (id) {
+
+		close_popup();
+		clear_btn();
+		setTimeout(function(){		
+			var est_budget = $("#est_budget").jqxNumberInput('getDecimal');
+			var status = $("#status").val();
+			var info = $("#exampleModalLabel").html();
+			//alert(saldo);
+
+			$.ajax({
+				type:"POST",
+				url:'<?php echo base_url("xhr_ajax/update_void_done");?>',
+				dataType:'json',
+				data:{id:id,est_budget:est_budget,status:status},
+				success:function(isi){
+
+					$("#exampleModalLabel").html(info);
+					$("#isinya").html("OK Clear!");
+				    $('#modal_profiling').modal('show');
+				}
+			});
+		},1000);
+	}
 	function update_refund_done (id) {
 
 		close_popup();
 		clear_btn();
-		setTimeout(function(){
-			var vendor = id;				
-			var act_budget = $("#act_budget").jqxNumberInput('getDecimal');
-			var rebook_status = $("#rebook_status").val();
+		setTimeout(function(){			
+			var refund_total_cost = $("#refund_total_cost").jqxNumberInput('getDecimal');
+			var refund_airline_status = $("#refund_airline_status").val();
+			var refund_airline_date = $("#refund_airline_date").val();
+			var refund_member_status = $("#refund_member_status").val();
+			var refund_member_date = $("#refund_member_date").val();
+			var info = $("#exampleModalLabel").html();
 			//alert(saldo);
 
 			$.ajax({
 				type:"POST",
 				url:'<?php echo base_url("xhr_ajax/update_refund_done");?>',
 				dataType:'json',
-				data:{id:id,act_budget:act_budget,rebook_status:rebook_status},
+				data:{
+						id:id,
+						refund_total_cost:refund_total_cost,
+						refund_airline_status:refund_airline_status,
+						refund_airline_date:refund_airline_date,
+						refund_member_status:refund_member_status,
+						refund_member_date:refund_member_date
+					},
 				success:function(isi){
 
 					$("#exampleModalLabel").html(info);
@@ -846,7 +945,7 @@ $(function() {
 						$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
 						$(".modal-footer").prepend('<button onclick="update_action_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 						$("#exampleModalLabel").html(isi.data.info);
-						$("#isinya").html(isi.data.info+" - "+isi.data.act_budget);
+						$("#isinya").html(isi.data.info+" - "+isi.data.act_budget_rp);
 					    $('#modal_profiling').modal('show');
 					}else if(isi.status=="FINISH"){
 						$("#exampleModalLabel").html(isi.data.info);
