@@ -11,7 +11,7 @@
       <div class="row">
 
       <div class="col-md-12">
-      <form method="POST" action="<?php echo base_url("operational/save_rebook_garuda");?>">
+      <form method="POST" action="<?php echo base_url("operational/save_rebook");?>">
 
 
       <div class="clearfix"></div>

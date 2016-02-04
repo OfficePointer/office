@@ -106,11 +106,11 @@
       <div class="clearfix"></div>
 
 <fieldset>
-<legend>New Data</legend>
+<legend>Refund Data</legend>
 
       <div class="clearfix"></div>
       <div class="inside-box-im">
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label>Tanggal Proses Refund</label>
           <div class="input-group">
             <input autocomplete="off" type="text" required class="form-control for_date" name="refund_cost_received" id="refund_cost_received">
@@ -118,20 +118,8 @@
           </div>
         </div>
 
-      <div class="clearfix"></div>
-        <div class="col-md-4">
-          <label>Status</label>
-          <div class="form-group">
-            <td><select required class="form-control" name="status">
-                  <option value="0">0</option>
-                  <option value="1">1</option>
-
-                  </select>
-          </div>
-      </div>
-
         <div class="clearfix"></div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <label>Tanggal Keluar Refund</label>
           <div class="input-group">
             <input autocomplete="off" type="text" required class="form-control for_date" name="refund_cost_out" id="refund_cost_out" value="<?php echo date("m/d/Y");?>">
@@ -158,7 +146,7 @@
       <div class="clearfix"></div>
 
 
-</fieldset>
+        </fieldset>
             <input autocomplete="off" type="hidden" class="form-control" name="paxinfo" id="paxinfo">
 
         <div class="col-md-12">

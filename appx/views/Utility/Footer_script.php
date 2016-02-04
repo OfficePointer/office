@@ -192,7 +192,7 @@ $(function() {
 											"</tr>"+
 											"<tr>"+
 												"<td>Flight Date & Time</td>"+
-												"<td>"+isi.data.rebook_flight_date+" "+isi.data.rebook_flight_time+"</td>"+
+												"<td>"+isi.data.rebook_date_flight+" "+isi.data.rebook_time_flight+"</td>"+
 												"<td>Class</td>"+
 												"<td>"+isi.data.rebook_class+"</td>"+
 											"</tr>"+
@@ -240,6 +240,80 @@ $(function() {
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
         					$("#act_budget").jqxNumberInput({ width: '90%', height: '25px', digits: 20, max:9999999999999999999,symbol:'Rp. '});
+						}else if(trx_info=="refund"){
+
+							var html = "<table>"+
+											"<tr>"+
+												"<td>Kode Booking</td>"+
+												"<td><b>"+isi.data.kode_booking+"</b></td>"+
+												"<td>Airline</td>"+
+												"<td>"+isi.data.airline+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Brand Name</td>"+
+											"<tr>"+
+											"</tr>"+
+												"<td colspan=4>"+isi.data.brand_name+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Refund Details</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Cost Received</td>"+
+												"<td>"+isi.data.refund_cost_received+"</td>"+
+												"<td>Est Cost to Member</td>"+
+												"<td>"+isi.data.refund_est_amount+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4>Total Refund</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=4><div class='form-control' id='refund_total_cost'></div></td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=2>Refund Airline Status</td>"+
+												"<td colspan=2>Refund Airline Date</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=2>"+
+													"<select class='form-control' id='refund_airline_status'>"+
+														"<option "+((isi.data.refund_airline_status==0)?"selected":"")+" value='0'>Dana Refund belum diterima - pending</option>"+
+														"<option "+((isi.data.refund_airline_status==1)?"selected":"")+"value='1'>Dana Refund sudah diterima - selesai</option>"+
+													"</select>"+
+												"</td>"+
+												"<td colspan=2>"+
+													'<div class="input-group">'+
+											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_airline_date" id="refund_airline_date" value="<?php echo date("m/d/Y");?>">'+
+											            '<span onclick="openfordate(\'refund_airline_date\')" class="input-group-addon"><i class="fa fa-calendar"></i></span>'+
+											        '</div>'+
+												"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=2>Refund Member Status</td>"+
+												"<td colspan=2>Refund Member Date</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td colspan=2>"+
+													"<select class='form-control' id='refund_member_status'>"+
+														"<option "+((isi.data.refund_member_status==0)?"selected":"")+" value='0'>Belum dikembalikan ke member - pending</option>"+
+														"<option "+((isi.data.refund_member_status==1)?"selected":"")+" value='1'>Sudah dikembalikan ke member - selesai</option>"+
+													"</select>"+
+												"</td>"+
+												"<td colspan=2>"+
+													'<div class="input-group">'+
+											            '<input autocomplete="off" type="text" required class="form-control for_date" name="refund_member_date" id="refund_member_date" value="<?php echo date("m/d/Y");?>">'+
+											            '<span onclick="openfordate(\'refund_member_date\')" class="input-group-addon"><i class="fa fa-calendar"></i></span>'+
+											        '</div>'+
+												"</td>"+
+											"</tr>"+
+										"</table>";
+
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_rebook_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
+							$("#exampleModalLabel").html(isi.data.info);
+							$("#isinya").html(html);
+						    $('#modal_profiling').modal('show');
+        					$("#refund_total_cost").jqxNumberInput({ width: '90%', height: '25px', digits: 15, max:9999999999999999999,symbol:'Rp. '});
 						}
 
 					}else if(isi.status=="FINISH"){
@@ -394,6 +468,23 @@ $(function() {
 								'</li>');
 	 							info += action[data].info;
 		 					}
+						}
+						else if(action[data].trx_info=='refund'){
+							color = "";
+	 						if(action[data].id_assign==<?php echo $this->session->userdata('id');?>){
+	 							color = 'bg-blue';
+	 						}
+	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
+	 							color = 'bg-green';
+	 						}
+							//if(action[data].id_flowsys==5){
+			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
+									'<a class="text-black waves-eff-li">'+
+										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+									'</a>'+
+								'</li>');
+	 							info += action[data].info;
+		 					//}
 						}
 						else if(action[data].trx_info=='...'){
 							//other transaction info.................
@@ -957,20 +1048,20 @@ $(function() {
 						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
 						audio.play();
 					}
-					if(abu>0 && bunyi==0){
-						notif = new Notification('Kode Abu-abu', {
-					      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
-					      body: 'Informasi Kode Booking Abu-abu',
-					    });
+				}
+				if(abu>0 && bunyi==0){
+					notif = new Notification('Kode Abu-abu', {
+				      icon: 'http://office.pointer.co.id/office/assets/favicon.png',
+				      body: 'Informasi Kode Booking Abu-abu',
+				    });
 
-					    notif.onclick = function (x) {
-					      window.focus();
-					    };
+				    notif.onclick = function (x) {
+				      window.focus();
+				    };
 
-						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
-						audio.play();
-						bunyi = 1;
-					}
+					var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
+					audio.play();
+					bunyi = 1;
 				}
 			}
 		});

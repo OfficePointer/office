@@ -36,24 +36,20 @@
       <table class="table table-bordered table-striped for_datatables">
         <thead>
           <tr>
-            <th>IDTicket</th>
+            <th>Date Start</th>
             <th>Info</th>
             <th>Pengirim</th>
             <th>Penerima</th>
-            <th>Date Start</th>
-            <th>Status</th>
             <th>Done at</th>
           </tr>
         </thead>
         <tbody>
         <?php foreach ($all_tasks as $key){ ?>
           <tr>
-            <td><?php echo $key['id_ticket'];?></td>
-            <td><?php echo $key['info'];?></td>
+            <td><?php echo $key['created_at'];?></td>
+            <td title="<?php echo ($key['status']==0)?"Open":(($key['status']==1)?"Hold":(($key['status']==2)?"Done":""));?>"><?php echo $key['info'];?></td>
             <td><?php echo $key['pengirim'];?></td>
             <td><?php echo $key['penerima'];?></td>
-            <td><?php echo $key['created_at'];?></td>
-            <td><?php echo ($key['status']==0)?"Open":(($key['status']==1)?"Hold":(($key['status']==2)?"Done":""));?></td>
             <td><?php echo $key['done_at'];?></td>
           </tr>
         <?php } ?>
