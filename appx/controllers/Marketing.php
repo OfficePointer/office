@@ -212,8 +212,8 @@ class Marketing extends CI_Controller {
 								number_format(($key['desember']/31),2),
 								$jum,
 								($key['tahunlalu']==0 and $jum==0)?0:(ceil(((($key['tahunlalu']==0 and $jum>0)?2:$jum/$key['tahunlalu'])*100)-100)),
-								number_format(($jum/(($this->input->post('tahun')%4==0)?366:365)),2),
-								$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".date("m")."-"),
+								number_format(($jum/(($_GET['tahun']%4==0)?366:365)),2),
+								$this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".date("m")."-"),
 							);
 		}
     	}
