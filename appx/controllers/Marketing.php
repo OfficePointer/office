@@ -152,7 +152,7 @@ class Marketing extends CI_Controller {
 		$newdata = array();
     	if($_GET["tahun"]!=""){
     		$dbpointer = $this->load->database('dbpointer',true);
-    		$hasil = $dbpointer->query("select join_date,brand_name, prefix,
+    		$hasil = $dbpointer->query("select join_date, id_mitra,brand_name, prefix,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".($_GET["tahun"]-1)."-12-%' and jml_tiket<100 and jml_tiket>0) as deslalu ,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".$_GET["tahun"]."-01-%' and jml_tiket<100 and jml_tiket>0) as januari ,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".$_GET["tahun"]."-02-%' and jml_tiket<100 and jml_tiket>0) as februari ,
@@ -213,6 +213,7 @@ class Marketing extends CI_Controller {
 								$jum,
 								($key['tahunlalu']==0 and $jum==0)?0:(ceil(((($key['tahunlalu']==0 and $jum>0)?2:$jum/$key['tahunlalu'])*100)-100)),
 								number_format(($jum/(($this->input->post('tahun')%4==0)?366:365)),2),
+								$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".date("m")."-"),
 							);
 		}
     	}
@@ -265,7 +266,7 @@ class Marketing extends CI_Controller {
 							$total = 0;
 						echo "<tr>";
 						echo "<td>".utf8_decode($datanya[0])."</td>";
-						echo "<td>".$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".date("m")."-")."</td>";
+						echo "<td>".utf8_decode($datanya[41])."</td>";
 						echo "<td>".utf8_decode($datanya[1])."</td>";
 						echo "<td>".utf8_decode($datanya[2])."</td>";
 						echo "<td>".utf8_decode($datanya[3])."</td>";
@@ -315,7 +316,7 @@ class Marketing extends CI_Controller {
     	$hasil = array();
     	if($this->input->post("tahun")!=""){
     		$dbpointer = $this->load->database('dbpointer',true);
-    		$hasil = $dbpointer->query("select join_date,brand_name, prefix,
+    		$hasil = $dbpointer->query("select join_date,id_mitra,brand_name, prefix,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".($this->input->post("tahun")-1)."-12-%' and jml_tiket<100 and jml_tiket>0) as deslalu ,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".$this->input->post("tahun")."-01-%' and jml_tiket<100 and jml_tiket>0) as januari ,
 				(select sum(jml_tiket) from all_selling where all_selling.id_mitra=mitra.id_mitra and date_resv like '".$this->input->post("tahun")."-02-%' and jml_tiket<100 and jml_tiket>0) as februari ,
