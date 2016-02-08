@@ -484,21 +484,12 @@ $(function() {
 	 						if(action[data].id_assign!=<?php echo $this->session->userdata('id');?> && action[data].id_assign>0 && action[data].assign_view==1 && action[data].status==1){
 	 							color = 'bg-green';
 	 						}
-							if(action[data].id_assign==0 || action[data].assign_view==1){
-			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
-									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-money text-aqua"></i> '+action[data].info+
-									'</a>'+
-								'</li>');
-	 							info += action[data].info;
-		 					}else if(action[data].status==1 && action[data].user_view==0){
-			 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="finish(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
-									'<a class="text-black waves-eff-li">'+
-										'<i class="fa fa-ticket text-aqua"></i> '+action[data].info+' Selesai'+
-									'</a>'+
-								'</li>');
-	 							info += action[data].info;
-		 					}
+		 					$("#pending_data").append('<li class="'+color+'" id="'+action[data].id+'" style="cursor:pointer;" onclick="openrequest(\''+action[data].id+'\',\''+action[data].trx_info+'\')">'+
+								'<a class="text-black waves-eff-li">'+
+									'<i class="fa fa-money text-aqua"></i> '+action[data].info+
+								'</a>'+
+							'</li>');
+ 							info += action[data].info;
 						}
 						else if(action[data].trx_info=='issued'){
 							color = "";
