@@ -83,7 +83,7 @@ class Operational extends CI_Controller {
         unset($data['pax_name']);
         unset($data['class']);
         $this->db->insert('actionsys',$data);
-        redirect(base_url("servicedesk/rebook_pending"));
+        redirect(base_url("operational/rebook_pending"));
     }
 
 
