@@ -96,17 +96,7 @@ class Xhr_ajax extends CI_Controller {
         $data['refund_member_status'] = $this->input->post('refund_member_status');
         $data['refund_airline_date'] = date_format(date_create($this->input->post('refund_airline_date')),"Y-m-d");
         $data['refund_member_date'] = date_format(date_create($this->input->post('refund_member_date')),"Y-m-d");
-        if($data['refund_member_status']==0){
-            $data['status'] = 0;
-            $data['id_assign'] = 0;
-            $data['assign_view'] = 0;
-            $data['user_view'] = 1;
-        }else{            
-            $data['status'] = 2;
-            $data['id_assign'] = $this->session->userdata('id');
-            $data['assign_view'] = 1;
-            $data['user_view'] = 0;
-        }
+
         $data['comment'] = $dat['comment'];
         if($dat['refund_total_cost']!=$this->input->post('refund_total_cost')){
             $data['comment'] = $data['comment']."\r\nUpdate Refund Total Cost from ".$dat['refund_total_cost']." to ".$data['refund_total_cost']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
@@ -122,6 +112,20 @@ class Xhr_ajax extends CI_Controller {
         }
         if($dat['refund_airline_date']!=$this->input->post('refund_airline_date')){
             $data['comment'] = $data['comment']."\r\nUpdate Refund Airline Date Status from ".$dat['refund_airline_date']." to ".$data['refund_airline_date']." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }
+
+        if($data['refund_member_status']==0){
+            $data['status'] = 0;
+            $data['id_assign'] = 0;
+            $data['assign_view'] = 0;
+            $data['user_view'] = 1;
+        }else{            
+            $data['comment'] = $dat['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+            $data['done_at'] = date("Y-m-d H:i:s");
+            $data['status'] = 2;
+            $data['id_assign'] = $this->session->userdata('id');
+            $data['assign_view'] = 1;
+            $data['user_view'] = 0;
         }
 
         if($dat['comment']==$data['comment']){
@@ -143,15 +147,7 @@ class Xhr_ajax extends CI_Controller {
         $dat = $this->db->get('actionsys')->row_array();
 
         $data['est_budget'] = $this->input->post('est_budget');
-        if($data['status']==0){
-            $data['id_assign'] = 0;
-            $data['assign_view'] = 0;
-            $data['user_view'] = 1;
-        }else{            
-            $data['id_assign'] = $this->session->userdata('id');
-            $data['assign_view'] = 1;
-            $data['user_view'] = 1;
-        }
+
         $data['act_budget'] = $data['est_budget'];
         $data['comment'] = $dat['comment'];
         if($dat['est_budget']!=$this->input->post('est_budget')){
@@ -159,6 +155,22 @@ class Xhr_ajax extends CI_Controller {
         }
         if($dat['status']!=$this->input->post('status')){
             $data['comment'] = $data['comment']."\r\nUpdate Void Status from ".$this->general->get_status($dat['status'])." to ".$this->general->get_status($data['status'])." by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+        }        
+
+        if($data['status']==0){
+            $data['id_assign'] = 0;
+            $data['assign_view'] = 0;
+            $data['user_view'] = 1;
+        }elseif ($data['status']==1){            
+            $data['id_assign'] = $this->session->userdata('id');
+            $data['assign_view'] = 1;
+            $data['user_view'] = 1;
+        }else{
+            $data['id_assign'] = $this->session->userdata('id');
+            $data['assign_view'] = 1;
+            $data['user_view'] = 1;
+            $data['comment'] = $data['comment']."\r\nDone by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
+            $data['done_at'] = date("Y-m-d H:i:s");
         }
 
         if($dat['comment']==$data['comment']){
