@@ -59,7 +59,7 @@ class Operational extends CI_Controller {
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'rebook';
         $data['id_flowsys'] = $this->db->where('id_info',$data['id_infosys'])->order_by('id','asc')->get('flowsys')->row_array()['id'];
-        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        $data['tgl_info'] = date_format(date_create($data['rebook_process']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
         if($data['paxinfo']==""){
             $data['paxinfo'] = json_encode(
@@ -95,7 +95,7 @@ class Operational extends CI_Controller {
         $data['id_user'] = $this->session->userdata('id');
         $data['trx_info'] = 'refund';
         $data['nomor_tiket'];
-        $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+        $data['tgl_info'] = date_format(date_create($data['refund_cost_received']),"Y-m-d H:i:s");
         $data['assign_view'] = 0;
         $data['comment'] = "Created by Human (".date("Y-m-d H:i:s").") ".$this->session->userdata('nama');
         $data['id_flowsys'] = 37;
@@ -126,7 +126,7 @@ class Operational extends CI_Controller {
       $data['user_view'] = 1;
       $data['id_user'] = $this->session->userdata('id');
       $data['trx_info'] = 'void';
-      $data['tgl_info'] = date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
+      $data['tgl_info'] = date("Y-m-d H:i:s");//date_format(date_create($data['tgl_info']),"Y-m-d H:i:s");
       $data['assign_view'] = 0;
       $data['vendor'] = 13;
       $data['id_flowsys'] = 43;
