@@ -105,7 +105,7 @@ class Operational extends CI_Controller {
                                                 'pax_name'=>$data['pax_name'])
             );
         }
-        $data['status'];
+        $data['status'] = 0;
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
         $data['id_ticket'] = uniqid();
