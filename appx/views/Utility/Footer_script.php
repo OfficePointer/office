@@ -585,7 +585,7 @@ $(function() {
 				    };
 				}
  				if(muncul){
-					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/RedAlert.mp3");?>');
+					 var audio_saldo = new Audio('<?php echo base_url("assets/sound/new_notif.mp3");?>');
 					 audio_saldo.play();
 				}
 
@@ -1166,7 +1166,7 @@ $(function() {
 					      window.focus();
 					    };
 
-						var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
+						var audio = new Audio('<?php echo base_url("assets/sound/topup.mp3");?>');
 						audio.play();
 					}
 				}
@@ -1180,7 +1180,7 @@ $(function() {
 				      window.focus();
 				    };
 
-					var audio = new Audio('<?php echo base_url("assets/sound/WhoopTypeAlert.mp3");?>');
+					var audio = new Audio('<?php echo base_url("assets/sound/topup.mp3");?>');
 					audio.play();
 					bunyi = 1;
 				}
