@@ -108,6 +108,8 @@ class Operational extends CI_Controller {
         $data['status'] = 0;
         $data['refund_cost_received'] = date_format(date_create($data['refund_cost_received']),"Y-m-d");
         $data['refund_cost_out'] = date_format(date_create($data['refund_cost_out']),"Y-m-d H:i:s");
+        $data['refund_airline_date'] = date("Y-m-d");
+        $data['refund_member_date'] = date("Y-m-d");
         $data['id_ticket'] = uniqid();
         $data['info'] = 'Refund '.$this->general->get_vendor($data['vendor'])." ".$data['kode_booking']." ".$data['mitra'];
         unset($data['mitra']);

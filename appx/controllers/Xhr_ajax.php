@@ -270,12 +270,7 @@ class Xhr_ajax extends CI_Controller {
         $d = array();
         foreach ($data['action'] as $key) {
             $assign_user = explode(",", $key['assign_user']);
-            if($key['id_assign']==0 and in_array($this->session->userdata('id'), $assign_user)
-                or $key['id_assign']==$this->session->userdata('id') and $key['assign_view']==0 and $key['status'] == 0
-                or $key['id_assign']==$this->session->userdata('id') and $key['assign_view']==1 and $key['status'] == 1
-                or $key['id_user']==$this->session->userdata('id') and $key['user_view']==0 and $key['status']==0
-                or $key['id_user']==$this->session->userdata('id') and $key['user_view']==1 and $key['status']==1
-                ){
+            if(in_array($this->session->userdata('id'), $assign_user)){
                 $d[] = $key;
             }
         }
