@@ -509,9 +509,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('klasifikasi')!=""){
 			if($this->session->userdata('klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
 			}
 		}
 		if($new=="new"){
@@ -524,8 +524,8 @@ class Marketing extends CI_Controller {
 
 		$data['mitra'] = $this->db->get('data_mitra')->result_array();
 		
-//		echo "<pre>".print_r($data['mitra'],1)."<pre>";
-//die();
+// 		echo "<pre>".print_r($this->db->last_query(),1)."<pre>";
+// die();
 
 		$this->db->select('count(data_mitra.id_mitra) as jumlah, status');
 		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
@@ -558,9 +558,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('klasifikasi')!=""){
 			if($this->session->userdata('klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
 			}
 		}
 		$this->db->group_by('status');
@@ -709,9 +709,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('followup_klasifikasi')!=""){
 			if($this->session->userdata('followup_klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('followup_klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
 			}
 		}
 
@@ -778,9 +778,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('followup_klasifikasi')!=""){
 			if($this->session->userdata('followup_klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('followup_klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
 			}
 		}
 		if($this->session->userdata('followup_status')!=""){
@@ -844,9 +844,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('followup_klasifikasi')!=""){
 			if($this->session->userdata('followup_klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('followup_klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
 			}
 		}
 		if($this->session->userdata('followup_status')!=""){
@@ -990,13 +990,13 @@ class Marketing extends CI_Controller {
             $this->db->where('k2.id',NULL);
             
             // if($_GET['klasifikasi']!=""){
-            //   $this->db->where('k1.id_klasifikasi',$_GET['klasifikasi']);
+            //   $this->db->where('data_klasifikasi.id',$_GET['klasifikasi']);
             // }
         if($_GET['klasifikasi']!=""){
 			if($_GET['klasifikasi']==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$_GET['klasifikasi']);
+				$this->db->where('data_klasifikasi.id',$_GET['klasifikasi']);
 			}
 		}
 						$this->db->where('status','active');
@@ -1055,9 +1055,9 @@ class Marketing extends CI_Controller {
             
         if($_GET['klasifikasi']!=""){
 			if($_GET['klasifikasi']==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$_GET['klasifikasi']);
+				$this->db->where('data_klasifikasi.id',$_GET['klasifikasi']);
 			}
 		}
 						$this->db->like('airline_member.kode',$_GET['vendor'],'both');
@@ -1238,9 +1238,9 @@ class Marketing extends CI_Controller {
 		}
 		if($this->session->userdata('klasifikasi')!=""){
 			if($this->session->userdata('klasifikasi')==0){
-				$this->db->where('k1.id_klasifikasi','');
+				$this->db->where('data_klasifikasi.id',NULL);
 			}else{
-				$this->db->where('k1.id_klasifikasi',$this->session->userdata('klasifikasi'));
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('klasifikasi'));
 			}
 		}
 
