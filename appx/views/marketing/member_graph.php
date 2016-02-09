@@ -90,7 +90,11 @@
             $this->db->where('k2.id',NULL);
             
             if($this->input->post('klasifikasi')!=""){
-              $this->db->where('data_klasifikasi.id',$this->input->post('klasifikasi'));
+              if($this->input->post('klasifikasi')==0){
+                $this->db->where('data_klasifikasi.id',NULL);
+              }else{
+                $this->db->where('data_klasifikasi.id',$this->input->post('klasifikasi'));
+              }
             }
 
             $this->db->like('kode',$this->input->post('vendor'),'both');
