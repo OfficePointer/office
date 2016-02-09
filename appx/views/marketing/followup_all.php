@@ -88,7 +88,6 @@
             <td>Klasifikasi</td>
             <td><select name="klasifikasi" class="form-control">
               <option <?php echo ($this->session->userdata('followup_klasifikasi')=="")?"selected":"";?> value="">all</option>
-              <option <?php echo ($this->session->userdata('followup_klasifikasi')=="0")?"selected":"";?> value="0">No Data</option>
               <?php
               foreach($klasifikasi as $dataklasifikasi){
               ?>

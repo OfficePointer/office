@@ -60,7 +60,6 @@
               <td>
                 <select name="klasifikasi" class="form-control">
                 <option <?php echo ($this->input->post('klasifikasi')=="")?"selected":"";?> value="">-- All --</option>
-                <option <?php echo ($this->input->post('klasifikasi')=="0")?"selected":"";?> value="0">No Data</option>
                 <?php
                 foreach($klasifikasi as $dataklasifikasi){
                 ?>
