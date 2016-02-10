@@ -199,18 +199,6 @@ class Operational extends CI_Controller {
 // >>>>>>> b25914c3b880804815e5b02e7a8959a4defd22be
         $this->general->load('operational/trx/request_potong_saldo',$data);
     }
-    public function save_nta_garuda()
-    {
-        $data = $this->input->post();
-        
-        redirect(base_url("operational/nta_garuda"));
-    }
-    public function nta_garuda()
-    {
-        $data['type_info'] = $this->db->where_in('id',array(6,7,8,9))->get('infosys')->result_array();
-        $data['vendor'] = $this->db->where('min_third >',0)->get('vendor')->result_array();
-        $this->general->load('operational/trx/nta_garuda/add',$data);
-    }
     public function airline_save()
     {
         $this->general->logging();
