@@ -199,6 +199,19 @@ class Operational extends CI_Controller {
 // >>>>>>> b25914c3b880804815e5b02e7a8959a4defd22be
         $this->general->load('operational/trx/request_potong_saldo',$data);
     }
+    public function nta_garuda()
+    {
+
+        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')
+                                       ->join('flowsys','flowsys.id=actionsys.id_flowsys','left')
+                                       ->join('infosys','infosys.id=flowsys.id_info','left')
+                                       ->where_in('trx_info',array('rebook','issued'))
+                                       ->where_in('status',array(1,0))
+                                       ->get('actionsys')
+                                       ->result_array();
+
+        $this->general->load('operational/trx/nta_garuda',$data);
+    }
     public function airline_save()
     {
         $this->general->logging();
