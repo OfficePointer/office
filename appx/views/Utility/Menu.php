@@ -482,7 +482,7 @@
                 <li><a href="<?php echo base_url('operational/void_done');?>"><i class="fa fa-check"></i> Void Done</a></li>
               </ul>
             </li>
-            <li><a href="#"><i class="fa fa-plane"></i> NTA Garuda</a></li>
+            <li><a href="<?php echo base_url('operational/nta_garuda');?>"><i class="fa fa-plane"></i> NTA Garuda</a></li>
             </ul>
 
             <li class="treeview">
