@@ -1099,6 +1099,8 @@ $(function() {
 							revert[data].airline = 'GA';
 						}else if(revert[data].airline==12 || revert[data].airline==2){
 							revert[data].airline = 'JT';
+						}else if(revert[data].airline==4){
+							revert[data].airline = 'QG';
 						}
 
 						if(revert[data].status==2 || revert[data].status==21){
