@@ -100,6 +100,13 @@
         </div>
         <div class="clearfix"></div>
         <div class="col-md-4">
+          <label>Biaya Lain</label> 
+          <div class="form-group">
+            <input autocomplete="off" type="text" class="form-control" name="description" id="description">
+          </div>
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-4">
           <label>Class</label> 
           <div class="form-group">
             <input autocomplete="off" type="text" class="form-control" name="class" id="class">

@@ -38,6 +38,8 @@ var muncul_deposit = 0;
 var bunyi = 0;
 
 var temp_code = '';
+var temp_basic = 0;
+var temp_id = 0;
     $(".for_numberinput").jqxNumberInput({ spinMode:'simple',width:'100%',digits: 10, max:9999999999999999999,symbol:'Rp. '});
     $('#nta').on('valueChanged', function (event) {$('#nta_num').val(event.args.value);}); 
     $('#basic').on('valueChanged', function (event) {$('#basic_num').val(event.args.value);}); 
@@ -131,7 +133,7 @@ $(function() {
  			success:function(isi){
  				var tambahan = "<tr><td colspan=4><b>";
 					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
-
+						tambahan += "This is your task";
 					}else if(isi.status=="FINISH"){
 						tambahan += 'This task has done by '+isi.by;
 					}else{
@@ -140,29 +142,44 @@ $(function() {
 
 					tambahan +='</b></td></tr>';
 
-						if(trx_info=="issued"){
+						if(trx_info=="confissued"){
 							var html = "<table>"+
 											tambahan+
 											"<tr>"+
 												"<td>Kode Booking</td>"+
 												"<td><b>"+isi.data.kode_booking+"</b></td>"+
 												"<td>Airline</td>"+
-												"<td>"+isi.data.airline+"</td>"+
+												"<td>"+isi.data.airline+" ("+isi.data.flight_type+")</td>"+
 											"</tr>"+
 											"<tr>"+
-												"<td colspan=4>Brand Name</td>"+
-											"<tr>"+
-											"</tr>"+
-												"<td colspan=4>"+isi.data.brand_name+"</td>"+
+												"<td>Brand Name</td>"+
+												"<td colspan=3>"+isi.data.brand_name+"</td>"+
 											"</tr>"+
 											"<tr>"+
-												"<td colspan=4>Details</td>"+
+												"<td>Basic</td>"+
+												"<td>"+isi.data.basic+"</td>"+
+												"<td>NTA</td>"+
+												"<td>"+isi.data.nta+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Memberpaid</td>"+
+												"<td>"+isi.data.memberpaid+"</td>"+
+												"<td>PaxPaid</td>"+
+												"<td>"+isi.data.pax+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Biaya Lain</td>"+
+												"<td colspan=3>"+isi.data.description+"</td>"+
 											"</tr>"+
 											"<tr>"+
 												"<td>From - To</td>"+
 												"<td>"+isi.data.from+" - "+isi.data.to+"</td>"+
 												"<td>To 2</td>"+
 												"<td>"+isi.data.to2+"</td>"+
+											"</tr>"+
+											"<tr>"+
+												"<td>Reason</td>"+
+												"<td colspan=3>"+isi.data.reason+"</td>"+
 											"</tr>"+
 											"<tr>"+
 												"<td colspan=4>Nota Airlines</td>"+
@@ -177,7 +194,7 @@ $(function() {
 												"<td colspan=4><input type='text' class='form-control' id='nota_member'></td>"+
 											"</tr>"+
 										"</table>";
-							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Revert</button>');
 							$(".modal-footer").prepend('<button onclick="update_issued_manual_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
@@ -245,7 +262,7 @@ $(function() {
 											"</tr>"+
 										"</table>";
 
-							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Revert</button>');
 							$(".modal-footer").prepend('<button onclick="update_rebook_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
@@ -321,7 +338,7 @@ $(function() {
 											"</tr>"+
 										"</table>";
 
-							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Revert</button>');
 							$(".modal-footer").prepend('<button onclick="update_refund_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
@@ -364,13 +381,16 @@ $(function() {
 											"</tr>"+
 										"</table>";
 
-							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+							$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Revert</button>');
 							$(".modal-footer").prepend('<button onclick="update_void_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 							$("#exampleModalLabel").html(isi.data.info);
 							$("#isinya").html(html);
 						    $('#modal_profiling').modal('show');
         					$("#est_budget").jqxNumberInput({ height: '25px', digits: 15, max:9999999999999999999,symbol:'Rp. '});
 							$("#est_budget").jqxNumberInput('setDecimal',isi.data.est_budget);
+						}else if(trx_info=="issued"){
+							temp_id = id;
+							opencode('confissued',isi.data.kode_booking);
 						}
 
 			}
@@ -744,17 +764,25 @@ $(function() {
 										'<th>Name</th>'+
 										'<th>Type</th>'+
 										'<th>Rute</th>'+
-										'<th>Class</th>'+
+										'<th>Class</th>'+	
+										'<th>Basic</th>'+	
 									'</tr>';
+									var basic_ = 0;
 						$.each( ar_pnr, function( key, value ) {
+							basic_ = parseFloat(basic_) + parseFloat(value.basic);
 						  paxinfo +=    '<tr>'+
 											'<td>'+value.title_pax+'</td>'+
 											'<td>'+value.nama_pax+'</td>'+
 											'<td>'+value.jenis_pax+'</td>'+
 											'<td>'+value.kota_asal+'-'+value.kota_tujuan+'</td>'+
 											'<td>'+value.kelas+'</td>'+
+											'<td>'+value.basic+'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td colspan=6>Biaya Lain : '+value.biaya_lain+'</td>'+
 										'</tr>';
 						});
+						temp_basic = basic_;
 							paxinfo +='</table>';
 
 						var html = '<table class="table">'+
@@ -762,7 +790,7 @@ $(function() {
 										'<td>Booking Code</td>'+
 										'<td><b>'+ar.kode_booking+'</b></td>'+
 										'<td colspan=2>Brand Name</td>'+
-										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+') '+mi.type+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Airline</td>'+
@@ -777,7 +805,7 @@ $(function() {
 										'<td colspan=2>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
 									'</tr>'+
 									'<tr>'+
-										'<td colspan=6>Pax Info</td>'+
+										'<td colspan=6>Pax Info : '+ar.jml_dewasa+' Adult, '+ar.jml_chd+' Child, '+ar.jml_inf+' Infant</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td colspan=6>'+paxinfo+'</td>'+
@@ -789,6 +817,16 @@ $(function() {
 										'<td>'+ar.pax_idr+'</td>'+
 										'<td>Member Paid</td>'+
 										'<td>'+ar.self_price+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>Contact Person</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Name</td>'+
+										'<td colspan=2>'+ar.contact_person_name+'</td>'+
+										'<td>Phone</td>'+
+										'<td colspan=2>'+ar.contact_person_sell+'</td>'+
+									'</tr>'+
 									'</table>';
 						$(".modal-footer").prepend('<button onclick="us'+'ecode_'+lanjut+'()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
 
@@ -796,6 +834,9 @@ $(function() {
 						$("#isinyafunnyname").html(html);
 					    $('#modal_funnyname').modal('show');
 					}else{
+						if(lanjut=='confissued'){
+							usecode_confissued();	
+						}
 						//$(".inside-box-im").fadeIn();
 					}
 				}
@@ -827,17 +868,25 @@ $(function() {
 										'<th>Name</th>'+
 										'<th>Type</th>'+
 										'<th>Rute</th>'+
-										'<th>Class</th>'+
+										'<th>Class</th>'+	
+										'<th>Basic</th>'+	
 									'</tr>';
+									var basic_ = 0;
 						$.each( ar_pnr, function( key, value ) {
+							basic_ = parseFloat(basic_) + parseFloat(value.basic);
 						  paxinfo +=    '<tr>'+
 											'<td>'+value.title_pax+'</td>'+
 											'<td>'+value.nama_pax+'</td>'+
 											'<td>'+value.jenis_pax+'</td>'+
 											'<td>'+value.kota_asal+'-'+value.kota_tujuan+'</td>'+
 											'<td>'+value.kelas+'</td>'+
+											'<td>'+value.basic+'</td>'+
+										'</tr>'+
+										'<tr>'+
+											'<td colspan=6>Biaya Lain : '+value.biaya_lain+'</td>'+
 										'</tr>';
 						});
+						temp_basic = basic_;
 							paxinfo +='</table>';
 
 						var html = '<table class="table">'+
@@ -845,7 +894,7 @@ $(function() {
 										'<td>Booking Code</td>'+
 										'<td><b>'+ar.kode_booking+'</b></td>'+
 										'<td colspan=2>Brand Name</td>'+
-										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+')</td>'+
+										'<td colspan=2>'+mi.brand_name+' ('+mi.prefix+') '+mi.type+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Airline</td>'+
@@ -860,7 +909,7 @@ $(function() {
 										'<td colspan=2>'+ar_pnr[0].kota_asal+' - '+ar_pnr[0].kota_tujuan+' ('+ar.route+')</td>'+
 									'</tr>'+
 									'<tr>'+
-										'<td colspan=6>Pax Info</td>'+
+										'<td colspan=6>Pax Info : '+ar.jml_dewasa+' Adult, '+ar.jml_chd+' Child, '+ar.jml_inf+' Infant</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td colspan=6>'+paxinfo+'</td>'+
@@ -872,6 +921,16 @@ $(function() {
 										'<td>'+ar.pax_idr+'</td>'+
 										'<td>Member Paid</td>'+
 										'<td>'+ar.self_price+'</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td colspan=6>Contact Person</td>'+
+									'</tr>'+
+									'<tr>'+
+										'<td>Name</td>'+
+										'<td colspan=2>'+ar.contact_person_name+'</td>'+
+										'<td>Phone</td>'+
+										'<td colspan=2>'+ar.contact_person_sell+'</td>'+
+									'</tr>'+
 									'</table>';
 						$(".modal-footer").prepend('<button onclick="us'+'ecode_'+lanjut+'()" id="btn_fol" class="pull-left btn btn-primary">Use This</button>');
 
@@ -894,16 +953,30 @@ $(function() {
 		$("#memberpaid").jqxNumberInput('setDecimal',temp_code.ar_booking.self_price);
 		$("#mitra").val(temp_code.mitra.brand_name+' ('+temp_code.mitra.prefix+')');
 		$("#from").val(temp_code.ar_booking_pnr[0].kota_asal);
+		$("#basic").val(temp_basic);
 		$("#to").val(temp_code.ar_booking_pnr[0].kota_tujuan);
+		if(temp_code.ar_booking.flight_type=="RT"){
+			$("#to2").val(temp_code.ar_booking_pnr[0].kota_asal);
+		}
 		$("#class").val(temp_code.ar_booking_pnr[0].kelas);
 		$("#id_mitra").val(temp_code.ar_booking.id_mitra);
 		$("#flight_type").val(temp_code.ar_booking.flight_type);
 		$("#adult").val(temp_code.ar_booking.jml_dewasa);
-		$("#child").val(temp_code.ar_booking.jml_child);
+		$("#child").val(temp_code.ar_booking.jml_chd);
 		$("#infant").val(temp_code.ar_booking.jml_inf);
 		$("#paxinfo").val(temp_code.json_data);
 		$('#vendor option[value='+temp_code.ar_booking.vendor+']').attr('selected','selected');
 		$("#tgl_info").focus();
+	}
+	function usecode_confissued(){
+		//$(".inside-box-im").fadeIn();
+		close_popup();
+		clear_btn();
+
+		setTimeout(function () {
+			openrequest(temp_id,'confissued');
+		},500);
+
 	}
 	function usecode_rebook(){
 		//$(".inside-box-im").fadeIn();
@@ -933,7 +1006,7 @@ $(function() {
 				data:{id:id},
 				success:function(isi){
 					if((isi.status=="VIEW" && isi.data.id_assign==<?php echo $this->session->userdata('id');?>) || isi.status=="OPEN"){
-						$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Cancel</button>');
+						$(".modal-footer").prepend('<button onclick="update_action_open('+id+')" id="btn_fol2" class="pull-left btn btn-primary " >Revert</button>');
 						$(".modal-footer").prepend('<button onclick="update_action_done('+id+')" id="btn_fol" class="pull-left btn btn-primary " >Done</button>');
 						$("#exampleModalLabel").html(isi.data.info);
 						$("#isinya").html(isi.data.info+" - "+isi.data.act_budget_rp);

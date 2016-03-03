@@ -191,8 +191,9 @@ class Xhr_ajax extends CI_Controller {
         $dbs->where('kode_booking',$value);
         $data['ar_booking'] = $dbs->get('ar_booking')->row_array();
         if($data['ar_booking']!=null){
-            $dbs->select('mitra.prefix,company.brand_name');
+            $dbs->select('mitra.prefix,company.brand_name,type.type');
             $dbs->join('company','company.id_mitra=mitra.id_mitra','left');
+            $dbs->join('type','type.id_type=mitra.id_type','left');
             $dbs->where('mitra.id_mitra',$data['ar_booking']['id_mitra']);
             $data['mitra'] = $dbs->get('mitra')->row_array();
             $dbs->where('id_booking',$data['ar_booking']['id']);
