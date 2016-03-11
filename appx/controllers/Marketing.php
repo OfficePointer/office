@@ -570,8 +570,11 @@ class Marketing extends CI_Controller {
 			$jum+=$keya['jumlah'];
 		}
 
+
 		$data['paging'] = $this->general->pagination($jum,$limit,$pg,base_url("marketing/member/%d"));
 		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+		
+
 		$this->general->load('marketing/member',$data);
 	}
 	public function followup_all($new='')
@@ -860,9 +863,77 @@ class Marketing extends CI_Controller {
 
 
 		$data['followup_by'] = $this->db->get('data_activity')->result_array();
+		
+
+		$this->db->select('data_klasifikasi.klasifikasi, count(data_mitra.id_mitra) as jumlah');
+		$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+		$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+		$this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
+		$this->db->join('data_activity a1','a1.member_ID=data_mitra.id_mitra','left');
+		$this->db->join('data_activity a2','a2.member_ID=data_mitra.id_mitra and a1.ID<a2.ID and ISNULL(a1.delete_at)','left outer');
+		$this->db->join('data_respon','data_respon.id=a1.id_respon','left');
+		$this->db->where('k2.id',NULL);
+		$this->db->where('a2.ID',NULL);
+		
+		if($this->session->userdata('followup_date_activity')!=""){
+			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
+			$date_start = $daten[0];
+			$date_end = $daten[1];
+			$this->db->where('data_activity.create_at>=',date_format(date_create($date_start),"Y-m-d"));
+			$this->db->where('data_activity.create_at<=',date_format(date_create($date_end),"Y-m-d"));
+		}
+		if($this->session->userdata('followup_date_join')!=""){
+			$daten = explode(" - ", $this->session->userdata('followup_date_join'));
+			$date_start = $daten[0];
+			$date_end = $daten[1];
+			$this->db->where('data_mitra.join_date>=',date_format(date_create($date_start),"Y-m-d"));
+			$this->db->where('data_mitra.join_date<=',date_format(date_create($date_end),"Y-m-d"));
+		}
+		if($this->session->userdata('followup_brand_name')!=""){
+			$this->db->like('data_mitra.brand_name',$this->session->userdata('followup_brand_name'),'both');
+		}
+		if($this->session->userdata('followup_prefix')!=""){
+			$this->db->like('data_mitra.prefix',$this->session->userdata('followup_prefix'),'both');
+		}
+
+		if($this->session->userdata('followup_type')!=""){
+			$this->db->like('data_mitra.type',$this->session->userdata('followup_type'),'both');
+		}
+		if($this->session->userdata('followup_topup')!=""){
+			$this->db->like('data_mitra.topup',$this->session->userdata('followup_topup'),'both');
+		}
+		if($this->session->userdata('followup_trx')!=""){
+			$this->db->like('data_mitra.trx',$this->session->userdata('followup_trx'),'both');
+		}
+		if($this->session->userdata('followup_respon')!=""){
+			$this->db->like('data_activity.id_respon',$this->session->userdata('followup_respon'),'both');
+		}
+		if($this->session->userdata('followup_province')!=""){
+			$this->db->like('data_mitra.province',$this->session->userdata('followup_province'),'both');
+		}
+		if($this->session->userdata('followup_klasifikasi')!=""){
+			if($this->session->userdata('followup_klasifikasi')==0){
+				$this->db->where('data_klasifikasi.id',NULL);
+			}else{
+				$this->db->where('data_klasifikasi.id',$this->session->userdata('followup_klasifikasi'));
+			}
+		}
+		if($this->session->userdata('followup_status')!=""){
+			if($this->session->userdata('followup_status')!="all"){
+				$this->db->like('data_mitra.status',$this->session->userdata('followup_status'),'both');
+			}
+		}else{
+			$this->db->like('data_mitra.status','active','both');
+		}
+		$this->db->group_by('k1.id_klasifikasi');
+
+
+		$data['followup_by_klasifikasi'] = $this->db->get('data_mitra')->result_array();
+		
+		//die("<pre>".print_r($data['followup_by_klasifikasi'],1)."</pre>");
+
 		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
 
-		//die("<pre>".print_r($data['followup_by'],1)."</pre>");
 
 
 		$data['response'] = $this->db->get('data_respon')->result_array();

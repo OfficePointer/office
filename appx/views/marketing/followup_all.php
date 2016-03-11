@@ -153,6 +153,12 @@
           <?php 
         }
       }
+      echo "<br>";
+      foreach ($followup_by_klasifikasi as $key) {
+          ?>
+          <span class="btn"><?php echo (($key['klasifikasi']==NULL)?"Non Data":$key['klasifikasi'])." : ".$key['jumlah'];?></span>
+          <?php 
+      }
       ?>
       <hr>
       <?php echo $paging;?>
