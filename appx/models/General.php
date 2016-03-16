@@ -157,6 +157,13 @@ function csv_to_array($filename='', $delimiter=',')
 		$xa = $xa->row_array();
 		return $xa['nama'];
 	}
+	public function get_klasifikasi_name($id)
+	{
+		$this->db->where('id',$id);
+		$xa = $this->db->get('data_klasifikasi');
+		$xa = $xa->row_array();
+		return $xa['klasifikasi'];
+	}
 	public function get_forms($id)
 	{
 		$this->db->where('delete_at',NULL);

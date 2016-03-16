@@ -1016,12 +1016,16 @@ class Marketing extends CI_Controller {
             <tbody>';
             foreach ($member as $key) {
               $id_mitra = $key['id_mitra'];
-              $tbl .='
-              <tr>
+              $jum_trx = 0;
+              $intbl='';
+              if($this->general->get_klasifikasi($id_mitra,$this->input->post('tahun')."-".$this->input->post('bulan')."-")==($this->input->post('klasifikasi')==0?"No Data":$this->general->get_klasifikasi_name($this->input->post('klasifikasi')))){
+              $intbl .='<tr>
                 <td>'.$key['brand_name'].'</td>
                 <td>'.$key['join_date'].'</td>
                 <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
+                    $jum_trx = 0;
                     foreach ($datatgl as $kay) {
+
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
                     	$this->db->where('id_mitra',$id_mitra);
@@ -1030,14 +1034,20 @@ class Marketing extends CI_Controller {
                     	$datanya = $this->db->get('airline_member');
                     	$datanya = $datanya->row_array();
                     	$datanya = $datanya['jumlah'];
-                      $tbl .= "<td>".$datanya."</td>";
+                    	$jum_trx +=$datanya;
+                      $intbl .= "<td>".$datanya."</td>";
                     }
-              $tbl .='</tr>';
+              		$intbl .='</tr>';
+          		}
+          		if($jum_trx>0){
+          			$tbl .=$intbl;
+          		}
 
             }
-          }
+
           $tbl .='</tbody>
               </table>';
+          }
 
 		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
 		$data['table'] = $tbl;
