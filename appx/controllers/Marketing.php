@@ -1018,7 +1018,8 @@ class Marketing extends CI_Controller {
               $id_mitra = $key['id_mitra'];
               $jum_trx = 0;
               $intbl='';
-              if($this->general->get_klasifikasi($id_mitra,$this->input->post('tahun')."-".$this->input->post('bulan')."-")==($this->input->post('klasifikasi')==0?"No Data":$this->general->get_klasifikasi_name($this->input->post('klasifikasi')))){
+              if($this->input->post('klasifikasi')!=""){
+              if($this->general->get_klasifikasi($id_mitra,$this->input->post('tahun')."-".$this->input->post('bulan')."-")==(($this->input->post('klasifikasi')==0)?"No Data":$this->general->get_klasifikasi_name($this->input->post('klasifikasi')))){
               $intbl .='<tr>
                 <td>'.$key['brand_name'].'</td>
                 <td>'.$key['join_date'].'</td>
@@ -1039,10 +1040,31 @@ class Marketing extends CI_Controller {
                     }
               		$intbl .='</tr>';
           		}
+          		}else{
+          			$intbl .='<tr>
+                <td>'.$key['brand_name'].'</td>
+                <td>'.$key['join_date'].'</td>
+                <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
+                    $jum_trx = 0;
+                    foreach ($datatgl as $kay) {
+
+                    	$this->db->select('sum(jumlah) as jumlah');
+                    	$this->db->like('kode',$this->input->post('vendor'),'both');
+                    	$this->db->where('id_mitra',$id_mitra);
+                    	$this->db->where('tanggal >=',$kay['arr'][0]);
+                    	$this->db->where('tanggal <=',$kay['arr'][1]);
+                    	$datanya = $this->db->get('airline_member');
+                    	$datanya = $datanya->row_array();
+                    	$datanya = $datanya['jumlah'];
+                    	$jum_trx +=$datanya;
+                      $intbl .= "<td>".$datanya."</td>";
+                    }
+              		$intbl .='</tr>';
+          		}
+
           		if($jum_trx>0){
           			$tbl .=$intbl;
           		}
-
             }
 
           $tbl .='</tbody>
