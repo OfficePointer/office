@@ -879,8 +879,8 @@ class Marketing extends CI_Controller {
 			$daten = explode(" - ", $this->session->userdata('followup_date_activity'));
 			$date_start = $daten[0];
 			$date_end = $daten[1];
-			$this->db->where('data_activity.create_at>=',date_format(date_create($date_start),"Y-m-d"));
-			$this->db->where('data_activity.create_at<=',date_format(date_create($date_end),"Y-m-d"));
+			$this->db->where('a1.create_at>=',date_format(date_create($date_start),"Y-m-d"));
+			$this->db->where('a1.create_at<=',date_format(date_create($date_end),"Y-m-d"));
 		}
 		if($this->session->userdata('followup_date_join')!=""){
 			$daten = explode(" - ", $this->session->userdata('followup_date_join'));
