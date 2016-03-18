@@ -996,7 +996,7 @@ class Marketing extends CI_Controller {
 		$tbl = '';
             $klasifikasi_data = array();
         	foreach ($data['klasifikasi'] as $key) {
-        		$klasifikasi_data+=array($key['klasifikasi']);
+        		$klasifikasi_data+=array($key['klasifikasi']=>0);
         	}
           if($this->input->post('bulan')!="" and $this->input->post('tahun')!=""){
             $month = $this->input->post('bulan');
@@ -1050,7 +1050,6 @@ class Marketing extends CI_Controller {
                 <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     $jum_trx = 0;
                     foreach ($datatgl as $kay) {
-                    	$klasifikasi_data[$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")]++;
 
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
@@ -1072,7 +1071,6 @@ class Marketing extends CI_Controller {
                 <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     $jum_trx = 0;
                     foreach ($datatgl as $kay) {
-						$klasifikasi_data[$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")]++;
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
                     	$this->db->where('id_mitra',$id_mitra);
@@ -1088,6 +1086,7 @@ class Marketing extends CI_Controller {
           		}
 
           		if($jum_trx>0){
+                    $klasifikasi_data[$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")]++;
           			$tbl .=$intbl;
           		}
             }
