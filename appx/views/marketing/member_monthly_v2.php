@@ -3,14 +3,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        <?php echo ($this->uri->segment(3)=="new")?"New":"All";?> Member
+      Member Monthly 
       </h1>
     </section>
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-md-12">
-<form action="" method="post">
+		<form action="" method="post">
 			<table class="table">
 				<tr>
 					<td>Year</td>
@@ -26,6 +26,9 @@
 				</tr>
 			</table>
 		</form>
+		<?php
+		if($this->input->post('tahun')!=""){
+		?>
 		<div style="overflow-x:scroll;overflow-y:hidden;">
 		<table id="example2" style="width:2000px;" class="table table-bordered table-striped for_datatables_asc">
 		<thead>
@@ -74,57 +77,6 @@
 			</tr>
 		</thead>
 		<tbody>
-		<?php
-		if(!empty($data)){
-		$datas = $data;
-		foreach ($datas as $key) {
-		?>
-			
-				<td><?php echo $key[0];?></td>
-				<td><?php echo $key[1];?></td>
-				<td><?php echo $key[2];?></td>
-				<td><?php echo $key[3];?></td>
-				<td><?php echo $key[4];?></td>
-				<td><?php echo $key[5];?></td>
-				<td><?php echo $key[6];?></td>
-				<td><?php echo $key[7];?></td>
-				<td><?php echo $key[8];?></td>
-				<td><?php echo $key[9];?></td>
-				<td><?php echo $key[10];?></td>
-				<td><?php echo $key[11];?></td>
-				<td><?php echo $key[12];?></td>
-				<td><?php echo $key[13];?></td>
-				<td><?php echo $key[14];?></td>
-				<td><?php echo $key[15];?></td>
-				<td><?php echo $key[16];?></td>
-				<td><?php echo $key[17];?></td>
-				<td><?php echo $key[18];?></td>
-				<td><?php echo $key[19];?></td>
-				<td><?php echo $key[20];?></td>
-				<td><?php echo $key[21];?></td>
-				<td><?php echo $key[22];?></td>
-				<td><?php echo $key[23];?></td>
-				<td><?php echo $key[24];?></td>
-				<td><?php echo $key[25];?></td>
-				<td><?php echo $key[26];?></td>
-				<td><?php echo $key[27];?></td>
-				<td><?php echo $key[28];?></td>
-				<td><?php echo $key[29];?></td>
-				<td><?php echo $key[30];?></td>
-				<td><?php echo $key[31];?></td>
-				<td><?php echo $key[32];?></td>
-				<td><?php echo $key[33];?></td>
-				<td><?php echo $key[34];?></td>
-				<td><?php echo $key[35];?></td>
-				<td><?php echo $key[36];?></td>
-				<td><?php echo $key[37];?></td>
-				<td><?php echo $key[38];?></td>
-				<td><?php echo $key[39];?></td>
-				<td><?php echo $key[40];?></td>
-			</tr>
-		<?php
-		}
-		?>
 		</tbody>
 		</table>
 		</div>

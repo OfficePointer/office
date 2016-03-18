@@ -79,6 +79,13 @@
           <div style="width:100%;overflow-x:scroll;">
           <?php echo $table;?>
           </div>
+          <?php
+          foreach ($klasifikasi_data as $key => $value) {
+          ?>
+          <span class="btn"><?php echo $key." : ".$value;?></span>
+          <?php 
+            }
+          ?>
       </div>
       </div>
       <!-- /.row (main row) -->

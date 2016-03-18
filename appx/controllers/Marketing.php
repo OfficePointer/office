@@ -390,6 +390,25 @@ class Marketing extends CI_Controller {
 
     public function member_monthly_v2()
     {
+    	if($this->input->post('tahun')!=""){
+    		$a = $this->db->query("select airline_member.id_mitra as id_, data_mitra.brand_name,
+		(select sum(jumlah) from airline_member where tanggal like '2015-01-%' and id_mitra = id_ and ) as 'Januari',
+		(select sum(jumlah) from airline_member where tanggal like '2015-02-%' and id_mitra = id_) as 'Februari',
+		(select sum(jumlah) from airline_member where tanggal like '2015-03-%' and id_mitra = id_) as 'Maret',
+		(select sum(jumlah) from airline_member where tanggal like '2015-04-%' and id_mitra = id_) as 'April',
+		(select sum(jumlah) from airline_member where tanggal like '2015-05-%' and id_mitra = id_) as 'Mei',
+		(select sum(jumlah) from airline_member where tanggal like '2015-06-%' and id_mitra = id_) as 'Juni',
+		(select sum(jumlah) from airline_member where tanggal like '2015-07-%' and id_mitra = id_) as 'Juli',
+		(select sum(jumlah) from airline_member where tanggal like '2015-08-%' and id_mitra = id_) as 'Agustus',
+		(select sum(jumlah) from airline_member where tanggal like '2015-09-%' and id_mitra = id_) as 'September',
+		(select sum(jumlah) from airline_member where tanggal like '2015-10-%' and id_mitra = id_) as 'Oktober',
+		(select sum(jumlah) from airline_member where tanggal like '2015-11-%' and id_mitra = id_) as 'November',
+		(select sum(jumlah) from airline_member where tanggal like '2015-12-%' and id_mitra = id_) as 'Desember' 
+		from airline_member left join data_mitra on data_mitra.id_mitra=airline_member.id_mitra group by id_");
+			print_r($a);
+    	}
+
+
     	$this->general->load('marketing/member_monthly_v2');
     }
 	public function member_summary()
@@ -973,7 +992,12 @@ class Marketing extends CI_Controller {
 	}
 	public function member_week()
 	{
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
 		$tbl = '';
+            $klasifikasi_data = array();
+        	foreach ($data['klasifikasi'] as $key) {
+        		array_push($klasifikasi_data,$key['klasifikasi']);
+        	}
           if($this->input->post('bulan')!="" and $this->input->post('tahun')!=""){
             $month = $this->input->post('bulan');
             $year = $this->input->post('tahun');
@@ -1026,6 +1050,7 @@ class Marketing extends CI_Controller {
                 <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     $jum_trx = 0;
                     foreach ($datatgl as $kay) {
+                    	$klasifikasi_data[$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")]++;
 
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
@@ -1047,7 +1072,7 @@ class Marketing extends CI_Controller {
                 <td>'.$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-").'</td>';
                     $jum_trx = 0;
                     foreach ($datatgl as $kay) {
-
+						$klasifikasi_data[$this->general->get_klasifikasi($key['id_mitra'],$this->input->post('tahun')."-".$this->input->post('bulan')."-")]++;
                     	$this->db->select('sum(jumlah) as jumlah');
                     	$this->db->like('kode',$this->input->post('vendor'),'both');
                     	$this->db->where('id_mitra',$id_mitra);
@@ -1070,8 +1095,7 @@ class Marketing extends CI_Controller {
           $tbl .='</tbody>
               </table>';
           }
-
-		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+        $data['klasifikasi_data'] = $klasifikasi_data;
 		$data['table'] = $tbl;
 		$this->general->load('marketing/member_week',$data);
 	}
