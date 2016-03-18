@@ -998,6 +998,7 @@ class Marketing extends CI_Controller {
         	foreach ($data['klasifikasi'] as $key) {
         		$klasifikasi_data+=array($key['klasifikasi']=>0);
         	}
+        	$klasifikasi_data+=array('No Data'=>0);
           if($this->input->post('bulan')!="" and $this->input->post('tahun')!=""){
             $month = $this->input->post('bulan');
             $year = $this->input->post('tahun');
