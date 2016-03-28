@@ -3,7 +3,8 @@ $url = array('http://office-cron.copasin.com/gd_system/index.php',
         'http://office-cron.copasin.com/gd_system/qg_qz_tnu.php',
         'http://office-cron.copasin.com/gd_system/tgn_kd.php',
         'http://office-cron.copasin.com/gd_system/sn_mg_kai.php',
-        'http://office-cron.copasin.com/gd_system/ga_jt_sj.php');
+        'http://office-cron.copasin.com/gd_system/ga_jt_sj.php',
+        'http://office-cron.copasin.com/gd_system/xxo.php');
 
 foreach ($url as $key) {
 $ch = curl_init($key);
@@ -26,6 +27,7 @@ curl_close($ch);
     <section class="content">
       <div class="row">
             <img src="http://office-cron.copasin.com/gd_system/temp/simple<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
+            <img src="http://office-cron.copasin.com/gd_system/temp/xxo<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
             <img src="http://office-cron.copasin.com/gd_system/temp/qg_qz_tnu<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
             <img src="http://office-cron.copasin.com/gd_system/temp/tgn_kd<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
             <img src="http://office-cron.copasin.com/gd_system/temp/sn_mg_kai<?php echo date("Y-m-d",strtotime("-1 day"));?>.png">
