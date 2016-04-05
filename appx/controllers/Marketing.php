@@ -1274,11 +1274,223 @@ class Marketing extends CI_Controller {
 	}
 	public function member_transaction()
 	{
-		$this->general->load('marketing/member_transaction');
+		$data['klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+		$this->general->load('marketing/member_transaction',$data);
 	}
-		public function export_trx()
+	public function export_trx()
 	{
-        $this->general->logging();
+		$this->general->logging();
+	        header('Content-type: application/vnd.ms-excel');
+	        header('Content-Disposition: attachment; filename=Export_Member_Transaction_'.$_GET['vendor'].'_'.$_GET['date_range'].'_by_'.$this->session->userdata('email').'.xls');
+	        ?>
+			<table class="table table-bordered table-striped for_datatables">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th>Date Join</th>
+								<th>Brand Name</th>
+								<th>Klasifikasi</th>
+								<th>Type</th>
+								<th>Num Ticket</th>
+								<th>Sum NTA</th>
+								<th>Sum PAX</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php 
+
+							$data = array();
+							$pg = 1;
+							$start = 0;
+
+							$vendor = ($_GET['vendor']=="all")?"":$_GET['vendor'];
+							$datenya = $_GET['date_range'];
+							$daten = explode(" - ", $datenya);
+							$date_start = $daten[0];
+							$date_end = $daten[1];
+
+							$this->db->select('id_mitra as idm,join_date,brand_name,prefix,type,(select sum(jml_tiket) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_tiket,(select sum(nta_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_nta,(select sum(pax_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_pax');
+							$this->db->where('status','active');
+							$this->db->like('brand_name',$_GET['brand_name'],'both');
+							$this->db->like('prefix',$_GET['prefix'],'both');
+							$this->db->order_by('jml_tiket','desc');
+							$a = $this->db->get('data_mitra');
+							$a = $a->result_array();
+							//print_r($a);
+							$i = 1;
+							$jum = sizeof($a);
+							foreach ($a as $key) {
+								//print_r($key);
+								//$key['jml_tiket']+=$this->create_model->get_manual($key['idm'],$date_start,$date_end);
+								if($key['jml_tiket']>0){
+									$this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+									$this->db->where('id_mitra',$key['idm']);
+									$this->db->where('tgl_update <=',date_format(date_create($date_end),"Y-m-d"));
+									$this->db->order_by('klasifikasi_member.id','desc');
+									$this->db->limit(1);
+									$kasl = $this->db->get('klasifikasi_member');
+									$klas = $kasl->row_array();
+									if($_GET['klasifikasi']!=""){
+
+										if($_GET['klasifikasi']=="non" and $klas['id_klasifikasi']==NULL){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											</tr>
+											<?php
+										}
+
+										if($klas['id_klasifikasi']==$_GET['klasifikasi']){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											</tr>
+											<?php
+										}
+
+									}else{
+									?>
+									<tr>
+									<td><?php echo $i;?></td>
+									<td><?php echo $key['join_date'];?></td>
+									<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+									<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+									<td><?php echo $key['type'];?></td>
+									<td><?php echo $key['jml_tiket'];?></td>
+									<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+									<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+									</tr>
+									<?php
+									}
+								$i++;
+								}	
+							}
+							?>
+						</tbody>
+					</table>
+					<?php
+	}
+	public function export_trx_all()
+	{
+		$this->general->logging();
+	        header('Content-type: application/vnd.ms-excel');
+	        header('Content-Disposition: attachment; filename=Export_Member_Transaction_All_'.$_GET['vendor'].'_'.$_GET['date_range'].'_by_'.$this->session->userdata('email').'.xls');
+	        ?>
+			<table class="table table-bordered table-striped for_datatables">
+						<thead>
+							<tr>
+								<th>No.</th>
+								<th>Date Join</th>
+								<th>Brand Name</th>
+								<th>Klasifikasi</th>
+								<th>Type</th>
+								<th>Num Ticket</th>
+								<th>Sum NTA</th>
+								<th>Sum PAX</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php 
+
+							$data = array();
+							$pg = 1;
+							$start = 0;
+
+							$vendor = ($_GET['vendor']=="all")?"":$_GET['vendor'];
+							$datenya = $_GET['date_range'];
+							$daten = explode(" - ", $datenya);
+							$date_start = $daten[0];
+							$date_end = $daten[1];
+
+							$this->db->select('id_mitra as idm,join_date,brand_name,prefix,type,(select sum(jml_tiket) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_tiket,(select sum(nta_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_nta,(select sum(pax_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($date_start),"Y-m-d").'" AND date_resv <="'.date_format(date_create($date_end),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as jml_pax');
+							$this->db->where('status','active');
+							$this->db->like('brand_name',$_GET['brand_name'],'both');
+							$this->db->like('prefix',$_GET['prefix'],'both');
+							$this->db->order_by('jml_tiket','desc');
+							$a = $this->db->get('data_mitra');
+							$a = $a->result_array();
+							//print_r($a);
+							$i = 1;
+							$jum = sizeof($a);
+							foreach ($a as $key) {
+								//print_r($key);
+								//$key['jml_tiket']+=$this->create_model->get_manual($key['idm'],$date_start,$date_end);
+									$this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+									$this->db->where('id_mitra',$key['idm']);
+									$this->db->where('tgl_update <=',date_format(date_create($date_end),"Y-m-d"));
+									$this->db->order_by('klasifikasi_member.id','desc');
+									$this->db->limit(1);
+									$kasl = $this->db->get('klasifikasi_member');
+									$klas = $kasl->row_array();
+									if($_GET['klasifikasi']!=""){
+
+										if($_GET['klasifikasi']=="non" and $klas['id_klasifikasi']==NULL){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											</tr>
+											<?php
+										}
+
+										if($klas['id_klasifikasi']==$_GET['klasifikasi']){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											</tr>
+											<?php
+										}
+
+									}else{
+									?>
+									<tr>
+									<td><?php echo $i;?></td>
+									<td><?php echo $key['join_date'];?></td>
+									<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+									<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+									<td><?php echo $key['type'];?></td>
+									<td><?php echo $key['jml_tiket'];?></td>
+									<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+									<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+									</tr>
+									<?php
+									}
+								$i++;
+							}
+							?>
+						</tbody>
+					</table>
+					<?php
+	}
+
+        /*$this->general->logging();
 		if($_GET['vendor']!="" or $_GET['date_start']!="" or $_GET['date_end']!=""){
 		$this->general->logging();
 		$this->load->library('Excel');
@@ -1299,8 +1511,9 @@ class Marketing extends CI_Controller {
 							$vendor = ($_GET['vendor']=="all")?"":$_GET['vendor'];
 
 							//$dbs->select('id_mitra as idm,join_date as "Join Date",brand_name as "Brand Name",prefix as "Member Code",type as "Type",(select sum(jml_tiket) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($_GET['date_start']),"Y-m-d").'" AND date_resv <="'.date_format(date_create($_GET['date_end']),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as Jumlah_Tiket,(select sum(nta_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($_GET['date_start']),"Y-m-d").'" AND date_resv <="'.date_format(date_create($_GET['date_end']),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as "Total NTA",(select sum(pax_idr) from data_trx where id_mitra=idm AND date_resv >="'.date_format(date_create($_GET['date_start']),"Y-m-d").'" AND date_resv <="'.date_format(date_create($_GET['date_end']),"Y-m-d").'" AND vendor like "%'.$vendor.'%") as "Total PAX"');
-							$this->db->select('data_mitra.join_date as "Join Date",data_mitra.brand_name as "Brand Name",data_mitra.prefix as "Member Code",data_mitra.type as "Tipe Member",sum(jml_tiket) as "Jumlah_Tiket",sum(nta_idr) as "Total NTA", sum(pax_idr) as "Total PAX"');
+							$this->db->select('data_mitra.join_date as "Join Date",data_mitra.brand_name as "Brand Name",data_mitra.prefix as "Member Code",data_klasifikasi.klasifikasi as "Klasifikasi",data_mitra.type as "Tipe Member",sum(jml_tiket) as "Jumlah_Tiket",sum(nta_idr) as "Total NTA", sum(pax_idr) as "Total PAX"');
 							$this->db->join('data_mitra','data_mitra.id_mitra=data_trx.id_mitra','left');
+							
 							$this->db->where('date_resv >=',date_format(date_create($_GET['date_start']),"Y-m-d"));
 							$this->db->where('date_resv <=',date_format(date_create($_GET['date_end']),"Y-m-d"));
 							//$this->db->where('Jumlah_Tiket >',0);
@@ -1323,7 +1536,8 @@ class Marketing extends CI_Controller {
 						}else{
 							redirect(base_url("index.php/marketing/transaction"));
 						}
-	}
+						*/
+	//}
 
 
 		public function export_excel()

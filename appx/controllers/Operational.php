@@ -1145,4 +1145,10 @@ class Operational extends CI_Controller {
       ->where_in('id_flowsys', 43)->where_in('status', 2)->get('actionsys')->result_array();
       $this->general->load('operational/trx/void_done',$data);
     }
+
+    public function uid_mgr()
+    {
+        $data['uid'] = $this->db->get('uid_mgr');
+        
+    }
 }

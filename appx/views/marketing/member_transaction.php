@@ -56,9 +56,21 @@ if($this->input->post('date_range')!=""){
 								</select></td>
 							</tr>
 							<tr>
+								<td>Klasifikasi</td>
+								<td>
+								<select type="text"  class="form-control" id="klasifikasi" name="klasifikasi" class="medium">
+									<option <?php echo ($this->input->post("klasifikasi")=="")?"selected":"";?> value="">-- All --</option>
+									<option <?php echo ($this->input->post("klasifikasi")=="non")?"selected":"";?> value="non">Non Data</option>
+									<?php foreach ($klasifikasi as $key) { ?>
+									<option <?php echo ($this->input->post("klasifikasi")==$key['id'])?"selected":"";?> value="<?php echo $key['id'];?>"><?php echo $key['klasifikasi'];?></option>
+									<?php } ?>
+								</select></td>
+							</tr>
+							<tr>
 								<td></td>
 								<td><div class="highlight"><button class="btn btn-primary" type="submit">Submit</button>  
-								<a class="btn btn-success" href="<?php echo base_url();?>index.php/marketing/export_trx/?vendor=<?php echo $this->input->post('vendor');?>&date_start=<?php echo $date_start;?>&date_end=<?php echo $date_end;?>&brand_name=<?php echo $this->input->post('brand_name');?>&prefix=<?php echo $this->input->post('prefix');?>">Export</a></div></td>
+								<a class="btn btn-success" href="<?php echo base_url("marketing/export_trx/?klasifikasi=".$this->input->post('klasifikasi')."&vendor=".$this->input->post('vendor')."&date_range=".$this->input->post('date_range')."&brand_name=".$this->input->post('brand_name')."&prefix=".$this->input->post('prefix'));?>">Export</a>
+								<a class="btn btn-success" href="<?php echo base_url("marketing/export_trx_all/?klasifikasi=".$this->input->post('klasifikasi')."&vendor=".$this->input->post('vendor')."&date_range=".$this->input->post('date_range')."&brand_name=".$this->input->post('brand_name')."&prefix=".$this->input->post('prefix'));?>">Export All</a></div></td>
 							</tr>
 						</table>
 					</form>
@@ -71,6 +83,7 @@ if($this->input->post('date_range')!=""){
 								<th style="width:10px;">No.</th>
 								<th>Date Join</th>
 								<th>Brand Name</th>
+								<th>Klasifikasi</th>
 								<th>Type</th>
 								<th>Num Ticket</th>
 								<th>Sum NTA</th>
@@ -98,30 +111,75 @@ if($this->input->post('date_range')!=""){
 							$this->db->order_by('jml_tiket','desc');
 							$a = $this->db->get('data_mitra');
 							$a = $a->result_array();
+							//print_r($a);
 							$i = 1;
 							$jum = sizeof($a);
 							foreach ($a as $key) {
 								//print_r($key);
 								//$key['jml_tiket']+=$this->create_model->get_manual($key['idm'],$date_start,$date_end);
 								if($key['jml_tiket']>0){
+									$this->db->join('data_klasifikasi','data_klasifikasi.id=klasifikasi_member.id_klasifikasi','left');
+									$this->db->where('id_mitra',$key['idm']);
+									$this->db->where('tgl_update <=',date_format(date_create($date_end),"Y-m-d"));
+									$this->db->order_by('klasifikasi_member.id','desc');
+									$this->db->limit(1);
+									$kasl = $this->db->get('klasifikasi_member');
+									$klas = $kasl->row_array();
+									if($this->input->post('klasifikasi')!=""){
+
+										if($this->input->post('klasifikasi')=="non" and $klas['id_klasifikasi']==NULL){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											<td><?php echo "<span onclick='openformdetail(".$key['idm'].")' style='cursor:pointer'>Detail</span>";?></td>
+											</tr>
+											<?php
+										}
+
+										if($klas['id_klasifikasi']==$this->input->post('klasifikasi')){
+											?>
+											<tr>
+											<td><?php echo $i;?></td>
+											<td><?php echo $key['join_date'];?></td>
+											<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+											<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
+											<td><?php echo $key['type'];?></td>
+											<td><?php echo $key['jml_tiket'];?></td>
+											<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
+											<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
+											<td><?php echo "<span onclick='openformdetail(".$key['idm'].")' style='cursor:pointer'>Detail</span>";?></td>
+											</tr>
+											<?php
+										}
+
+									}else{
 									?>
 									<tr>
 									<td><?php echo $i;?></td>
 									<td><?php echo $key['join_date'];?></td>
 									<td><a onclick="openformdetail(<?php echo $key['idm'];?>)"><?php echo $key['brand_name']." (".$key['prefix'].")";?></a></td>
+									<td><?php echo ($klas['klasifikasi']==""?"Non Data":$klas['klasifikasi']);?></td>
 									<td><?php echo $key['type'];?></td>
 									<td><?php echo $key['jml_tiket'];?></td>
 									<td><?php echo number_format($key['jml_nta'],2,",",".");?></td>
 									<td><?php echo number_format($key['jml_pax'],2,",",".");?></td>
 									<td><?php echo "<span onclick='openformdetail(".$key['idm'].")' style='cursor:pointer'>Detail</span>";?></td>
 									</tr>
-								<?php
+									<?php
+									}
 								$i++;
 								}	
 							}
 							?>
 						</tbody>
-					</table> >
+					</table>
 					<?php
 					}
 					?>
