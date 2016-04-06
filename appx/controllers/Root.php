@@ -140,7 +140,7 @@ class Root extends CI_Controller {
 	}
 	public function logusers()
 	{
-		$data['users'] = $this->db->query('select id as idnya,name, (select count(id) from logdata where idpengguna=idnya and tanggal="'.date("Y-m-d").'") as jumlah from data_user')->result_array();
+		$data['users'] = $this->db->query('select id as idnya,name, (select count(id) from logdata where idpengguna=idnya and tanggal="'.date("Y-m-d").'") as jumlah,(select count(id) from logdata where idpengguna=idnya) as allvisit from data_user')->result_array();
 		$this->general->load('root/logusers',$data);
 		# code...
 	}

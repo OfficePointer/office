@@ -14,7 +14,8 @@
         <thead>
           <tr>
             <th>Pengguna</th>
-            <th>Visit</th>
+            <th>Today Visit</th>
+            <th>All Visit</th>
             <th>Last Visit</th>
           </tr>
         </thead>
@@ -28,6 +29,7 @@
           <tr>
             <td><?php echo $key['name'];?></td>
             <td><?php echo $key['jumlah'];?></td>
+            <td><?php echo $key['allvisit'];?></td>
             <td><?php echo empty($a)?"Never":((date("Y-m-d")==$a['tanggal']?"Today at ":date_format(date_create($a['tanggal']),"D, d M Y")." at ").$a['jam']);?></td>
           </tr>
           <?php } ?>
