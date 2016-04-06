@@ -29,7 +29,7 @@
           <tr>
             <td><?php echo $key['nama'];?></td>
             <td><?php echo $key['jumlah'];?></td>
-            <td><?php echo (date("Y-m-d")==$a['tanggal']?"Today at ":date_format(date_create($a['tanggal']),"D, d M Y")." at ").$a['jam'];?></td>
+            <td><?php echo empty($a)?"Not Yet Sign In":((date("Y-m-d")==$a['tanggal']?"Today at ":date_format(date_create($a['tanggal']),"D, d M Y")." at ").$a['jam']);?></td>
           </tr>
           <?php } ?>
         </tbody>
