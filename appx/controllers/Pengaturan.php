@@ -236,7 +236,7 @@ class Pengaturan extends CI_Controller {
 		if($_FILES['picture']['tmp_name']!="")
 		{
         	$folder = $_FILES['picture']['tmp_name'];
-        	mkdir("assets/images/".$this->session->userdata('id'));
+        	@mkdir("assets/images/".$this->session->userdata('id'));
         	$lokasi = "assets/images/".$this->session->userdata('id')."/".$_FILES['picture']['name'];
         	move_uploaded_file($folder, $lokasi);
         	$data['picture'] = base_url('assets/images/'.$this->session->userdata('id')."/".$_FILES['picture']['name']);
