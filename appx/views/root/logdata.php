@@ -10,6 +10,31 @@
     <section class="content">
       <div class="row">
         <div class="col-md-12">
+        <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Pengguna</th>
+            <th>Visit</th>
+            <th>Last Visit</th>
+          </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($users as $key) {
+          $this->db->where('idpengguna',$key['idpengguna']);
+          $this->db->where('tanggal',date("Y-m-d"));
+          $this->db->order_by('id','desc');
+          $this->db->limit(1);
+          $a = $this->db->get('logdata')->row_array();
+          ?>
+          <tr>
+            <td><?php echo $key['nama'];?></td>
+            <td><?php echo $key['jumlah'];?></td>
+            <td><?php echo (date("Y-m-d")==$a['tanggal']?"Today at ":date_format(date_create($a['tanggal']),"D, d M Y")." at ").$a['jam'];?></td>
+          </tr>
+          <?php } ?>
+        </tbody>
+        </table>
+        <hr>
       <table class="table table-bordered table-striped">
         <thead>
           <tr>

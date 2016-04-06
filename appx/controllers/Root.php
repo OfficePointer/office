@@ -134,6 +134,8 @@ class Root extends CI_Controller {
 		$data['logdata'] = $logdata;
 		$count = $this->db->get('logdata')->num_rows();
 		$data['paging'] = $this->general->pagination($count,$limit,$pg,base_url("root/logdata/%d"));
+		$data['users'] = $this->db->query('select idpengguna,nama, count(logdata.id) as jumlah from logdata left join data_user on data_user.id=logdata.idpengguna where logdata.tanggal ="'.date("Y-m-d").'"');
+
 		$this->general->load('root/logdata',$data);
 	}
 	public function send_dtr_mail()
