@@ -7,7 +7,7 @@ class Xhr_ajax extends CI_Controller {
     public function ajax_get_mitra()
     {
         $term = $this->input->post('term');
-        $this->db->select("id_mitra as id, concat(brand_name,' (',prefix,')') as value, prefix");
+        $this->db->select("id_mitra as id, concat(brand_name,' (',prefix,')') as value, prefix, type");
         $this->db->group_start();
         $this->db->like("concat(brand_name,' (',prefix,')')",$term,'both');
         $this->db->group_end();

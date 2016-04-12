@@ -201,16 +201,7 @@ class Operational extends CI_Controller {
     }
     public function nta_garuda()
     {
-
-        $data['actionsys'] = $this->db->select('actionsys.*,infosys.id as id_infosys')
-                                       ->join('flowsys','flowsys.id=actionsys.id_flowsys','left')
-                                       ->join('infosys','infosys.id=flowsys.id_info','left')
-                                       ->where_in('trx_info',array('rebook','issued'))
-                                       ->where_in('status',array(1,0))
-                                       ->get('actionsys')
-                                       ->result_array();
-
-        $this->general->load('operational/trx/nta_garuda',$data);
+        $this->general->load('operational/trx/nta_garuda');
     }
     public function airline_save()
     {

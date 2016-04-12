@@ -116,6 +116,7 @@ $(function() {
 	   },
 		select:function(event, ui){
 			$("#id_mitra").val(ui.item.id);
+			$("#type_mitra").val(ui.item.type);
 		}
 	 });
 });
