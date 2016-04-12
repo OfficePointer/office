@@ -69,7 +69,7 @@
 
   <script type="text/javascript">
     
-    $("#pax, #basic, #tax").on('input',function() {
+    $("#pax, #basic, #tax, #id_mitra, #mitra").on('input',function() {
       var pax = $("#pax").val();
       var basic = $("#basic").val();
       $("#tax").val(rupiah(parseFloat(pax)-parseFloat(basic)));
