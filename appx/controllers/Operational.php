@@ -19,6 +19,40 @@ class Operational extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */
 
+    public function upload_form()
+    {
+        move_uploaded_file(
+            $_FILES['form']['tmp_name'],
+            "assets/form/".$_FILES['form']['name']
+            );
+
+        redirect(base_url("operational/form_beban_error_sistem"));
+    }
+    public function form_beban_error_sistem()
+    {
+        $file = '';
+        if ($handle = opendir('assets/form')) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $ic = '';
+                    $ext = pathinfo($entry,PATHINFO_EXTENSION);
+                    if(in_array($ext,array("doc","docx"))){
+                        $ic = "fa-file-word-o";
+                    }elseif(in_array($ext, array('xls','xlsx'))){
+                        $ic = "fa-file-excel-o";
+                    }elseif(in_array($ext, array('pdf'))){
+                        $ic = "fa-file-pdf-o";
+                    }
+                    $file .= '<a href="'.base_url("assets/form/".$entry).'" class="btn btn-app">
+                            <i class="fa '.$ic.'"></i> '.$entry.'</a>';
+                }
+            }
+            closedir($handle);
+        }
+
+        $this->general->load('operational/form_beban_error',array('data'=>$file));
+
+    }
     public function save_issued_manual()
     {
         $data = $this->input->post();
