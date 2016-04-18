@@ -393,7 +393,7 @@
           </a>
           <ul class="treeview-menu">
           
-            <li class="treeview">
+            <!--li class="treeview">
               <a href="#">
                 <i class="fa fa-paper-plane-o"></i>
                 <span>Change Transaction</span>
@@ -405,7 +405,7 @@
                 <li><a href="<?php echo base_url('operational/add_new_refund');?>"><i class="fa fa-money"></i> Refund</a></li>
                 <li><a href="<?php echo base_url('operational/add_new_void_garuda');?>"><i class="fa fa-remove"></i> Void</a></li>
               </ul>
-            </li>
+            </li-->
             <?php
             $this->db->where('utama',1);
             $forms = $this->db->get('forms');
@@ -428,7 +428,7 @@
                 <i class="fa fa-angle-left pull-right"></i>
               </a> 
               <ul class="treeview-menu"> 
-              <li><a href="<?php echo base_url('operational/request_potong_saldo');?>"><i class="fa fa-usd"></i> Request Potong Saldo</a></li>
+              <!-- <li><a href="<?php echo base_url('operational/request_potong_saldo');?>"><i class="fa fa-usd"></i> Request Potong Saldo</a></li> -->
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-pie-chart"></i>
@@ -440,7 +440,7 @@
                 <li><a href="<?php echo base_url('operational/rekonsj');?>"><i class="fa fa-plane"></i> Sriwijaya Air</a></li>
               </ul>
             </li>
-            <li class="treeview">
+            <!--li class="treeview">
               <a href="#">
                 <i class="fa fa-pencil"></i>
                 <span>Issued Manual Data</span>
@@ -483,7 +483,7 @@
                 <li><a href="<?php echo base_url('operational/void_pending');?>"><i class="fa fa-hourglass-half"></i> Void Pending</a></li>
                 <li><a href="<?php echo base_url('operational/void_done');?>"><i class="fa fa-check"></i> Void Done</a></li>
               </ul>
-            </li>
+            </li-->
             <li><a href="<?php echo base_url('operational/nta_garuda');?>"><i class="fa fa-plane"></i> NTA Garuda</a></li>
             </ul>
 
@@ -529,6 +529,17 @@
             </li> 
               </ul>
             </li>  
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-suitcase"></i>
+            <span>QA Tools</span>
+            <i class="fa fa-angle-left pull-right"></i>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="<?php echo base_url('operational/form_beban_error_sistem');?>"><i class="fa fa-file"></i> Form Beban Error Sistem</a></li>
+            <li><a href="<?php echo base_url('operational/dokumen_error');?>"><i class="fa fa-file"></i> Dokumen Error</a></li>
           </ul>
         </li>
         </ul>
