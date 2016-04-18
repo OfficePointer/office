@@ -34,7 +34,7 @@ class Operational extends CI_Controller {
         if ($handle = opendir('assets/form')) {
             while (false !== ($entry = readdir($handle))) {
                 if ($entry != "." && $entry != "..") {
-                    $ic = '';
+                    $ic = 'fa-file';
                     $ext = pathinfo($entry,PATHINFO_EXTENSION);
                     if(in_array($ext,array("doc","docx"))){
                         $ic = "fa-file-word-o";
@@ -51,6 +51,40 @@ class Operational extends CI_Controller {
         }
 
         $this->general->load('operational/form_beban_error',array('data'=>$file));
+
+    }
+    public function upload_form_error()
+    {
+        move_uploaded_file(
+            $_FILES['form']['tmp_name'],
+            "assets/dokumen_error/".$_FILES['form']['name']
+            );
+
+        redirect(base_url("operational/dokumen_error"));
+    }
+    public function dokumen_error()
+    {
+        $file = '';
+        if ($handle = opendir('assets/dokumen_error')) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry != "." && $entry != "..") {
+                    $ic = 'fa-file';
+                    $ext = pathinfo($entry,PATHINFO_EXTENSION);
+                    if(in_array($ext,array("doc","docx"))){
+                        $ic = "fa-file-word-o";
+                    }elseif(in_array($ext, array('xls','xlsx'))){
+                        $ic = "fa-file-excel-o";
+                    }elseif(in_array($ext, array('pdf'))){
+                        $ic = "fa-file-pdf-o";
+                    }
+                    $file .= '<a href="'.base_url("assets/dokumen_error/".$entry).'" class="btn btn-app">
+                            <i class="fa '.$ic.'"></i> '.$entry.'</a>';
+                }
+            }
+            closedir($handle);
+        }
+
+        $this->general->load('operational/dokumen_error',array('data'=>$file));
 
     }
     public function save_issued_manual()
