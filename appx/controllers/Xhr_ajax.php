@@ -522,7 +522,8 @@ public function ajax_save_klasifikasi()
 		$this->db->select('def_kode_error.nama,data_mitra.prefix,data_mitra.brand_name,data_all_error.*');
 		$this->db->join('data_mitra','data_mitra.id_mitra=data_all_error.id_mitra','left');
 		$this->db->join('def_kode_error','def_kode_error.kode_error=data_all_error.kasus','left');
-		$this->db->where('updated_at',NULL);
+        $this->db->where('updated_at',NULL);
+		$this->db->order_by('id','desc');
 		$dataz = $this->db->get('data_all_error');
 		$dataz = $dataz->result_array();
 
