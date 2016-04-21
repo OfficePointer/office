@@ -1110,7 +1110,7 @@ class Marketing extends CI_Controller {
 						// $this->db->like('tanggal',$_GET['tahun']."-".$_GET['bulan']."-",'both');
 						// $this->db->group_by('airline_member.id_mitra');
 						// $xa = $this->db->get('airline_member');
-			$this->db->select('data_mitra.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix,data_mitra.city');
+			$this->db->select('data_mitra.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix,data_mitra.city,data_mitra.type');
 			$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
             $this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
             $this->db->join('data_klasifikasi','data_klasifikasi.id=k1.id_klasifikasi','left');
@@ -1135,6 +1135,7 @@ class Marketing extends CI_Controller {
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
 						echo "<th>Date Join</th>";
+						echo "<th>Type</th>";
 						echo "<th>City</th>";
 						echo "<th>Klasifikasi</th>";
 						for($i=1;$i<=31;$i++){
@@ -1149,6 +1150,7 @@ class Marketing extends CI_Controller {
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
 						echo "<td>".utf8_decode($key['join_date'])."</td>";
+						echo "<td>".utf8_decode($key['type'])."</td>";
 						echo "<td>".utf8_decode($key['city'])."</td>";
 						echo "<td>".utf8_decode($this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-"))."</td>";
 
@@ -1175,7 +1177,7 @@ class Marketing extends CI_Controller {
         $this->general->logging();
 	        header('Content-type: application/vnd.ms-excel');
 	        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_TRX_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
-			$this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix,data_mitra.city');
+			$this->db->select('airline_member.id_mitra,data_mitra.brand_name,data_mitra.join_date,data_mitra.prefix,data_mitra.city,data_mitra.type');
 			$this->db->join('data_mitra','data_mitra.id_mitra=airline_member.id_mitra','left');
 			$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
             $this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
@@ -1200,6 +1202,7 @@ class Marketing extends CI_Controller {
 						echo "<table><thead>";
 						echo "<th>Brand Name</th>";
 						echo "<th>Date Join</th>";
+						echo "<th>Type</th>";
 						echo "<th>City</th>";
 						echo "<th>Klasifikasi</th>";
 						for($i=1;$i<=31;$i++){
@@ -1214,6 +1217,7 @@ class Marketing extends CI_Controller {
 						echo "<tr>";
 						echo "<td>".$key['brand_name']." (".$key['prefix'].")</td>";
 						echo "<td>".utf8_decode($key['join_date'])."</td>";
+						echo "<td>".utf8_decode($key['type'])."</td>";
 						echo "<td>".utf8_decode($key['city'])."</td>";
 						echo "<td>".utf8_decode($this->general->get_klasifikasi($key['id_mitra'],$_GET['tahun']."-".$_GET['bulan']."-"))."</td>";
 							for($i = 1;$i<=31;$i++){

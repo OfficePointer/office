@@ -1401,6 +1401,55 @@ $(function() {
 			});
 			}
 		}
+		function profiling(jenis,id_mitra) {
+			var prof = $("#"+jenis+"_profiling").val();
+			if(prof!="new"){
+				$.ajax({
+					type:'POST',
+					url:'<?php echo base_url("xhr_ajax/save_profiling_new");?>',
+					data:{jenis:jenis,id_mitra:id_mitra,prof:prof},
+					dataType:'json',
+					success:function (data) {
+						$("#exampleModalLabelFunnyname").html(data.brand_name+" ("+data.jenis+" updated)");
+					}
+				});
+				$('#new_'+jenis).remove();
+				$('#profiling_btn_'+jenis).remove();
+		}else{
+			if(!$("#new_"+jenis).length){
+				$("#"+jenis+"_profiling").after('<input type="text" class="form-control" id="new_'+jenis+'"/><span class="btn btn-primary" onclick="profiling(\''+jenis+'\',\''+id_mitra+'\')" id="profiling_btn_'+jenis+'">Update</span>');
+			}else{
+				prof = $("#new_"+jenis).val();
+				$.ajax({
+					type:'POST',
+					url:'<?php echo base_url("xhr_ajax/save_profiling_new/new");?>',
+					data:{jenis:jenis,id_mitra:id_mitra,prof:prof},
+					dataType:'json',
+					success:function (data) {
+						$("#exampleModalLabelFunnyname").html(data.brand_name+" ("+data.jenis+" updated)");
+						$("#"+jenis+"_profiling").append('<option value="'+prof+'" selected>'+prof+'</option>');
+						$('#new_'+jenis).remove();
+						$("#"+jenis+"_profiling option[value=new]").remove();
+						$("#"+jenis+"_profiling").append('<option value="new">Input Baru</option>');
+						$('#profiling_btn_'+jenis).remove();
+					}
+				});
+			}
+		}
+		}
+		function save_klasifikasi(id_mitra) {
+			var id_klasifikasi = $("#klasifikasi_profiling").val();
+			$.ajax({
+				type:'POST',
+				url:'<?php echo base_url("xhr_ajax/ajax_save_klasifikasi");?>',
+				data:{id_klasifikasi:id_klasifikasi,id_mitra:id_mitra},
+				dataType:'json',
+				success:function (data) {
+					$("#exampleModalLabelFunnyname").html(data.brand_name+" ("+data.jenis+" updated)");
+				}
+			});
+		}
+
 	    function openformdetail(id) {
 
 			$.ajax({
@@ -1410,59 +1459,98 @@ $(function() {
 				data:{id:id},
 				success:function(isi){
 					var dm = isi.detail_mitra;
-					isi     = isi.profiling;
+					var profiling     = isi.profiling;
+
+					var all_tipe = isi.all_tipe;
+					var htmltipe = '<select class="form-control" id="tipe_profiling" onchange="profiling(\'tipe\',\''+profiling.id_mitra+'\')">';
+						htmltipe += '<option '+(dm.tipe==""?"selected":"")+' value="">No Data</option>';
+					for(var data in all_tipe) {
+						htmltipe += '<option '+(dm.tipe==all_tipe[data].data?"selected":"")+' value="'+all_tipe[data].data+'">'+all_tipe[data].data+'</option>';
+					}						
+					htmltipe += '<option value="new">Input Baru</option>';
+
+					htmltipe += '</select>';
+					var all_bank = isi.all_bank;
+					var htmlbank = '<select class="form-control" id="bank_profiling" onchange="profiling(\'bank\',\''+profiling.id_mitra+'\')">';
+						htmlbank += '<option '+(dm.bank==""?"selected":"")+' value="">No Data</option>';
+					for(var data in all_bank) {
+						htmlbank += '<option '+(dm.bank==all_bank[data].data?"selected":"")+' value="'+all_bank[data].data+'">'+all_bank[data].data+'</option>';
+					}
+						htmlbank += '<option value="new">Input Baru</option>';
+					htmlbank += '</select>';
+					var all_lastsystem = isi.all_lastsystem;
+					var htmllastsystem = '<select class="form-control" id="lastsystem_profiling" onchange="profiling(\'lastsystem\',\''+profiling.id_mitra+'\')">';
+						htmllastsystem += '<option '+(dm.lastsystem==""?"selected":"")+' value="">No Data</option>';
+					for(var data in all_lastsystem) {
+						htmllastsystem += '<option '+(dm.lastsystem==all_lastsystem[data].data?"selected":"")+' value="'+all_lastsystem[data].data+'">'+all_lastsystem[data].data+'</option>';
+					}						
+					htmllastsystem += '<option value="new">Input Baru</option>';
+
+					htmllastsystem += '</select>';
+					var all_info = isi.all_info;
+					var htmlinfo = '<select class="form-control" id="info_profiling" onchange="profiling(\'info\',\''+profiling.id_mitra+'\')">';
+						htmlinfo += '<option '+(dm.info==""?"selected":"")+' value="">No Data</option>';
+					for(var data in all_info) {
+						htmlinfo += '<option '+(dm.info==all_info[data].data?"selected":"")+' value="'+all_info[data].data+'">'+all_info[data].data+'</option>';
+					}
+						htmlinfo += '<option value="new">Input Baru</option>';
+					htmlinfo += '</select>';
+					var all_klasifikasi = isi.all_klasifikasi;
+					var htmlklasifikasi = '<select class="form-control" id="klasifikasi_profiling" onchange="save_klasifikasi(\''+profiling.id_mitra+'\')">';
+						htmlklasifikasi += '<option '+(profiling.klasifikasi_id==""?"selected":"")+' value="">No Data</option>';
+					for(var data in all_klasifikasi) {
+						htmlklasifikasi += '<option '+(profiling.klasifikasi_id==all_klasifikasi[data].id?"selected":"")+' value="'+all_klasifikasi[data].id+'">'+all_klasifikasi[data].klasifikasi+'</option>';
+					}
+					htmlklasifikasi += '</select>';
+
+					var htmlotherinfo = '<textarea row=5 class="form-control" id="otherinfo_profiling" oninput="profiling(\'otherinfo\',\''+profiling.id_mitra+'\')">'+dm.otherinfo+'</textarea>';
 
 					clear_btn();
-					$(".modal-footer").prepend('<button onclick="update_open('+isi.id_mitra+')" id="btn_fol2" class="pull-left btn btn-success " >Update</button>');
-					$(".modal-footer").prepend('<button onclick="followup_open('+isi.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
-					$("#exampleModalLabelFunnyname").html(isi.brand_name);
+					$(".modal-footer").prepend('<button onclick="followup_open('+profiling.id_mitra+')" id="btn_fol" class="pull-left btn btn-primary " >Follow Up</button>');
+					$("#exampleModalLabelFunnyname").html(profiling.brand_name);
 					$("#isinyafunnyname").html('<tr>'+
 										'<td>Prefix</td>'+
-										'<td>'+isi.prefix+'</td>'+
+										'<td>'+profiling.prefix+'</td>'+
 										'<td>Company Type</td>'+
-										'<td>'+dm.tipe+'</td>'+
+										'<td>'+htmltipe+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Join Date</td>'+
-										'<td>'+isi.join_date+'</td>'+
+										'<td>'+profiling.join_date+'</td>'+
 										'<td>Info</td>'+
-										'<td>'+dm.info+'</td>'+
+										'<td>'+htmlinfo+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Type</td>'+
-										'<td>'+isi.type+'</td>'+
+										'<td>'+profiling.type+'</td>'+
 										'<td>Last Used System</td>'+
-										'<td>'+dm.lastsystem+'</td>'+
+										'<td>'+htmllastsystem+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>E-Mail</td>'+
-										'<td>'+isi.email+'</td>'+
-										'<td>Other Info</td>'+
-										'<td>'+dm.otherinfo+'</td>'+
+										'<td>'+profiling.email+'</td>'+
+										'<td>Bank</td>'+
+										'<td>'+htmlbank+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Address</td>'+
-										'<td>'+isi.address+'</td>'+
+										'<td>'+profiling.address+'</td>'+
+										'<td>Klasifikasi</td>'+
+										'<td>'+htmlklasifikasi+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Mobile</td>'+
-										'<td>'+isi.mobile+'</td>'+
+										'<td>'+profiling.mobile+'</td>'+
+										'<td colspan=2>Other Info</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>City</td>'+
-										'<td>'+isi.city+'</td>'+
+										'<td>'+profiling.city+'</td>'+
+										'<td rowspan=2 colspan=2>'+htmlotherinfo+'</td>'+
 									'</tr>'+
 									'<tr>'+
 										'<td>Province</td>'+
-										'<td>'+isi.province+'</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>Classification</td>'+
-										'<td>'+isi.klasifikasi+'</td>'+
-									'</tr>'+
-									'<tr>'+
-										'<td>Bank</td>'+
-										'<td>'+dm.bank+'</td>'+
+										'<td>'+profiling.province+'</td>'+
 									'</tr>');
 				    $('#modal_funnyname').modal('show');
 				}
@@ -1605,7 +1693,7 @@ $(function() {
 			},1000);
 		}
 
-//------------------------------------------------------------------------------
+/*------------------------------------------------------------------------------
 		function update_open(id){
 			close_popup();
 
@@ -1624,8 +1712,9 @@ $(function() {
 
 					var html = '';
 
+					html += '<option '+(data.lastKlasifikasi==0?"selected":"")+' value="">No Data</option>';
 					for(var data in klasifikasi) {
-						html += '<option value="'+klasifikasi[data].id+'">'+klasifikasi[data].klasifikasi+'</option>';
+						html += '<option '+(klasifikasi[data].id==data.lastKlasifikasi?"selected":"")+' value="'+klasifikasi[data].id+'">'+klasifikasi[data].klasifikasi+'</option>';
 					}
 
 					clear_btn();
@@ -1647,7 +1736,7 @@ $(function() {
 
 			},1000);
 		}
-//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------*/
 
 		function save_dataklas_from_popup (id) {
 

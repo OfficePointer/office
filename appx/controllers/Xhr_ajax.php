@@ -322,9 +322,13 @@ class Xhr_ajax extends CI_Controller {
   public function ajax_get_klasifikasi(){
     $this->general->logging();
 		$data = $this->input->post();
+        $this->db->where('id_mitra',$data['id']);
+        $datklas['getMemberKlas'] = $this->db->get('data_mitra')->row_array();
+        $datklas['getKlasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
 		$this->db->where('id_mitra',$data['id']);
-		$datklas['getMemberKlas'] = $this->db->get('data_mitra')->row_array();
-		$datklas['getKlasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
+        $this->db->order_by('id','desc');
+        $balik = $this->db->get('data_klasifikasi')->row_array();
+        $datklas['lastKlasifikasi'] = empty($balik)?0:$balik->id_klasifikasi; 
 		print_r(json_encode($datklas));
   }
 
@@ -337,7 +341,8 @@ public function ajax_save_klasifikasi()
   $data['tgl_update'] = date("Y-m-d H:i:s");
   $data['created_by'] = $this->session->userdata('id');
   $this->db->insert('klasifikasi_member',$data);
-  print_r(json_encode($data));
+  //print_r(json_encode($data));
+  echo json_encode(array('jenis'=>'klasifikasi','brand_name'=>$this->db->where('id_mitra',$data['id_mitra'])->get('data_mitra')->row_array()['brand_name']));
 }
 
 //------------------------------------------------------------------------------
@@ -628,7 +633,8 @@ public function ajax_save_klasifikasi()
         $this->db->where('id_mitra',$data['id']);
         $this->db->order_by('klasifikasi_member.id','desc');
         $class = $this->db->get('klasifikasi_member')->row_array();
-		$dat['profiling']['klasifikasi'] = !empty($class['klasifikasi'])?$class['klasifikasi']:"No Data";
+        $dat['profiling']['klasifikasi'] = !empty($class['klasifikasi'])?$class['klasifikasi']:"No Data";
+		$dat['profiling']['klasifikasi_id'] = !empty($class['klasifikasi'])?$class['id_klasifikasi']:0;
         $this->db->where('id_mitra',$data['id']);
         $data_detail = $this->db->get('data_detail_mitra')->row_array();
         if(empty($data_detail)){
@@ -636,12 +642,41 @@ public function ajax_save_klasifikasi()
                                     'tipe'=>'No Data',
                                     'lastsystem'=>'No Data',
                                     'info'=>'No Data',
-                                    'otherinfo'=>'No Data');
+                                    'otherinfo'=>'');
         }
         $dat['detail_mitra'] = $data_detail;
+        $dat['all_tipe'] = $this->db->where('jenis','tipe')->get('data_profiling')->result_array();
+        $dat['all_lastsystem'] = $this->db->where('jenis','lastsystem')->get('data_profiling')->result_array();
+        $dat['all_info'] = $this->db->where('jenis','info')->get('data_profiling')->result_array();
+        $dat['all_bank'] = $this->db->where('jenis','bank')->get('data_profiling')->result_array();
+        $dat['all_klasifikasi'] = $this->db->get('data_klasifikasi')->result_array();
         $dat['response'] = $this->db->get('data_respon')->result_array();
 		print_r(json_encode($dat));
 	}
+    public function save_profiling_new($new="")
+    {
+        $id_mitra = $this->input->post('id_mitra');
+        $jenis = $this->input->post('jenis');
+        $prof = $this->input->post('prof');
+
+        $this->db->where('id_mitra',$id_mitra);
+        $a = $this->db->get('data_detail_mitra')->row_array();
+        if(empty($a)){
+            $data['id_mitra'] = $id_mitra;
+            $data[$jenis] = $prof;
+            $a = $this->db->insert('data_detail_mitra',$data);
+        }else{
+            $this->db->where('id_mitra',$id_mitra);
+            $this->db->update('data_detail_mitra',array($jenis=>$prof));
+        }
+        if($new=="new"){
+            $data['jenis'] = $jenis; 
+            $data['data'] = $prof;
+            $a = $this->db->insert('data_profiling',$data);
+        }
+        echo json_encode(array('jenis'=>$jenis,'brand_name'=>$this->db->where('id_mitra',$id_mitra)->get('data_mitra')->row_array()['brand_name']));
+
+    }
 	public function get_solve_note_option()
 	{
     $this->general->logging();
