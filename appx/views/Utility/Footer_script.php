@@ -67,6 +67,7 @@ var temp_id = 0;
 
 		$('#modal_funnyname .modal-dialog').css('width','1200px');
 	    $(".for_date").datepicker();
+	    $(".for_chosen").chosen();
 	    $(".datepicker").daterangepicker();
 
 	    setInterval(function () {

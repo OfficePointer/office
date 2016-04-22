@@ -47,13 +47,16 @@ foreach ($us as $key) {
   <link rel="stylesheet" href="<?php echo base_url('assets/waves/waves.min.css');?>">
   <link href="<?php echo base_url('assets/favicon.png');?>" rel="shortcut icon">
   <link href="<?php echo base_url('assets/favicon.png');?>" rel="favicon">
+    <link rel="stylesheet" href="<?php echo base_url('assets/plugins/chosen/chosen.min.css');?>">
+
 <script src="<?php echo base_url('assets/plugins/jQuery/jQuery-2.1.4.min.js');?>"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo base_url('assets/plugins/jQueryUI/jquery-ui.min.js');?>"></script>
 <script src="<?php echo base_url('assets/plugins/datatables/jquery.dataTables.min.js');?>"></script>
 <script src="<?php echo base_url('assets/plugins/datatables/dataTables.bootstrap.min.js');?>"></script>
 <script src="<?php echo base_url('assets/js/notification.js');?>"></script>
-<script src="https://cdn.datatables.net/fixedcolumns/3.1.0/js/dataTables.fixedColumns.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/fixedcolumns/3.1.0/js/dataTables.fixedColumns.min.js"></script> -->
+<script type="text/javascript" src="<?php echo base_url('assets/plugins/chosen/chosen.jquery.min.js');?>"></script>
 
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxcore.js');?>"></script>
 <script type="text/javascript" src="<?php echo base_url('assets/jqwidgets/jqxdata.js');?>"></script>

@@ -1207,7 +1207,49 @@ class Operational extends CI_Controller {
 
     public function uid_mgr()
     {
-        $data['uid'] = $this->db->get('uid_mgr');
-        
+        $data['data'] = $this->db->get('uid_mgr')->result_array();
+        $this->general->load('operational/uid_mgr/all',$data);
+    }
+    public function uid_mgr_add()
+    {
+        $data['airline'] = $this->db->get('vendor')->result_array();
+        $data['id_user'] = $this->db->get('data_user')->result_array();
+        $this->general->load('operational/uid_mgr/add',$data);
+    }
+    public function uid_mgr_save()
+    {
+        $s = $this->input->post();
+        $s['create_by'] = $this->session->userdata('id');
+        $s['update_by'] = $this->session->userdata('id');
+        $s['created_at'] = date("Y-m-d H:i:s");
+        $s['updated_at'] = date("Y-m-d H:i:s");
+        $s['log'] = "Created by ".$this->session->userdata('nama');
+        $this->db->insert('uid_mgr',$s);
+        redirect(base_url("operational/uid_mgr"));
+    }
+    public function uid_mgr_edit($id)
+    {
+        $this->db->where('id',$id);
+        $s['data'] = $this->db->get('uid_mgr')->row_array();
+        $s['airline'] = $this->db->get('vendor')->result_array();
+        $s['id_user'] = $this->db->get('data_user')->result_array();
+        $this->general->load('operational/uid_mgr/edit',$s);
+    }
+    public function uid_mgr_update()
+    {
+        $s = $this->input->post();
+        $x = $this->db->where('id',$s['id'])->get('uid_mgr')->row_array();
+        $s['update_by'] = $this->session->userdata('id');
+        $s['updated_at'] = date("Y-m-d H:i:s");
+        $s['log'] = $x['log']."\r\nUpdated by ".$this->session->userdata('nama');
+        $this->db->where('id',$s['id']);
+        $this->db->update('uid_mgr',$s);
+        redirect(base_url("operational/uid_mgr"));
+    }
+    public function uid_mgr_delete($id)
+    {
+        $this->db->where('id',$id);
+        $this->db->delete('uid_mgr');
+        redirect(base_url("operational/uid_mgr"));
     }
 }
