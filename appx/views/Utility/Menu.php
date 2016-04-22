@@ -498,52 +498,63 @@
                 <li><a href="<?php echo base_url('operational/adminkoran');?>"><i class="fa fa-user-secret"></i> Administrator</a></li>
                 <li><a href="<?php echo base_url('operational/funnyname');?>"><i class="fa fa-check-square-o"></i> Funnyname List</a></li>
                 <li><a href="<?php echo base_url('operational/koran_helpdesk');?>"><i class="fa fa-newspaper-o"></i> Koran Helpdesk</a></li>
-              <li class="treeview">
-              <a href="#">
-                <i class="fa fa-cog"></i>
-                <span>Preferences</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a> 
-              <ul class="treeview-menu"> 
-              <li class="treeview">
-              <a href="#">
-                <i class="fa fa-medium"></i>
-                <span>Master Mandatory</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
-                <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-maxcdn"></i>
-                <span>Master Class Garuda</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
-                <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
-              </ul>
-            </li> 
-              </ul>
-            </li>  
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-suitcase"></i>
-            <span>QA Tools</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="<?php echo base_url('operational/form_beban_error_sistem');?>"><i class="fa fa-file"></i> Form Beban Error Sistem</a></li>
-            <li><a href="<?php echo base_url('operational/dokumen_error');?>"><i class="fa fa-file"></i> Dokumen Error</a></li>
-          </ul>
-        </li>
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-group"></i>
+                    <span>User ID Airline</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url('operational/uid_mgr_add');?>"><i class="fa fa-plus"></i> Add New</a></li>          
+                    <li><a href="<?php echo base_url('operational/uid_mgr');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
+                  </ul>
+                </li> 
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-cog"></i>
+                    <span>Preferences</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a> 
+                  <ul class="treeview-menu"> 
+                  <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-medium"></i>
+                    <span>Master Mandatory</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url('pengaturan/mandatoryviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
+                    <li><a href="<?php echo base_url('pengaturan/mandatoryviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
+                  </ul>
+                </li>
+                <li class="treeview">
+                  <a href="#">
+                    <i class="fa fa-maxcdn"></i>
+                    <span>Master Class Garuda</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </a>
+                  <ul class="treeview-menu">
+                    <li><a href="<?php echo base_url('pengaturan/classgarudaviewall');?>"><i class="fa fa-navicon"></i>  All Data</a></li>
+                    <li><a href="<?php echo base_url('pengaturan/classgarudaviewadd');?>"><i class="fa fa-plus"></i> Add New</a></li>          
+                  </ul>
+                </li> 
+                </ul>
+              </li>  
+            </ul>
+          </li>
+          <li class="treeview">
+            <a href="#">
+              <i class="fa fa-suitcase"></i>
+              <span>QA Tools</span>
+              <i class="fa fa-angle-left pull-right"></i>
+            </a>
+            <ul class="treeview-menu">
+              <li><a href="<?php echo base_url('operational/form_beban_error_sistem');?>"><i class="fa fa-file"></i> Form Beban Error Sistem</a></li>
+              <li><a href="<?php echo base_url('operational/dokumen_error');?>"><i class="fa fa-file"></i> Dokumen Error</a></li>
+            </ul>
+          </li>
         </ul>
-        </li>
+      </li>
 
         <?php
         }

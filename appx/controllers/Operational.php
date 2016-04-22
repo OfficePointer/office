@@ -1219,6 +1219,11 @@ class Operational extends CI_Controller {
     public function uid_mgr_save()
     {
         $s = $this->input->post();
+        if($s['vendor']==13){
+            $s['ga_chg'] = date_format(date_create($s['ga_chg']),"Y-m-d H:i:s");
+        }else{
+            $s['ga_chg'] = "0000-00-00 00:00:00";
+        }
         $s['create_by'] = $this->session->userdata('id');
         $s['update_by'] = $this->session->userdata('id');
         $s['created_at'] = date("Y-m-d H:i:s");
@@ -1238,6 +1243,11 @@ class Operational extends CI_Controller {
     public function uid_mgr_update()
     {
         $s = $this->input->post();
+        if($s['vendor']==13){
+            $s['ga_chg'] = date_format(date_create($s['ga_chg']),"Y-m-d H:i:s");
+        }else{
+            $s['ga_chg'] = "0000-00-00 00:00:00";
+        }
         $x = $this->db->where('id',$s['id'])->get('uid_mgr')->row_array();
         $s['update_by'] = $this->session->userdata('id');
         $s['updated_at'] = date("Y-m-d H:i:s");

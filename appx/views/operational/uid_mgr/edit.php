@@ -60,9 +60,9 @@
               <label>Airline Password</label>
               <input type="text" value="<?php echo $data['password_airline'];?>" name="password_airline" class="form-control" placeholder="">
             </div>
-            <div class="form-group" id="ga_chg" style="display:none;">
+            <div class="form-group" id="ga_chg" style="<?php if($data['vendor']!=13){?>display:none;<?php } ?>">
               <label>Last GA Change Password</label>
-              <input type="text" value="<?php echo $data['ga_chg'];?>" name="ga_chg" class="form-control for_date" placeholder="">
+              <input type="text" value="<?php echo date_format(date_create($data['ga_chg']),"m/d/Y");?>" name="ga_chg" class="form-control for_date" placeholder="">
             </div>
             <div class="form-group">
               <label>Note</label>
