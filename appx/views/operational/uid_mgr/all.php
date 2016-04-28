@@ -15,8 +15,8 @@
         <thead>
           <tr>
             <th>Vendor</th>
-            <th>E-Mail Maskapai</th>
-            <th>E-Mail Username</th>
+            <th>UID Maskapai</th>
+            <th>E-Mail</th>
             <th>PIC</th>
             <th>Used For</th>
             <th>Action</th>
@@ -40,7 +40,7 @@
             <td><?php echo $key['email_akun'];?></td>
             <td><?php echo $this->db->where('id',$key['id_user'])->get('data_user')->row_array()['name']." (".$this->db->where('id',$key['id_user'])->get('data_user')->row_array()['email'].")";?></td>
             <td><?php echo $uid_used;?></td>
-            <td><a title="Edit" href="<?php echo base_url("operational/uid_mgr_edit/".$key['id']);?>">Edit</a> <a title="Hapus" onclick="return confirm('Yakin hapus user <?php echo $this->db->where('id',$key['vendor'])->get('vendor')->row_array()['nama']." (".$key['email_akun'].")";?>?')" href="<?php echo base_url("operational/uid_mgr_delete/".$key['id']);?>">Hapus</a></td>
+            <td><a title="Show Password" onclick="alert('E-Mail Password : <?php echo $key['email_pass'];?>\r\nAirline Password : <?php echo $key['password_airline'];?>')">Show Password</a> <a title="Edit" href="<?php echo base_url("operational/uid_mgr_edit/".$key['id']);?>">Edit</a> <a title="Hapus" onclick="return confirm('Yakin hapus user <?php echo $this->db->where('id',$key['vendor'])->get('vendor')->row_array()['nama']." (".$key['email_akun'].")";?>?')" href="<?php echo base_url("operational/uid_mgr_delete/".$key['id']);?>">Hapus</a></td>
           </tr>
         <?php
         }
