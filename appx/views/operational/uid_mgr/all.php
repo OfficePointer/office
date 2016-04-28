@@ -36,9 +36,9 @@
         ?>
           <tr>
             <td><?php echo $this->db->where('id',$key['vendor'])->get('vendor')->row_array()['nama'];?></td>
-            <td><?php echo $this->db->where('id',$key['id_user'])->get('data_user')->row_array()['name']." (".$this->db->where('id',$key['id_user'])->get('data_user')->row_array()['email'].")";?></td>
             <td><?php echo $key['username_airline'];?></td>
             <td><?php echo $key['email_akun'];?></td>
+            <td><?php echo $this->db->where('id',$key['id_user'])->get('data_user')->row_array()['name']." (".$this->db->where('id',$key['id_user'])->get('data_user')->row_array()['email'].")";?></td>
             <td><?php echo $uid_used;?></td>
             <td><a title="Edit" href="<?php echo base_url("operational/uid_mgr_edit/".$key['id']);?>">Edit</a> <a title="Hapus" onclick="return confirm('Yakin hapus user <?php echo $this->db->where('id',$key['vendor'])->get('vendor')->row_array()['nama']." (".$key['email_akun'].")";?>?')" href="<?php echo base_url("operational/uid_mgr_delete/".$key['id']);?>">Hapus</a></td>
           </tr>
