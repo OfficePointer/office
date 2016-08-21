@@ -145,21 +145,9 @@
         ?>
         </tbody>
       </table>
-      <?php
-      foreach ($followup_by as $key) {
-        if($key['create_by']!=NULL){
-          ?>
-          <span class="btn"><?php echo $this->general->get_user($key['create_by'])." : ".$key['jumlah'];?></span>
-          <?php 
-        }
-      }
-      echo "<br>";
-      foreach ($followup_by_klasifikasi as $key) {
-          ?>
-          <span class="btn"><?php echo (($key['klasifikasi']==NULL)?"Non Data":$key['klasifikasi'])." : ".$key['jumlah'];?></span>
-          <?php 
-      }
-      ?>
+      <div id="klasifikasi_by_user"></div>
+      <br>
+      <div id="klasifikasi_by_mitra"></div>
       <hr>
       <?php echo $paging;?>
       </div>
@@ -170,3 +158,23 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <script type="text/javascript">
+    $.ajax({
+      url:'<?php echo base_url('xhr_ajax/ajax_get_mitra_by_user');?>',
+      dataType:'html',
+      type:'GET',
+      success:function(hasil) {
+        $("#klasifikasi_by_user").html(hasil);
+
+        $.ajax({
+          url:'<?php echo base_url('xhr_ajax/ajax_get_mitra_by_klasifikasi');?>',
+          dataType:'html',
+          type:'GET',
+          success:function(hasil2) {
+            $("#klasifikasi_by_mitra").html(hasil2);
+          }
+        });
+      }
+    });
+  </script>

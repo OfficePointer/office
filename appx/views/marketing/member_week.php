@@ -72,17 +72,17 @@
               <tr>
                 <td></td>
                 <td><button class="btn btn-primary" type="submit">Submit</button>  
-                <a class="btn btn-success" href="<?php echo base_url();?>marketing/expr_/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>">Export Selling</a></td>
+                <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_week_export/?vendor=<?php echo $this->input->post('vendor');?>&tahun=<?php echo $this->input->post('tahun');?>&bulan=<?php echo $this->input->post('bulan');?>&klasifikasi=<?php echo $this->input->post('klasifikasi');?>">Export Selling</a></td>
               </tr>
             </table>
           </form>
-          <div style="width:100%;overflow-x:scroll;">
+          <div style="width:100%;overflow-x:hidden;">
           <?php echo $table;?>
           </div>
           <?php
           foreach ($klasifikasi_data as $key => $value) {
           ?>
-          <span class="btn"><?php echo $key." : ".$value;?></span>
+          <span class="btn"><?php echo $key." : ".$value." tickets";?></span>
           <?php 
             }
           ?>

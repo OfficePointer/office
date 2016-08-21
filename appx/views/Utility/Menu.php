@@ -233,6 +233,19 @@
                 <li><a href="<?php echo base_url('marketing/airline_graph');?>"><i class="fa fa-plane"></i> Vendor Graph</a></li>
                 <li><a href="<?php echo base_url('marketing/member_week');?>"><i class="fa fa-bar-chart"></i> Weekly Member Graph</a></li>
                 <li><a href="<?php echo base_url('marketing/member_monthly');?>"><i class="fa fa-group"></i> Member Monthly</a></li>
+                <li><a href="<?php echo base_url('marketing/member_graph_daily');?>"><i class="fa fa-line-chart"></i> Member Graph Daily</a></li>
+              </ul>
+            </li>
+            <li class="treeview">
+              <a href="#">
+                <i class="fa fa-envelope"></i>
+                <span>E-Mail Marketing</span>
+                <i class="fa fa-angle-left pull-right"></i>
+              </a>
+              <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('marketing/email_templates');?>"><i class="fa fa-th-list"></i> E-Mail Templates</a></li>
+                <li><a href="<?php echo base_url('marketing/email_campaign');?>"><i class="fa fa-at"></i> E-Mail Campaign</a></li>
+                <li><a href="<?php echo base_url('marketing/subscribers_list');?>"><i class="fa fa-at"></i> Recipients List</a></li>
               </ul>
             </li>
 

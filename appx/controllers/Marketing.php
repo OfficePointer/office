@@ -1779,21 +1779,49 @@ class Marketing extends CI_Controller {
     		$dn = array();
     		foreach($this->db->get('data_klasifikasi')->result_array() as $key){
     			$dt = array();
-    			for($i=0; $i < $number; $i++) { 
+    			for($i=0; $i <= $number; $i++) { 
     				$this->db->select('count(k1.id) as jumlah');
 					$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
 					$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
-					$this->db->where('k1.tgl_update <=',date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d")." 00:00:00");
+					if($i<$number){
+						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d");
+					}else{
+						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-1"),"Y-m-");
+					}
+					$this->db->like('k1.tgl_update',$likedate,'both');
 					$this->db->where('k1.id_klasifikasi',$key['id']);
 					$this->db->where('k2.id',NULL);
 					//$this->db->group_by('k1.id_mitra');
 					$xa = $this->db->get('data_mitra');
 					$xa = $xa->row_array();
-					echo $key['klasifikasi']." ".date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d")." :".$xa['jumlah'];
+					$dt[$i+1] = $xa['jumlah'];
 					// die($this->db->last_query());
     			}
+    			$dn[$key['klasifikasi']] = $dt;
     			// die();
     		}
+
+    			$dt = array();
+    			for($i=0; $i <= $number; $i++) { 
+    				$this->db->select('count(data_mitra.id_mitra) as jumlah');
+					$this->db->join('klasifikasi_member','klasifikasi_member.id_mitra=data_mitra.id_mitra','left');
+					if($i<$number){
+						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d");
+					}else{
+						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-1"),"Y-m-");
+					}
+					$this->db->like('data_mitra.join_date',$likedate,'both');
+					$this->db->where('id_klasifikasi',NULL);
+					//$this->db->group_by('k1.id_mitra');
+					$xa = $this->db->get('data_mitra');
+					$xa = $xa->row_array();
+					$dt[$i+1] = $xa['jumlah'];
+					// die($this->db->last_query());
+    			}
+    			$dn['Non Data'] = $dt;
+    		$data['data'] = $dn;
     	}
+
+    	$this->general->load('marketing/member_graph_daily',$data);
     }
 }

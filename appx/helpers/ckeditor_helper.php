@@ -45,31 +45,32 @@ function cke_initialize($data = array()) {
 function cke_create_instance($data = array()) {
        
     $return = "<script type=\"text/javascript\">
-        CKEDITOR.replace('" . $data['id'] . "', {";
+        CKEDITOR.replace('" . $data['id'] . "',";
    
                 //Adding config values
                 if(isset($data['config'])) {
-                        foreach($data['config'] as $k=>$v) {
+                        // foreach($data['config'] as $k=>$v) {
                                
-                                // Support for extra config parameters
-                                if (is_array($v)) {
-                                        $return .= $k . " : [";
-                                        $return .= config_data($v);
-                                        $return .= "]";
+                        //         // Support for extra config parameters
+                        //         if (is_array($v)) {
+                        //                 $return .= $k . " : [";
+                        //                 $return .= config_data($v);
+                        //                 $return .= "]";
                                        
-                                }
-                                else {
-                                        $return .= $k . " : '" . $v . "'";
-                                }
+                        //         }
+                        //         else {
+                        //                 $return .= $k . " : '" . $v . "'";
+                        //         }
  
-                                $endkeys = array_keys($data['config']);
-                                if($k !== end($endkeys)) {
-                                                $return .= ",";
-                                        }                                      
-                        }
+                        //         $endkeys = array_keys($data['config']);
+                        //         if($k !== end($endkeys)) {
+                        //                         $return .= ",";
+                        //                 }                                      
+                        // }
+                    $return .= json_encode($data['config']);
                 }                      
                                
-    $return .= '});</script>'; 
+    $return .= ');</script>'; 
    
     return $return;
        
@@ -143,21 +144,24 @@ function display_ckeditor($data = array())
 function config_data($data = array())
 {
         $return = '';
-        foreach ($data as $key)
-        {
-                if (is_array($key)) {
-                        $return .= "[";
-                        foreach ($key as $string) {
-                                $return .= "'" . $string . "'";
-                                if ($string != end(array_values($key))) $return .= ",";
-                        }
-                        $return .= "]";
-                }
-                else {
-                        $return .= "'".$key."'";
-                }
-                if ($key != end(array_values($data))) $return .= ",";
+        return json_encode($return);
+        // foreach ($data as $key)
+        // {
+        //         if (is_array($key)) {
+        //                 $return .= "[";
+        //                 foreach ($key as $string) {
+        //                         $return .= "'" . $string . "'";
+        //                         if ($string != end(array_values($key))) 
+        //                             $return .= ",";
+        //                 }
+        //                 $return .= "]";
+        //         }
+        //         else {
+        //                 $return .= "'".$key."'";
+        //         }
+        //         if ($key != end(array_values($data))) 
+        //             $return .= ",";
  
-        }
+        // }
         return $return;
 }

@@ -18,10 +18,43 @@
 						<input class="form-control" required value="<?php echo $this->input->post("tahun");?>" type="number" minlength="4" maxlength="4" name="tahun">
 					</td>
 				</tr>
+
+              <tr>
+                <td>Airline</td>
+                <td>
+                <select type="text" id="vendor" name="vendor" class="form-control">
+                  <option <?php echo ($this->input->post("vendor")=="")?"selected":"";?> value="">-- All --</option>
+                  <option <?php echo ($this->input->post("vendor")=="KAI")?"selected":"";?> value="KAI">Kereta Api</option>
+                  <option <?php echo ($this->input->post("vendor")=="MG")?"selected":"";?> value="MG">Hotel</option>
+                  <option <?php echo ($this->input->post("vendor")=="JT")?"selected":"";?> value="JT">Lion Air</option>
+                  <option <?php echo ($this->input->post("vendor")=="GA")?"selected":"";?> value="GA">Garuda Indonesia</option>
+                  <option <?php echo ($this->input->post("vendor")=="SJ")?"selected":"";?> value="SJ">Sriwijaya</option>
+                  <option <?php echo ($this->input->post("vendor")=="QG")?"selected":"";?> value="QG">Citilink</option>
+                  <option <?php echo ($this->input->post("vendor")=="QZ")?"selected":"";?> value="QZ">AirAsia</option>
+                  <option <?php echo ($this->input->post("vendor")=="KD")?"selected":"";?> value="KD">Kalstar</option>
+                  <option <?php echo ($this->input->post("vendor")=="SN")?"selected":"";?> value="SN">ExpressAir</option>
+                  <option <?php echo ($this->input->post("vendor")=="TGN")?"selected":"";?> value="TGN">Trigana</option>
+                  <option <?php echo ($this->input->post("vendor")=="TNU")?"selected":"";?> value="TNU">Transnusa</option>
+                </select></td>
+              </tr>
+              <tr>
+              <td>Klasifikasi</td>
+              <td>
+                <select name="klasifikasi" class="form-control">
+                <option <?php echo ($this->input->post('klasifikasi')=="")?"selected":"";?> value="">-- All --</option>
+                <option <?php echo ($this->input->post('klasifikasi')=="0")?"selected":"";?> value="0">No Data</option>
+                <?php
+                foreach($this->db->get('data_klasifikasi')->result_array() as $dataklasifikasi){
+                ?>
+                <option <?php echo ($this->input->post('klasifikasi')==$dataklasifikasi['id'])?"selected":"";?> value="<?php echo $dataklasifikasi['id'];?>"><?php echo $dataklasifikasi['klasifikasi'];?></option>
+                <?php } ?>
+                </select>
+              </td>
+              </tr>
 				<tr>
 					<td></td>
 					<td><div class="highlight"><button class="btn btn-primary" type="submit">Submit</button>
-					<a class="btn btn-success" href="<?php echo base_url('marketing/export_member_monthly?tahun='.(($this->input->post('tahun')=="")?2015:$this->input->post('tahun')));?>">Export</a>
+					<a class="btn btn-success" href="<?php echo base_url('marketing/export_member_monthly?tahun='.(($this->input->post('tahun')=="")?date("Y"):$this->input->post('tahun')));?>&vendor=<?php echo $this->input->post('vendor');?>&klasifikasi=<?php echo $this->input->post('klasifikasi');?>">Export</a>
 					</div></td>  
 				</tr>
 			</table>
