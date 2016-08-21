@@ -1896,15 +1896,15 @@ class Marketing extends CI_Controller {
           <tbody>
           <?php 
           $i = 1;
-              foreach ($data as $key => $value) {
+              foreach ($data['data'] as $key => $value) {
                 ?>
 
           <tr>
           <?php
                 echo "<td>".$i++."</td>";
                 echo "<td>".$key."</td>";
-                foreach ($value as $data) {
-                echo "<td>".$data."</td>";
+                foreach ($value as $daki) {
+                echo "<td>".$daki."</td>";
                  } 
               }
             ?>
