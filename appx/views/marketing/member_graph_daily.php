@@ -16,31 +16,31 @@
               <tr>
                 <td>Month</td>
                 <td><select class="form-control" name="bulan">
-                  <option <?php echo ($_GET["bulan"]=="01")?"selected":"";?> value="01">Januari</option>
-                  <option <?php echo ($_GET["bulan"]=="02")?"selected":"";?> value="02">Februari</option>
-                  <option <?php echo ($_GET["bulan"]=="03")?"selected":"";?> value="03">Maret</option>
-                  <option <?php echo ($_GET["bulan"]=="04")?"selected":"";?> value="04">April</option>
-                  <option <?php echo ($_GET["bulan"]=="05")?"selected":"";?> value="05">Mei</option>
-                  <option <?php echo ($_GET["bulan"]=="06")?"selected":"";?> value="06">Juni</option>
-                  <option <?php echo ($_GET["bulan"]=="07")?"selected":"";?> value="07">Juli</option>
-                  <option <?php echo ($_GET["bulan"]=="08")?"selected":"";?> value="08">Agustus</option>
-                  <option <?php echo ($_GET["bulan"]=="09")?"selected":"";?> value="09">September</option>
-                  <option <?php echo ($_GET["bulan"]=="10")?"selected":"";?> value="10">Oktober</option>
-                  <option <?php echo ($_GET["bulan"]=="11")?"selected":"";?> value="11">November</option>
-                  <option <?php echo ($_GET["bulan"]=="12")?"selected":"";?> value="12">Desember</option>
+                  <option <?php echo ($this->input->get("bulan")=="01")?"selected":"";?> value="01">Januari</option>
+                  <option <?php echo ($this->input->get("bulan")=="02")?"selected":"";?> value="02">Februari</option>
+                  <option <?php echo ($this->input->get("bulan")=="03")?"selected":"";?> value="03">Maret</option>
+                  <option <?php echo ($this->input->get("bulan")=="04")?"selected":"";?> value="04">April</option>
+                  <option <?php echo ($this->input->get("bulan")=="05")?"selected":"";?> value="05">Mei</option>
+                  <option <?php echo ($this->input->get("bulan")=="06")?"selected":"";?> value="06">Juni</option>
+                  <option <?php echo ($this->input->get("bulan")=="07")?"selected":"";?> value="07">Juli</option>
+                  <option <?php echo ($this->input->get("bulan")=="08")?"selected":"";?> value="08">Agustus</option>
+                  <option <?php echo ($this->input->get("bulan")=="09")?"selected":"";?> value="09">September</option>
+                  <option <?php echo ($this->input->get("bulan")=="10")?"selected":"";?> value="10">Oktober</option>
+                  <option <?php echo ($this->input->get("bulan")=="11")?"selected":"";?> value="11">November</option>
+                  <option <?php echo ($this->input->get("bulan")=="12")?"selected":"";?> value="12">Desember</option>
                   </select>
                 </td>
               </tr>
               <tr>
                 <td>Year</td>
                 <td>
-                  <input required class="form-control" value="<?php echo $_GET["tahun"];?>" type="number" minlength="4" maxlength="4" name="tahun">
+                  <input required class="form-control" value="<?php echo $this->input->get("tahun");?>" type="number" minlength="4" maxlength="4" name="tahun">
                 </td>
               </tr>
               <tr>
                 <td></td>
                 <td><button class="btn btn-primary" type="submit">Submit</button>  
-                <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_daily_export/?tahun=<?php echo $_GET['tahun'];?>&bulan=<?php echo $_GET['bulan'];?>">Export Data</a></td>
+                <a class="btn btn-success" href="<?php echo base_url();?>marketing/member_graph_daily_export/?tahun=<?php echo $this->input->get('tahun');?>&bulan=<?php echo $this->input->get('bulan');?>">Export Data</a></td>
               </tr>
             </table>
           </form>
@@ -53,7 +53,7 @@
             <th>No</th>
             <th>Klasifikasi</th>
             <?php
-              $number = cal_days_in_month(1, $_GET['bulan'], $_GET['tahun']);
+              $number = cal_days_in_month(1, $this->input->get('bulan'), $this->input->get('tahun'));
               for ($i=1; $i <= $number; $i++) { 
                 ?>
                 <th><?php echo $i;?></th>

@@ -1774,8 +1774,8 @@ class Marketing extends CI_Controller {
     public function member_graph_daily()
     {
     	$data = array();
-    	if($_GET['bulan']!="" and $_GET['tahun']!=""){
-    		$number = cal_days_in_month(1, $_GET['bulan'], $_GET['tahun']);
+    	if($this->input->get('bulan')!="" and $this->input->get('tahun')!=""){
+    		$number = cal_days_in_month(1, $this->input->get('bulan'), $this->input->get('tahun'));
     		$dn = array();
     		foreach($this->db->get('data_klasifikasi')->result_array() as $key){
     			$dt = array();
@@ -1784,9 +1784,9 @@ class Marketing extends CI_Controller {
 					$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
 					$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
 					if($i<$number){
-						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d");
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-".($i+1)),"Y-m-d");
 					}else{
-						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-1"),"Y-m-");
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-1"),"Y-m-");
 					}
 					$this->db->like('k1.tgl_update',$likedate,'both');
 					$this->db->where('k1.id_klasifikasi',$key['id']);
@@ -1806,9 +1806,9 @@ class Marketing extends CI_Controller {
     				$this->db->select('count(data_mitra.id_mitra) as jumlah');
 					$this->db->join('klasifikasi_member','klasifikasi_member.id_mitra=data_mitra.id_mitra','left');
 					if($i<$number){
-						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-".($i+1)),"Y-m-d");
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-".($i+1)),"Y-m-d");
 					}else{
-						$likedate = date_format(date_create($_GET['tahun']."-".$_GET['bulan']."-1"),"Y-m-");
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-1"),"Y-m-");
 					}
 					$this->db->like('data_mitra.join_date',$likedate,'both');
 					$this->db->where('id_klasifikasi',NULL);
