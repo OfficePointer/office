@@ -1824,4 +1824,93 @@ class Marketing extends CI_Controller {
 
     	$this->general->load('marketing/member_graph_daily',$data);
     }
+    public function member_graph_daily_export()
+    {
+    	$this->general->logging();
+	        header('Content-type: application/vnd.ms-excel');
+	        header('Content-Disposition: attachment; filename=Export_Member_Graph_Daily_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
+	      
+    	$data = array();
+    	if($this->input->get('bulan')!="" and $this->input->get('tahun')!=""){
+    		$number = cal_days_in_month(1, $this->input->get('bulan'), $this->input->get('tahun'));
+    		$dn = array();
+    		foreach($this->db->get('data_klasifikasi')->result_array() as $key){
+    			$dt = array();
+    			for($i=0; $i <= $number; $i++) { 
+    				$this->db->select('count(k1.id) as jumlah');
+					$this->db->join('klasifikasi_member k1','k1.id_mitra=data_mitra.id_mitra','left');
+					$this->db->join('klasifikasi_member k2','k2.id_mitra=data_mitra.id_mitra and k1.id<k2.id','left outer');
+					if($i<$number){
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-".($i+1)),"Y-m-d");
+					}else{
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-1"),"Y-m-");
+					}
+					$this->db->like('k1.tgl_update',$likedate,'both');
+					$this->db->where('k1.id_klasifikasi',$key['id']);
+					$this->db->where('k2.id',NULL);
+					//$this->db->group_by('k1.id_mitra');
+					$xa = $this->db->get('data_mitra');
+					$xa = $xa->row_array();
+					$dt[$i+1] = $xa['jumlah'];
+					// die($this->db->last_query());
+    			}
+    			$dn[$key['klasifikasi']] = $dt;
+    			// die();
+    		}
+
+    			$dt = array();
+    			for($i=0; $i <= $number; $i++) { 
+    				$this->db->select('count(data_mitra.id_mitra) as jumlah');
+					$this->db->join('klasifikasi_member','klasifikasi_member.id_mitra=data_mitra.id_mitra','left');
+					if($i<$number){
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-".($i+1)),"Y-m-d");
+					}else{
+						$likedate = date_format(date_create($this->input->get('tahun')."-".$this->input->get('bulan')."-1"),"Y-m-");
+					}
+					$this->db->like('data_mitra.join_date',$likedate,'both');
+					$this->db->where('id_klasifikasi',NULL);
+					//$this->db->group_by('k1.id_mitra');
+					$xa = $this->db->get('data_mitra');
+					$xa = $xa->row_array();
+					$dt[$i+1] = $xa['jumlah'];
+					// die($this->db->last_query());
+    			}
+    			$dn['Non Data'] = $dt;
+    		$data['data'] = $dn;
+    	}
+    	?>
+    	<table class="table table-bordered table-striped for_datatables_asc">
+          <thead>
+            <th>No</th>
+            <th>Klasifikasi</th>
+            <?php
+              $number = cal_days_in_month(1, $this->input->get('bulan'), $this->input->get('tahun'));
+              for ($i=1; $i <= $number; $i++) { 
+                ?>
+                <th><?php echo $i;?></th>
+                <?php
+              }
+            ?>
+            <th>Total</th>
+          </thead>
+          <tbody>
+          <?php 
+          $i = 1;
+              foreach ($data as $key => $value) {
+                ?>
+
+          <tr>
+          <?php
+                echo "<td>".$i++."</td>";
+                echo "<td>".$key."</td>";
+                foreach ($value as $data) {
+                echo "<td>".$data."</td>";
+                 } 
+              }
+            ?>
+          </table>
+    	<?php
+
+    	//$this->general->load('marketing/member_graph_daily',$data);
+    }
 }
