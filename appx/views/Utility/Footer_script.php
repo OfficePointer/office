@@ -30,6 +30,7 @@ foreach ($us as $key) {
 <script type="text/javascript">
 //----------------------------JavaScript---------------------------------------
 var muncul_deposit = 0;
+$("button").addClass('waves-button waves-float');
 	Waves.attach('button');
     Waves.attach('button', ['waves-button', 'waves-float']);
     Waves.attach('.btn', ['waves-button', 'waves-float']);

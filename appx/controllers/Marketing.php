@@ -1750,6 +1750,180 @@ class Marketing extends CI_Controller {
 
 		redirect(base_url('marketing/email_templates'));
 	}
+
+	public function lookup_recipient_add()
+	{
+		$this->general->load('marketing/lookup_recipient/add');
+	}
+	public function lookup_recipient_edit($id)
+	{
+		$data['data'] = $this->db->where('id',$id)->get('marketing_recipient_type')->row_array();
+		$this->general->load('marketing/lookup_recipient/edit',$data);
+	}
+	public function lookup_recipient_update(){
+		$data = $this->input->post();
+		$data['created_at'] = date("Y-m-d H:i:s");
+		$data['id_user'] = $this->session->userdata('id');
+		$this->db->where('id',$data['id']);
+		$this->db->update('marketing_recipient_type',$data);
+
+		redirect(base_url('marketing/lookup_recipient'));
+	}
+	public function lookup_recipient_view($id){
+		$data['data'] = $this->db->where('id',$id)->get('marketing_recipient_type')->row_array();
+
+		$a = $this->db->query($data['data']['query']);
+		$data['recipient'] = $a->result_array();
+
+		$this->general->load('marketing/lookup_recipient/view',$data);
+	}
+	public function lookup_recipient_delete($id){
+		$this->db->where('id',$id)->delete('marketing_recipient_type');
+
+		redirect(base_url('marketing/lookup_recipient'));
+	}
+	public function lookup_recipient()
+	{
+		$data['data'] = $this->db->get('marketing_recipient_type')->result_array();
+		$this->general->load('marketing/lookup_recipient/all',$data);
+	}
+	public function lookup_recipient_save(){
+		$data = $this->input->post();
+		$data['created_at'] = date("Y-m-d H:i:s");
+		$data['id_user'] = $this->session->userdata('id');
+		$this->db->insert('marketing_recipient_type',$data);
+
+		redirect(base_url('marketing/lookup_recipient'));
+	}
+
+
+	public function subscribers_list()
+	{
+		$data['data'] = $this->db->select('*,id as "id_master_nya", (select count(id) from marketing_recipient_list_detail where id_master=id_master_nya) as "subscribers"')->get('marketing_recipient_list')->result_array();
+		$this->general->load('marketing/subscribers_list/all',$data);
+	}
+	public function subscribers_list_view($id_master){
+		$this->db->where('id_master',$id_master);
+		$a = $this->db->get('marketing_recipient_list_detail');
+		$data['data'] = $this->db->where('id',$id_master)->get('marketing_recipient_list')->row_array();
+		$data['recipient'] = $a->result_array();
+
+		$this->general->load('marketing/subscribers_list/view',$data);
+	}	
+	public function subscribers_list_delete($id_master){
+		$this->db->where('id_master',$id_master);
+		$this->db->delete('marketing_recipient_list_detail');
+		$this->db->where('id',$id_master)->delete('marketing_recipient_list');
+
+		redirect(base_url('marketing/subscribers_list/'));
+
+	}
+	public function subscribers_list_add()
+	{
+		$this->general->load('marketing/subscribers_list/add');
+	}
+	public function subscribers_list_save(){
+		$data = $this->input->post();
+		$data['uniqid'] = uniqid();
+		$data['id_user'] = $this->session->userdata('id');
+		$this->db->insert('marketing_recipient_list',$data);
+
+		redirect(base_url('marketing/subscribers_list_manage/'.$this->db->insert_id()));
+	}
+	public function subscribers_list_manage($id)
+	{
+		$data['data'] = $this->db->where('id',$id)->get('marketing_recipient_list')->row_array();
+		$data['subscribers'] = $this->db->select('*, count(id) as "jumlah"')->where('id_master',$id)->group_by('concat(id_type," ",type_value)')->get('marketing_recipient_list_detail')->result_array();
+		$this->general->load('marketing/subscribers_list/manage',$data);
+	}
+	public function subscribers_list_manage_view($id_master,$id_type,$type_value){
+		$this->db->where('id_master',$id_master);
+		$this->db->where('id_type',$id_type);
+		$this->db->where('type_value',$type_value);
+		$a = $this->db->get('marketing_recipient_list_detail');
+		$name = '';
+		if($id_type==1){
+			$new = $this->db->where('id',$type_value)->get('marketing_recipient_type')->row_array();
+			$name = "Lookup Recipient '".$new['name']."'";
+		}elseif($id_type==2){
+			$new = $this->db->where('id',$type_value)->get('data_klasifikasi')->row_array();
+			$name = "Member by Klasifikasi '".$new['klasifikasi']."'";
+		}elseif($id_type==3){
+			$new = $this->db->where('id_type',$type_value)->get('type')->row_array();
+			$name = "Member by Type '".$new['type']."'";
+		}else{
+			$name = "Other data";
+		}
+
+		$data['data'] = array('name'=>$name,'id_master'=>$id_master);
+		$data['recipient'] = $a->result_array();
+
+		$this->general->load('marketing/subscribers_list_manage/view',$data);
+	}
+	public function subscribers_list_manage_add($id)
+	{		
+		$data['data'] = $this->db->where('id',$id)->get('marketing_recipient_list')->row_array();
+		$data['pre_lists'] = $this->db->get('marketing_recipient_type')->result_array();
+		$data['classification'] = $this->db->get('data_klasifikasi')->result_array();
+		$data['type'] = $this->db->get('type')->result_array();
+		$this->general->load('marketing/subscribers_list_manage/add',$data);
+	}
+	public function subscribers_list_manage_save()
+	{
+		$id_master = $this->input->post('id_master');
+		$data = $this->input->post();
+		$source = $data['source'];
+		$value = $data['data_'.$source];
+		$result = '';
+		if($source==1){
+			$lookup = $this->db->where('id',$value)->get('marketing_recipient_type')->row_array();
+			$query = $lookup['query'];
+
+			$result = $this->db->query($query)->result_array();
+		}elseif($source==2){
+			$query = "select id_mitra as 'id_mitra', brand_name as 'name', email as 'email' from data_mitra where status='active'";
+			$lookup = $this->db->query($query)->result_array();
+			$res = array();
+			foreach ($lookup as $key) {
+				if($this->general->get_klasifikasi_id($key['id_mitra'])==$value){
+					$res[] = $key;
+				}
+			}
+			$result = $res;
+		}elseif($source==3){
+
+			$type = $this->db->where('id_type',$value)->get('type')->row_array();
+			$type = $type['type'];
+
+			$query = "select id_mitra as 'id_mitra', brand_name as 'name', email as 'email' from data_mitra where status='active' and type='".$type."'";
+
+			$result = $this->db->query($query)->result_array();
+
+		}
+
+		$uniq = uniqid();
+
+		foreach ($result as $key) {
+			$dat = $key;
+			$dat['uniqid'] = $uniq;
+			$dat['id_master'] = $id_master;
+			$dat['id_type'] = $source;
+			$dat['type_value'] = $value;
+			$this->db->insert('marketing_recipient_list_detail',$dat);
+		}
+
+		redirect(base_url('marketing/subscribers_list_manage/'.$id_master));
+	}
+	public function subscribers_list_manage_delete($id_master,$id_type,$type_value)
+	{
+		$this->db->where('id_master',$id_master);
+		$this->db->where('id_type',$id_type);
+		$this->db->where('type_value',$type_value);
+		$this->db->delete('marketing_recipient_list_detail');
+
+		redirect(base_url('marketing/subscribers_list_manage/'.$id_master));
+	}
+
 	private function _setup_ckeditor($id)
     {
         $this->load->helper('url');

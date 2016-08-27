@@ -244,8 +244,9 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="<?php echo base_url('marketing/email_templates');?>"><i class="fa fa-th-list"></i> E-Mail Templates</a></li>
-                <li><a href="<?php echo base_url('marketing/email_campaign');?>"><i class="fa fa-at"></i> E-Mail Campaign</a></li>
+                <li><a href="<?php echo base_url('marketing/lookup_recipient');?>"><i class="fa fa-group"></i> Lookup Recipients</a></li>
                 <li><a href="<?php echo base_url('marketing/subscribers_list');?>"><i class="fa fa-at"></i> Recipients List</a></li>
+                <li><a href="<?php echo base_url('marketing/email_campaign');?>"><i class="fa fa-envelope-o"></i> E-Mail Campaign</a></li>
               </ul>
             </li>
 
