@@ -33,10 +33,6 @@
           <input type="text" class="form-control" name="direktorat">
         </div>
         <div class="form-group">
-          <label>NIK</label>
-          <input type="text" class="form-control" name="nik">
-        </div>
-        <div class="form-group">
           <label>Division</label>
           <select type="text" class="form-control" name="division">
           <?php

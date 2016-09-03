@@ -307,6 +307,7 @@ class Pengaturan extends CI_Controller {
 		$data['status'] = "Online";
 		$data['create_at'] = date("Y-m-d H:i:s");
 		$data['picture'] = base_url('/assets/images/foto.png');
-		redirect(base_url('pengaturan/add_new_user'));
+		$this->db->insert('data_user',$data);
+		redirect(base_url('pengaturan/user_manage'));
 	}
 }
