@@ -1,7 +1,7 @@
 <?php
-        $config['smtp_host'] = 'smtp.mandrillapp.com';
-        $config['smtp_user'] = 'support@it-club.smkn10jakarta.sch.id';
-        $config['smtp_pass'] = '_C4gRd_RxE-JskVlDK8wrQ';
+        $config['smtp_host'] = 'smtp-mail.outlook.com';
+        $config['smtp_user'] = 'qa.dev.pointer@outlook.com';
+        $config['smtp_pass'] = 'windows10';
         $config['smtp_port'] = '587';
         
         $config['protocol'] = 'smtp';
