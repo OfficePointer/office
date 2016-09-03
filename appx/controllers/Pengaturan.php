@@ -298,7 +298,7 @@ class Pengaturan extends CI_Controller {
 		$data = $this->input->post();
 		if($data['password']=="")
 		{
-			unset($data['password']);
+			$data['password'] = md5("test1234");
 		}
 		else
 		{
