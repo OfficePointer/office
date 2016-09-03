@@ -307,6 +307,7 @@ class Pengaturan extends CI_Controller {
 		$data['id_division'] = $data['division'];
 		$data['id_level'] = $data['level'];
 		$data['division'] = "Opera";
+		unset($data['level']);
 		$data['grup'] = "Service Operation";
 		$data['status'] = "Online";
 		$data['create_at'] = date("Y-m-d H:i:s");
