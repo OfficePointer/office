@@ -1,7 +1,7 @@
 <?php
-        $config['smtp_host'] = 'smtp-mail.outlook.com';
-        $config['smtp_user'] = 'qa.dev.pointer@outlook.com';
-        $config['smtp_pass'] = 'windows10';
+        $config['smtp_host'] = 'smtp.gmail.com';
+        $config['smtp_user'] = 'arief@pointer.co.id';
+        $config['smtp_pass'] = '@pointer123';
         $config['smtp_port'] = '587';
         
         $config['protocol'] = 'smtp';
