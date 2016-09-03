@@ -304,6 +304,10 @@ class Pengaturan extends CI_Controller {
 		{
 			$data['password'] = md5($data['password']);
 		}
+		$data['id_division'] = $data['division'];
+		$data['id_level'] = $data['level'];
+		$data['division'] = "Opera";
+		$data['grup'] = "Service Operation";
 		$data['status'] = "Online";
 		$data['create_at'] = date("Y-m-d H:i:s");
 		$data['picture'] = base_url('/assets/images/foto.png');
