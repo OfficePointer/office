@@ -1210,6 +1210,8 @@ class Marketing extends CI_Controller {
 	}
 	public function member_graph_export(){
 
+		set_time_limit(300);
+
         	$this->general->logging();
 	        header('Content-type: application/vnd.ms-excel');
 	        header('Content-Disposition: attachment; filename=Export_Member_Airline_Graph_'.$_GET['vendor'].'_'.$_GET['bulan'].'_'.$_GET['tahun'].'_by_'.$this->session->userdata('email').'.xls');
