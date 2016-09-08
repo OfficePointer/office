@@ -18,6 +18,20 @@ class Marketing extends CI_Controller {
 	 * map to /index.php/welcome/<method_name>
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */		
+
+	public function image_dump($id)
+	{
+		$this->general->set_email_read($id);
+		$filename=FCPATH."assets/1px.png"; //<-- specify the image  file
+		if(file_exists($filename)){ 
+		  header('Content-Length: '.filesize($filename)); //<-- sends filesize header
+		  header('Content-Type: image/png'); //<-- send mime-type header
+		  header('Content-Disposition: inline; filename="'.$filename.'";'); //<-- sends filename header
+		  readfile($filename); //<--reads and outputs the file onto the output buffer
+		  die(); //<--cleanup
+		  exit; //and exit
+		}
+	}
 	public function responseadd(){
  		$this->general->load('marketing/member_response_add');
  	}

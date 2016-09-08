@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once APPPATH.'/libraries/PHPMailer/PHPMailerAutoload.php';
+
 class general extends CI_Model {
 
 	/**
@@ -22,6 +24,7 @@ class general extends CI_Model {
 	{
 		if($this->uri->segment(1)!="login"
 			and $this->uri->segment(2)!="generate_tanggal"
+			and $this->uri->segment(2)!="image_dump"
 			and $this->uri->segment(2)!="cron_cek_deposit"){
 			if($this->session->userdata('id')==0 or $this->session->userdata('id')==""){
 				$this->session->set_userdata('revert_data',0);
@@ -32,6 +35,45 @@ class general extends CI_Model {
 				$this->session->set_userdata('saldosekarang',0);
 				redirect(base_url("login"));
 			}
+		}
+	}
+
+	public function set_email_read($id)
+	{
+		
+	}
+
+	public function send_mail($email,$subject,$body)
+	{
+		$mail = new \PHPMailer;
+
+		$mail->isSMTP();                                      // Set mailer to use SMTP
+		$mail->Host = 'smtp.googlemail.com';  // Specify main and backup SMTP servers
+		$mail->SMTPAuth = true;                               // Enable SMTP authentication
+		$mail->Username = 'arief@pointer.co.id';                 // SMTP username
+		$mail->Password = '@pointer123';                           // SMTP password
+		$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+		$mail->Port = 587;                                    // TCP port to connect to
+
+		$mail->setFrom('arief@pointer.co.id', "Arief Setya");
+		$mail->addAddress($email);     // Add a recipient
+
+		$mail->isHTML(true);                                  // Set email format to HTML
+
+		$body .= "<img src=''><div><blockquote style='margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex'><span style='font-family:verdana,sans-serif'><span><span><span><b><span><span><span><span><span><span><b>
+     </b></span></span></span></span></span></span></b></span></span></span>
+</span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>";
+        
+
+		$mail->Subject = $subject;
+		$mail->Body    = $body;
+		$mail->AltBody = strip_tags($body);
+
+		if(!$mail->send()) {
+		    echo 'Message could not be sent.';
+		    echo 'Mailer Error: ' . $mail->ErrorInfo;
+		} else {
+		    echo 'Message has been sent';
 		}
 	}
 
