@@ -24,7 +24,7 @@ class Root extends CI_Controller {
 	 * </span><span><span><span><span><span><b>Office Pointer</b></span></span></span></span></span><span><span><span><span></span></span><br><span><span>PT. Pojok Celebes Mandiri</span></span><br><span><span>Jalan Condet Raya No. 333/J Balekambang, Kramat Jati, Jakarta Timur 13530</span></span><br><span><span>Telp. 021 2937 3371 | Fax. 021 2937 3372</span></span><span><span></span></span><br><a href='http://www.pointer.co.id' target='_blank'></a></blockquote></div>
 	 */
 
-	public function send_mail($subject,$body,$email="ariefsetya@live.com")
+	public function send_mail($subject,$body,$email="arief@pointer.co.id")
 	{
 		$this->general->send_mail($email,$subject,$body);
 	}

@@ -19,6 +19,12 @@ class Marketing extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */		
 
+	public function email_campaign()
+	{
+		$data['data'] = $this->db->get('marketing_email_campaign')->result_array();
+		$this->general->load('marketing/email_campaign/all',$data);
+	}
+
 	public function image_dump($id)
 	{
 		$this->general->set_email_read($id);
