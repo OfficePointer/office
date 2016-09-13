@@ -259,6 +259,7 @@
               </a>
 
               <ul class="treeview-menu">
+                <li><a href="<?php echo base_url('marketing/auto_classified_member');?>"><i class="fa fa-group"></i> Auto Classified Member</a></li>
                 <li> <a href="#">
                         <i class="fa fa-check-circle"></i>
                         <span>Master Responses</span>

@@ -1,6 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+include APPPATH.'/libraries/PHPMailer/PHPMailerAutoload.php';
+
 class Marketing extends CI_Controller {
 
 	/**
@@ -19,15 +21,260 @@ class Marketing extends CI_Controller {
 	 * @see http://codeigniter.com/user_guide/general/urls.html
 	 */		
 
+	public function email_campaign_add()
+	{
+		$data['data'] = $this->db->get('marketing_email_templates')->result_array();
+		$this->general->load('marketing/email_campaign/sel_template',$data);
+	}
+	public function customize_template($id){
+		if(is_numeric($id)){
+
+			$this->db->where('id',$id);
+			$temp = $this->db->get('marketing_email_templates');
+			$temp = $temp->row_array();
+			$temp = $temp['content'];
+			$data['id_user'] = $this->session->userdata('id');
+			$data['template_id'] = $id;
+			$data['uniqid'] = uniqid();
+			$data['status'] = "A";
+			$data['created_at'] = date("Y-m-d H:i:s");
+			$data['content'] = $temp;
+			$this->db->insert('marketing_email_campaign',$data);
+			
+			redirect(base_url('marketing/customize_template/'.$data['uniqid']));
+		}else{
+			$this->db->where('uniqid',$id);
+			$data = $this->db->get('marketing_email_campaign');
+			$data = $data->row_array();
+			$data['ckeditor'] = $this->_setup_ckeditor('notes');
+
+			$this->general->load('marketing/email_campaign/customize_template',$data);
+
+		}
+	}
+	public function select_recipient($id)
+	{
+		$data = array();
+		if(sizeof($this->input->post())>0){
+			$data['content'] = $this->input->post('content');
+			$data['status'] = "B";
+			$this->db->where('uniqid',$id);
+			$this->db->update('marketing_email_campaign',$data);
+		}
+		$this->db->where('uniqid',$id);
+		$data = $this->db->get('marketing_email_campaign');
+		$data = $data->row_array();
+		$data['subscribers'] = $this->db->get('marketing_recipient_list')->result_array();
+		$data['uniqid'] = $id;
+
+		$this->general->load('marketing/email_campaign/sel_recipient',$data);
+	}
+	public function configure_campaign($id,$uniqid){
+		if(is_numeric($uniqid)){
+
+			$this->db->where('id',$uniqid);
+			$a = $this->db->get('marketing_email_campaign');
+			$a = $a->row_array();
+
+			$data['recipient_id'] = $id;
+			$data['status'] = "C";
+			$data['reply_to'] = "sales@pointer.co.id";
+			$data['tracking_open'] = 0;
+			$this->db->where('id',$uniqid);
+			$this->db->update('marketing_email_campaign',$data);
+			
+
+			$this->db->where('id_master',$a['id']);
+			$this->db->delete('marketing_email_campaign_recipient');
+			
+			$this->db->where('id_master',$id);
+			$x = $this->db->get('marketing_recipient_list_detail');
+			$x = $x->result_array();
+			foreach ($x as $key) {
+				unset($key['id']);
+				$key['id_master'] = $a['id'];
+				$this->db->insert('marketing_email_campaign_recipient',$key);
+			}
+
+
+			redirect(base_url('marketing/configure_campaign/'.$id."/".$a['uniqid']));
+		}else{
+			$this->db->where('uniqid',$uniqid);
+			$data = $this->db->get('marketing_email_campaign');
+			$data = $data->row_array();
+
+			$this->general->load('marketing/email_campaign/configure_campaign',$data);
+
+		}
+	}
+	public function campaign_summary($id)
+	{
+
+		$data = $this->input->post();
+		if(sizeof($data)>0){
+			$data['tracking_open'] = 0;
+			$data['status'] = "D";
+			if(isset($data['track_open'])){
+				$data['tracking_open'] += 1; 
+			}
+			if(isset($data['track_click'])){
+				$data['tracking_open'] += 3; 
+			}
+			if(isset($data['track_unsubscribe'])){
+				$data['tracking_open'] += 5; 
+			}
+			if(!in_array($data['tracking_open'], array(0,1,4,6,9))){	
+				$data['tracking_open'] = 1;
+				if(isset($data['track_click'])){
+					$data['tracking_open'] += 3; 
+				}
+				if(isset($data['track_unsubscribe'])){
+					$data['tracking_open'] += 5; 
+				}
+			}
+
+			unset($data['track_unsubscribe']);
+			unset($data['track_click']);
+			unset($data['track_open']);
+
+			$this->db->where('uniqid',$id);
+			$this->db->update('marketing_email_campaign',$data);
+		}
+		
+		$this->db->where('uniqid',$id);
+		$data = $this->db->get('marketing_email_campaign');
+		$data = $data->row_array();
+
+		$this->general->load('marketing/email_campaign/campaign_summary',$data);
+	}
+
+	public function auto_classified_member(){
+		$data['data'] = $this->db->get('marketing_auto_classified')->result_array();
+		$this->general->load('marketing/auto_classified/all',$data);
+	}
+	public function auto_classified_member_add(){
+		$data['data'] = $this->db->get('data_klasifikasi')->result_array();
+		$this->general->load('marketing/auto_classified/add',$data);
+	}
+	public function auto_classified_member_edit($id){
+		$data = $this->db->where('id',$id)->get('marketing_auto_classified')->row_array();
+		$data['datax'] = $this->db->get('data_klasifikasi')->result_array();
+		$this->general->load('marketing/auto_classified/edit',$data);
+	}
+	public function auto_classified_member_save(){
+		$data = $this->input->post();
+		$data['id_user'] = $this->session->userdata('id');
+
+		$this->db->insert('marketing_auto_classified',$data);
+
+		redirect(base_url('marketing/auto_classified_member'));
+	}
+	public function auto_classified_member_update(){
+		$data = $this->input->post();
+		$data['id_user'] = $this->session->userdata('id');
+
+		$this->db->where('id',$data['id']);
+		$this->db->update('marketing_auto_classified',$data);
+
+		redirect(base_url('marketing/auto_classified_member'));
+	}
+	public function auto_classified_member_delete($id){
+		$this->db->where('id',$id);
+		$this->db->delete('marketing_auto_classified');
+
+		redirect(base_url('marketing/auto_classified_member'));
+	}
 	public function email_campaign()
 	{
 		$data['data'] = $this->db->get('marketing_email_campaign')->result_array();
 		$this->general->load('marketing/email_campaign/all',$data);
 	}
 
+	public function send_now($id)
+	{
+		$this->db->where('uniqid',$id)->update('marketing_email_campaign',array('status'=>"E"));
+
+		$a = $this->db->where('uniqid',$id)->get('marketing_email_campaign');
+		$a = $a->row_array();
+		
+		// echo $a['id'];
+		$x = $this->db->where('id_master',$a['id'])->update('marketing_email_campaign_recipient',array('status'=>"R"));
+		// print_r($x);
+		redirect(base_url('marketing/email_campaign'));
+	}
+
+	public function email_campaign_delete($id)
+	{
+		$this->db->where('id',$id)->delete('marketing_email_campaign');
+		$this->db->where('id_master',$id)->delete('marketing_email_campaign_recipient');
+
+		redirect(base_url('marketing/email_campaign'));
+	}
+
+	public function override_email_send()
+	{
+		$a = $this->db->where('status',"E")->get('marketing_email_campaign');
+		$a = $a->row_array();
+
+		if(!empty($a)){
+			$x = $this->db->where('id_master',$a['id'])->where('status',"R")->get('marketing_email_campaign_recipient');
+			$x = $x->result_array();
+
+			$temp = $a['content'];
+
+			foreach ($x as $key) {
+				$mitra = $this->db->where('id_mitra',$key['id_mitra'])->get('data_mitra')->row_array();
+				$temp = str_replace("\${brand-name}", $mitra['brand_name'], $temp);
+				$temp = str_replace("\${owner-name}", $mitra['name'], $temp);
+
+				$temp = $temp."<img src='".base_url('marketing/image_dump/'.$key['id'])."'>"; 
+
+				
+				$mail = new PHPMailer;
+
+				//$mail->SMTPDebug = 3;                               // Enable verbose debug output
+
+				$mail->isSMTP();                                      // Set mailer to use SMTP
+				$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+				$mail->SMTPAuth = true;                               // Enable SMTP authentication
+				$mail->Username = 'arief@pointer.co.id';                 // SMTP username
+				$mail->Password = '@pointer123';                           // SMTP password
+				$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+				$mail->Port = 587;                                    // TCP port to connect to
+
+				$mail->setFrom('sales@pointer.co.id', 'Sales Pointer');
+				$mail->addAddress($mitra['email']);               // Name is optional
+				$mail->addReplyTo($a['reply_to']);
+
+				$mail->isHTML(true);                                  // Set email format to HTML
+
+				$mail->Subject = $a['subject'];
+				$mail->Body    = $temp;
+				// $mail->AltBody = strip_tags($temp);
+
+				if(!$mail->send()) {
+				    echo 'Message could not be sent.';
+				    echo 'Mailer Error: ' . $mail->ErrorInfo;
+				    //$this->db->where('id',$a['id'])->update('marketing_email_campaign',array('status'=>'E'));
+				    $this->db->where('id',$key['id'])->update('marketing_email_campaign_recipient',array('status'=>'F','result'=>10,'sent_at'=>date("Y-m-d H:i:s")));
+				} else {
+				    $this->db->where('id',$a['id'])->update('marketing_email_campaign',array('status'=>'F'));
+				    $this->db->where('id',$key['id'])->update('marketing_email_campaign_recipient',array('status'=>'S','result'=>0,'sent_at'=>date("Y-m-d H:i:s")));
+				}
+
+			}
+
+		}else{
+			echo "No";
+		}
+
+		// redirect(base_url("email"))
+
+	}	
+
 	public function image_dump($id)
 	{
-		$this->general->set_email_read($id);
+		$this->general->set_email_open($id);
 		$filename=FCPATH."assets/1px.png"; //<-- specify the image  file
 		if(file_exists($filename)){ 
 		  header('Content-Length: '.filesize($filename)); //<-- sends filesize header
@@ -1751,6 +1998,10 @@ class Marketing extends CI_Controller {
 	}
 	public function email_templates_view($id){
 		$data['data'] = $this->db->where('id',$id)->get('marketing_email_templates')->row_array();
+		$this->load->view('marketing/email_templates/view',$data);
+	}
+	public function email_campaign_temp_view($id){
+		$data['data'] = $this->db->where('uniqid',$id)->get('marketing_email_campaign')->row_array();
 		$this->load->view('marketing/email_templates/view',$data);
 	}
 	public function email_templates_delete($id){

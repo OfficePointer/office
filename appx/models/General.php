@@ -38,11 +38,26 @@ class general extends CI_Model {
 		}
 	}
 
-	public function set_email_read($id)
+	public function set_email_open($id)
 	{
-		
+		$this->db->where('id',$id);
+		$this->db->update('marketing_email_campaign_recipient',array('result'=>1));
 	}
-
+	public function set_email_click($id)
+	{
+		$this->db->where('id',$id);
+		$this->db->update('marketing_email_campaign_recipient',array('status'=>4));
+	}
+	public function set_email_unsubs($id)
+	{
+		$this->db->where('id',$id);
+		$this->db->update('marketing_email_campaign_recipient',array('status'=>6));
+	}
+	public function set_email_open_unsubs($id)
+	{
+		$this->db->where('id',$id);
+		$this->db->update('marketing_email_campaign_recipient',array('status'=>9));
+	}
 	public function send_mail($email,$subject,$body)
 	{
 		$mail = new \PHPMailer;
@@ -173,6 +188,14 @@ function csv_to_array($filename='', $delimiter=',')
         fclose($handle);
     }
     return $data;
+}
+
+public function marketing_get_recipient($id)
+{
+	$this->db->where('id',$id);
+	$a = $this->db->get('marketing_recipient_list');
+	$a = $a->row_array();
+	return $a['name'];
 }
 
 	public function log()
