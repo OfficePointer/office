@@ -224,10 +224,10 @@ class Marketing extends CI_Controller {
 
 			foreach ($x as $key) {
 				$mitra = $this->db->where('id_mitra',$key['id_mitra'])->get('data_mitra')->row_array();
-				$temp = str_replace("\${brand-name}", $mitra['brand_name'], $temp);
-				$temp = str_replace("\${owner-name}", $mitra['name'], $temp);
+				$tempx = str_replace("\${brand-name}", $mitra['brand_name'], $temp);
+				$tempx = str_replace("\${owner-name}", $mitra['name'], $tempx);
 
-				$temp = $temp."<img src='".base_url('marketing/image_dump/'.$key['id'])."'>"; 
+				$tempx = $tempx."<img src='".base_url('marketing/image_dump/'.$key['id'])."'>"; 
 
 				
 				$mail = new PHPMailer;
@@ -237,8 +237,8 @@ class Marketing extends CI_Controller {
 				$mail->isSMTP();                                      // Set mailer to use SMTP
 				$mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
 				$mail->SMTPAuth = true;                               // Enable SMTP authentication
-				$mail->Username = 'arief@pointer.co.id';                 // SMTP username
-				$mail->Password = '@pointer123';                           // SMTP password
+				$mail->Username = 'sales@pointer.co.id';                 // SMTP username
+				$mail->Password = 'pointer1234';                           // SMTP password
 				$mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
 				$mail->Port = 587;                                    // TCP port to connect to
 
@@ -249,7 +249,7 @@ class Marketing extends CI_Controller {
 				$mail->isHTML(true);                                  // Set email format to HTML
 
 				$mail->Subject = $a['subject'];
-				$mail->Body    = $temp;
+				$mail->Body    = $tempx;
 				// $mail->AltBody = strip_tags($temp);
 
 				if(!$mail->send()) {
