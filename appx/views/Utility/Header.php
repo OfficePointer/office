@@ -67,6 +67,7 @@ foreach ($us as $key) {
 <script src="<?php echo base_url('assets/waves/waves.min.js');?>"></script>
 <?php
   include 'Header_script.php';
+  
 ?>
 </head>
 <body class="hold-transition skin-blue sidebar-mini fixed" style="background:lightgray;">
@@ -87,6 +88,15 @@ foreach ($us as $key) {
       <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      <?php
+      $host = '192.168.200.1'; 
+      $port = 3306; 
+      $waitTimeoutInSeconds = 1; 
+      if(!fsockopen($host,$port,$errCode,$errStr,$waitTimeoutInSeconds)){ ?>
+      <a href="#" class="sidebar-toggle-info" role="button">
+        <span class="">Lost VPN Connection to Pointer bro, please check ;)</span>
+      </a>
+      <?php } ?>
 
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">

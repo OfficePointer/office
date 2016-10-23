@@ -284,6 +284,21 @@ a:focus {
   padding: 2px 3px;
   line-height: .9;
 }
+
+.sidebar-toggle-info {
+  float: left;
+  background-color: transparent;
+  background-image: none;
+  padding: 15px 15px;
+  font-family: fontAwesome;
+  color: #fff;
+}
+.sidebar-toggle-info:before {
+  content: "\f129";
+}
+.sidebar-toggle-info:hover {
+  color: #fff;
+}
 .main-header .logo {
   -webkit-transition: width 0.3s ease-in-out;
   -o-transition: width 0.3s ease-in-out;
